@@ -180,11 +180,16 @@ export class RecoveryService {
             await SyncService.commitSubmission(fullSubmission);
           }
         } catch (err: any) {
-          console.warn(`[leetie] Failed to commit item ${subMeta.id}:`, err);
+          if (err.message && err.message.includes('429')) {
+            console.warn('[leetie] Rate limit encountered. Backing off for 5 seconds...');
+            await new Promise((r) => setTimeout(r, 5000));
+          } else {
+            console.warn(`[leetie] Failed to commit item ${subMeta.id}:`, err);
+          }
         }
 
-        // Polite delay to prevent rate limits
-        await new Promise((r) => setTimeout(r, 400));
+        // 1000ms polite delay to safeguard LeetCode & GitHub APIs
+        await new Promise((r) => setTimeout(r, 1000));
       }
 
       await storage.setState({ syncStatus: 'idle', recoveryProgress: null });
