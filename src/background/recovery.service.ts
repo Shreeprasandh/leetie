@@ -60,6 +60,7 @@ export class RecoveryService {
       headers,
       credentials: 'include',
       body: JSON.stringify({
+        operationName: 'submissionList',
         query,
         variables: { offset, limit },
       }),
@@ -108,6 +109,7 @@ export class RecoveryService {
       headers,
       credentials: 'include',
       body: JSON.stringify({
+        operationName: 'submissionDetails',
         query,
         variables: { submissionId: Number(id) },
       }),
