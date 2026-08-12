@@ -1,0 +1,63 @@
+1. Core Workflow & Logic
+Event Interception: Monitor LeetCode's client-side network traffic or DOM changes to detect when a submission passes all test cases (listening for the GraphQL mutation response for problem submission status: success).
+
+Data Extraction: Scrape the submission payload from the DOM or API response to capture:
+
+Problem Title, ID, and Difficulty.
+
+Solution Code (Language, Source text).
+
+Runtime, Memory usage, and Beats statistics.
+
+GitHub Integration: Format the payload into a clean directory tree (e.g., Problem_Name/solution.py) and push it to a designated repository using the GitHub REST API (PUT /repos/{owner}/{repo}/contents/{path}).
+
+2. Required GitHub API Endpoints
+OAuth Authentication: [https://github.com/login/oauth/authorize](https://github.com/login/oauth/authorize) and [https://github.com/login/oauth/access_token](https://github.com/login/oauth/access_token) to generate user access tokens.
+
+Repository Check/Creation: GET /user/repos and POST /user/repos to verify or initialize the target storage repository.
+
+File Commit API: PUT /repos/{owner}/{repo}/contents/{path} (requires base64-encoded file content, commit message, and branch name).
+
+3. DOM & Network Selectors (Reference Logic)
+Submission Status Hook: Intercept fetch or XMLHttpRequest calls matching LeetCode's /graphql endpoint where the query payload contains submitSolution.
+
+Code Retrieval: Extract code blocks from the Monaco Editor instance present on the active LeetCode workspace DOM (.monaco-editor).
+
+Next logical step: Specify your custom style and theme parameters so we can map out the UI and directory structure.
+
+I already completed 250 problems is there a way to get that ?
+
+Yes. LeetCode stores your entire submission history on their servers, meaning you can retrieve all 250 previously solved problems programmatically without having to re-solve them.
+
+Recovery Strategy via LeetCode's Internal GraphQL API
+Authentication Session: Grab your active session cookies (LEETCODE_SESSION and csrftoken) from your browser's DevTools while logged into LeetCode.  
+PyPI
+
+Fetch Submission List: Query LeetCode's GraphQL endpoint to pull your submission history list (which maps out pagination for all past accepted answers):
+
+Endpoint: [https://leetcode.com/graphql](https://leetcode.com/graphql)
+
+Query Payload Structure:
+
+GraphQL
+query submissionList($offset: Int!, $limit: Int!, $slug: String) {
+  submissionList(offset: $offset, limit: $limit, questionSlug: $slug) {
+    hasNext
+    submissions {
+      id
+      statusDisplay
+      lang
+      timestamp
+    }
+  }
+}
+Fetch Specific Solution Code: For each successful submission ID returned, query the submission detail endpoint to extract the raw source code text.
+
+Bulk Push to GitHub: Loop through the gathered records, format them locally into your preferred folder layout, and push them to your target repository via the GitHub REST API.
+
+
+
+name - leetie
+dont use exact things due to copyrights.
+
+ref - https://github.com/arunbhardwaj/LeetHub-2.0
