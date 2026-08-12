@@ -32,6 +32,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
       (async () => {
         try {
           const user = await GitHubService.verifyUser(token);
+          await storage.setConfig({ githubToken: token, githubUsername: user.login });
           const repoOk = await GitHubService.ensureRepo(token, user.login, repoName);
           await storage.setState({ isAuthenticated: true, lastError: null });
           sendResponse({ success: true, user, repoOk });

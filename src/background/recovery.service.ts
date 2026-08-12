@@ -138,6 +138,14 @@ export class RecoveryService {
     this.isRunning = true;
 
     try {
+      const config = await storage.getConfig();
+      if (!config.githubToken || !config.githubUsername) {
+        const errMsg = 'GitHub Token or Username is missing. Please connect your GitHub account first.';
+        await storage.setState({ syncStatus: 'error', lastError: errMsg, recoveryProgress: null });
+        this.isRunning = false;
+        return;
+      }
+
       await storage.setState({ syncStatus: 'recovering', lastError: null });
 
       // Step 1: Paginate to collect all submission metadata
@@ -166,6 +174,7 @@ export class RecoveryService {
       // Step 2: Deduplicate (one per problem + language)
       const uniqueSubmissions = this.deduplicateSubmissions(allSubmissions);
       const total = uniqueSubmissions.length;
+      let successCount = 0;
 
       // Step 3: Fetch detail and commit
       for (let i = 0; i < total; i++) {
@@ -180,13 +189,15 @@ export class RecoveryService {
           const fullSubmission = await this.fetchSubmissionDetail(subMeta.id, subMeta.timestamp);
           if (fullSubmission) {
             await SyncService.commitSubmission(fullSubmission);
+            successCount++;
           }
         } catch (err: any) {
+          console.warn(`[leetie] Failed to commit item ${subMeta.id}:`, err);
           if (err.message && err.message.includes('429')) {
             console.warn('[leetie] Rate limit encountered. Backing off for 5 seconds...');
             await new Promise((r) => setTimeout(r, 5000));
           } else {
-            console.warn(`[leetie] Failed to commit item ${subMeta.id}:`, err);
+            await storage.setState({ lastError: `Commit error on #${subMeta.titleSlug}: ${err.message}` });
           }
         }
 
@@ -194,7 +205,11 @@ export class RecoveryService {
         await new Promise((r) => setTimeout(r, 1000));
       }
 
-      await storage.setState({ syncStatus: 'idle', recoveryProgress: null });
+      await storage.setState({
+        syncStatus: 'idle',
+        recoveryProgress: null,
+        lastError: successCount === 0 && total > 0 ? 'Recovery completed but 0 commits succeeded. Please check GitHub permissions.' : null,
+      });
     } catch (err: any) {
       console.error('[leetie] History recovery error:', err);
       await storage.setState({ syncStatus: 'error', lastError: err.message, recoveryProgress: null });
