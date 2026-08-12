@@ -58,6 +58,16 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
           await storage.setState({ syncStatus: 'syncing' });
           const record = await SyncService.commitSubmission(submission);
           await storage.setState({ syncStatus: 'idle', lastError: null });
+
+          if (typeof chrome !== 'undefined' && chrome.notifications) {
+            chrome.notifications.create({
+              type: 'basic',
+              iconUrl: 'assets/icon-48.png',
+              title: 'leetie — Solution Synced!',
+              message: `Successfully committed ${submission.problem.id}. ${submission.problem.title} [${submission.problem.difficulty}] to GitHub.`,
+            });
+          }
+
           sendResponse({ success: true, record });
         } catch (err: any) {
           await storage.setState({ syncStatus: 'error', lastError: err.message });

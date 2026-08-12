@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "zip": "powershell Compress-Archive -Path dist/* -DestinationPath leetie-v1.0.0.zip -Force"
   },
   "dependencies": {
     "clsx": "^2.1.1",
