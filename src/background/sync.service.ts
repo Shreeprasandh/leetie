@@ -88,7 +88,9 @@ ${submission.code}`;
     path: string,
     content: string,
     commitMessage: string,
-    branch: string
+    branch: string,
+    commitDate?: string,
+    githubUsername?: string
   ): Promise<string> {
     const sha = await this.getFileSha(token, owner, repo, path, branch);
     const body: any = {
@@ -97,6 +99,17 @@ ${submission.code}`;
       branch,
     };
     if (sha) body.sha = sha;
+
+    if (commitDate) {
+      const username = githubUsername || 'leetie-user';
+      const committerObj = {
+        name: username,
+        email: `${username}@users.noreply.github.com`,
+        date: commitDate,
+      };
+      body.author = committerObj;
+      body.committer = committerObj;
+    }
 
     const res = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/contents/${path}`, {
       method: 'PUT',
@@ -148,6 +161,7 @@ ${rows}
     const filePath = this.formatFilePath(submission, config);
     const fileContent = config.addHeaderComment ? this.formatSolutionHeader(submission) : submission.code;
     const commitMessage = `leetie: Add ${submission.problem.id}. ${submission.problem.title} [${submission.problem.difficulty}] (${submission.lang})`;
+    const commitDate = submission.timestamp ? new Date(submission.timestamp).toISOString() : undefined;
 
     // Commit solution file
     const sha = await this.putFile(
@@ -157,7 +171,9 @@ ${rows}
       filePath,
       fileContent,
       commitMessage,
-      config.branch
+      config.branch,
+      commitDate,
+      config.githubUsername
     );
 
     const record: CommitRecord = {

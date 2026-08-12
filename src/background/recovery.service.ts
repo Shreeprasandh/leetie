@@ -56,7 +56,7 @@ export class RecoveryService {
     };
   }
 
-  static async fetchSubmissionDetail(id: number): Promise<Submission | null> {
+  static async fetchSubmissionDetail(id: number, rawTimestamp?: number): Promise<Submission | null> {
     const query = `
       query submissionDetails($id: Int!) {
         submissionDetails(submissionId: $id) {
@@ -67,6 +67,7 @@ export class RecoveryService {
           memory
           runtimePercentile
           memoryPercentile
+          timestamp
           question {
             questionId
             title
@@ -99,6 +100,7 @@ export class RecoveryService {
     if (!details || details.statusDisplay !== 'Accepted') return null;
 
     const q = details.question || {};
+    const unixTs = Number(details.timestamp || rawTimestamp || 0);
     return {
       submissionId: String(id),
       problem: {
@@ -114,7 +116,7 @@ export class RecoveryService {
       memory: details.memory || 'N/A',
       runtimePercentile: Math.round(details.runtimePercentile || 0),
       memoryPercentile: Math.round(details.memoryPercentile || 0),
-      timestamp: Date.now(),
+      timestamp: unixTs > 0 ? unixTs * 1000 : Date.now(),
     };
   }
 
@@ -175,7 +177,7 @@ export class RecoveryService {
         });
 
         try {
-          const fullSubmission = await this.fetchSubmissionDetail(subMeta.id);
+          const fullSubmission = await this.fetchSubmissionDetail(subMeta.id, subMeta.timestamp);
           if (fullSubmission) {
             await SyncService.commitSubmission(fullSubmission);
           }
