@@ -50,23 +50,23 @@
   function isAcceptedResponse(data: any, url: string): boolean {
     if (!data) return false;
 
-    // Filter out "Run Code" sample test runs
-    if (url.includes('/interpret') || url.includes('/runcode/')) {
-      return false;
-    }
-    if (data.interpret_id != null || data.interpret_code != null || data.task_name === 'interpret') {
+    // Only exclude explicit "Run Code" test endpoints
+    if (url.includes('/interpret_solution/')) {
       return false;
     }
 
-    // Shape 1 — GraphQL submissionDetails
-    const gql = data?.data?.submissionDetails || data?.data?.submissionResult;
+    // Shape 1 — GraphQL submissionDetails / submissionResult / submitCode
+    const gql =
+      data?.data?.submissionDetails ||
+      data?.data?.submissionResult ||
+      data?.data?.submitCode;
     if (gql) {
-      const status = gql.statusDisplay || gql.status_display;
-      return status === 'Accepted';
+      const status = gql.statusDisplay || gql.status_display || gql.status_msg;
+      if (status === 'Accepted') return true;
     }
 
-    // Shape 2 — REST polling endpoint (/submissions/detail/{id}/check/)
-    const status = data?.status_msg || data?.statusDisplay;
+    // Shape 2 — REST polling check endpoint or flat response
+    const status = data?.status_msg || data?.statusDisplay || data?.status_display;
     return status === 'Accepted';
   }
 
@@ -87,12 +87,8 @@
           ? rawUrl.href
           : (rawUrl as Request)?.url || '';
 
-      // Only inspect submission-related endpoints, ignore interpret/test runs
-      if (
-        (url.includes('/graphql') || url.includes('/submissions/') || url.includes('/check/')) &&
-        !url.includes('/interpret') &&
-        !url.includes('/runcode/')
-      ) {
+      // Ignore explicit interpret_solution endpoints
+      if (!url.includes('/interpret_solution/')) {
         const clone = response.clone();
 
         clone
@@ -100,11 +96,14 @@
           .then((data: any) => {
             if (!isAcceptedResponse(data, url)) return;
 
-            // Try to get code from the response first; fall back to Monaco
-            const gql = data?.data?.submissionDetails || data?.data?.submissionResult;
+            // Extract code from Monaco editor or DOM
+            const gql =
+              data?.data?.submissionDetails ||
+              data?.data?.submissionResult ||
+              data?.data?.submitCode;
             const details = gql || data;
 
-            // Extract numeric submission ID from URL or body
+            // Extract numeric submission ID from URL if available
             const urlMatch = url.match(/submissions\/(?:detail\/)?(\d+)/);
             const extractedId = urlMatch?.[1] || details?.submission_id || details?.id || details?.submissionId;
             if (extractedId) {
@@ -125,7 +124,7 @@
               })
             );
 
-            console.log('[leetie] Accepted submission dispatched from main world:', data._submission_id || 'detected');
+            console.log('[leetie] Accepted submission intercepted and dispatched:', data._submission_id || 'detected');
           })
           .catch(() => {
             // Non-JSON response — ignore silently

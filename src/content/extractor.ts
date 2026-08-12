@@ -62,19 +62,18 @@ export class LeetCodeExtractor {
 
   static parseSubmissionResponse(rawResponse: any, codeOverride?: string): Submission | null {
     try {
-      // --- Shape 1: GraphQL submissionDetails / submissionResult ---
-      // Fired when the user navigates to a submission detail page.
-      // { data: { submissionDetails: { statusDisplay, lang, code, question: {...} } } }
+      // Shape 1 — GraphQL submissionDetails / submissionResult / submitCode
       const gqlDetails =
-        rawResponse?.data?.submissionDetails || rawResponse?.data?.submissionResult;
+        rawResponse?.data?.submissionDetails ||
+        rawResponse?.data?.submissionResult ||
+        rawResponse?.data?.submitCode;
 
-      // --- Shape 2: Submission check polling endpoint ---
-      // Fired repeatedly by LeetCode until the judge returns a verdict.
-      // Flat object: { state, status_msg, lang, submission_id, runtime, memory, ... }
-      // This is the primary trigger in LeetCode's current submission flow.
+      // Shape 2 — Submission check polling endpoint / flat object
       const isCheckShape =
         !gqlDetails &&
-        (rawResponse?.status_msg != null || rawResponse?.state != null);
+        (rawResponse?.status_msg != null ||
+          rawResponse?.state != null ||
+          rawResponse?.statusDisplay != null);
       const checkDetails = isCheckShape ? rawResponse : null;
 
       const details = gqlDetails || checkDetails;
@@ -108,7 +107,7 @@ export class LeetCodeExtractor {
         return null;
       }
 
-      // Extract genuine LeetCode submission ID — filter out test runs ("Run Code")
+      // Extract submission ID with Date.now() fallback
       const rawSubId =
         details._submission_id ||
         rawResponse?._submission_id ||
@@ -117,8 +116,7 @@ export class LeetCodeExtractor {
         details.submission_id;
 
       const subIdStr = rawSubId ? String(rawSubId) : String(Date.now());
-      if (subIdStr.startsWith('runcode_') || subIdStr.startsWith('interpret_')) {
-        console.warn('[leetie] Sample test run ignored:', subIdStr);
+      if (subIdStr.includes('interpret_solution')) {
         return null;
       }
 
