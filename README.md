@@ -2,9 +2,8 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 2 Solved
+## Progress Summary: 1 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
-| recover-binary-search-tree | Recover Binary Search Tree | Medium | java | [Problem](https://leetcode.com/problems/recover-binary-search-tree/) | [Solution](./solutions/Medium/0099-recover-binary-search-tree/solution.java) |
-| recover-binary-search-tree | Recover Binary Search Tree | Medium | java | [Problem](https://leetcode.com/problems/recover-binary-search-tree/) | [Solution](./solutions/Medium/0000-recover-binary-search-tree/solution.java) |
+| length-of-longest-subarray-with-at-most-k-frequency | Length of Longest Subarray With at Most K Frequency | Medium | java | [Problem](https://leetcode.com/problems/length-of-longest-subarray-with-at-most-k-frequency/) | [Solution](./solutions/Medium/3225-length-of-longest-subarray-with-at-most-k-frequency/solution.java) |
