@@ -3,8 +3,8 @@
 // Difficulty: Easy
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/length-of-longest-subarray-with-at-most-k-frequency/
-// Runtime  : 72 ms (beats 35%)
-// Memory   : 101144000 (beats 28%)
+// Runtime  : 71 ms (beats 37%)
+// Memory   : 90728000 (beats 41%)
 // Language : java
 // Synced by: leetie
 // ──────────────────────────────────────────────────
