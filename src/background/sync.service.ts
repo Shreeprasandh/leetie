@@ -135,7 +135,8 @@ ${submission.code}`;
       .map((c) => {
         const link = `https://leetcode.com/problems/${c.problemSlug}/`;
         const solutionLink = `./${c.githubPath.replace(`${subfolder}/`, '')}`;
-        return `| ${c.problemSlug} | ${c.problemTitle} | ${c.difficulty} | ${c.lang} | [Problem](${link}) | [Solution](${solutionLink}) |`;
+        const safeTitle = c.problemTitle.replace(/\|/g, '\\|');
+        return `| ${c.problemSlug} | ${safeTitle} | ${c.difficulty} | ${c.lang} | [Problem](${link}) | [Solution](${solutionLink}) |`;
       })
       .join('\n');
 

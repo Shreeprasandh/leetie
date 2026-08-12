@@ -33,6 +33,8 @@ export const STORAGE_KEYS = {
 export const LANGUAGE_EXTENSION_MAP: Record<string, string> = {
   python: 'py',
   python3: 'py',
+  pythondata: 'py',
+  pandas: 'py',
   javascript: 'js',
   typescript: 'ts',
   java: 'java',
@@ -48,4 +50,12 @@ export const LANGUAGE_EXTENSION_MAP: Record<string, string> = {
   scala: 'scala',
   php: 'php',
   sql: 'sql',
+  mysql: 'sql',
+  mssql: 'sql',
+  oraclesql: 'sql',
+  postgresql: 'sql',
+  dart: 'dart',
+  elixir: 'ex',
+  erlang: 'erl',
+  racket: 'rkt',
 };
