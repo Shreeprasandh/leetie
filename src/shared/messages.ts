@@ -3,6 +3,7 @@ export type MessageType =
   | 'COMMIT_SUCCESS'
   | 'COMMIT_ERROR'
   | 'RECOVERY_START'
+  | 'RECOVERY_STOP'
   | 'RECOVERY_PROGRESS'
   | 'RECOVERY_COMPLETE'
   | 'AUTH_SUCCESS'

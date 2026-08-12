@@ -3,6 +3,7 @@ import { Message } from '../shared/messages';
 import { Submission } from '../shared/types';
 import { GitHubService } from './github.service';
 import { SyncService } from './sync.service';
+import { RecoveryService } from './recovery.service';
 
 console.log('[leetie] Background service worker initialized.');
 
@@ -10,6 +11,18 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
   chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) => {
     if (message.type === 'GET_STATE') {
       storage.getState().then((state) => sendResponse(state));
+      return true;
+    }
+
+    if (message.type === 'RECOVERY_START') {
+      RecoveryService.startRecovery();
+      sendResponse({ success: true, message: 'History recovery started.' });
+      return true;
+    }
+
+    if (message.type === 'RECOVERY_STOP') {
+      RecoveryService.stopRecovery();
+      sendResponse({ success: true, message: 'History recovery stopped.' });
       return true;
     }
 

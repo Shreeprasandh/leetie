@@ -57,6 +57,18 @@ export default function App() {
     return state.isAuthenticated ? 'Live' : 'Offline';
   };
 
+  const handleStartRecovery = () => {
+    if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+      chrome.runtime.sendMessage({ type: 'RECOVERY_START' });
+    }
+  };
+
+  const handleStopRecovery = () => {
+    if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+      chrome.runtime.sendMessage({ type: 'RECOVERY_STOP' });
+    }
+  };
+
   return (
     <div style={{ width: 360, minHeight: 460, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Header */}
@@ -68,7 +80,7 @@ export default function App() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 500, color: 'var(--text-secondary)' }}>
             <motion.div
-              animate={state.syncStatus === 'syncing' ? { scale: [1, 1.3, 1] } : {}}
+              animate={state.syncStatus === 'syncing' || state.syncStatus === 'recovering' ? { scale: [1, 1.3, 1] } : {}}
               transition={{ repeat: Infinity, duration: 1 }}
               style={{
                 width: 8,
@@ -131,10 +143,37 @@ export default function App() {
           <div style={{ fontSize: 13, fontWeight: 600, fontFamily: 'var(--font-mono)' }}>
             {config.githubUsername || 'user'}/{config.repoName}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', display: 'flex', justifyContent: 'space-between' }}>
-            <span>Branch: <code>{config.branch}</code></span>
-            <span>Subfolder: <code>{config.solutionSubfolder || 'solutions'}</code></span>
-          </div>
+
+          {state.syncStatus === 'recovering' && state.recoveryProgress ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-secondary)' }}>
+                <span>Recovering History...</span>
+                <span>{state.recoveryProgress.current} / {state.recoveryProgress.total}</span>
+              </div>
+              <div style={{ width: '100%', height: 6, backgroundColor: 'var(--bg-primary)', borderRadius: 3, overflow: 'hidden' }}>
+                <div
+                  style={{
+                    width: `${Math.min(100, Math.round((state.recoveryProgress.current / (state.recoveryProgress.total || 1)) * 100))}%`,
+                    height: '100%',
+                    backgroundColor: 'var(--primary)',
+                    transition: 'width 0.3s ease',
+                  }}
+                />
+              </div>
+              <button className="btn btn-secondary" style={{ marginTop: 4, padding: '4px 10px', fontSize: 11 }} onClick={handleStopRecovery}>
+                Stop Recovery
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                Subfolder: <code>{config.solutionSubfolder || 'solutions'}</code>
+              </div>
+              <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }} onClick={handleStartRecovery}>
+                <RefreshCw size={12} /> Recover History
+              </button>
+            </div>
+          )}
         </div>
       )}
 
