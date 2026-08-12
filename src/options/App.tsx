@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { storage } from '../shared/storage';
 import { ExtensionConfig } from '../shared/types';
-import { Save, Check, Key, GitBranch, FolderTree, Lock, Unlock, Edit3, X, Github, ChevronDown, ChevronUp } from 'lucide-react';
+import { Save, Check, Key, GitBranch, FolderTree, Lock, Unlock, Edit3, X, Github, ChevronDown, ChevronUp, Info } from 'lucide-react';
 
 export default function OptionsApp() {
   const [config, setConfig] = useState<ExtensionConfig | null>(null);
   const [initialConfig, setInitialConfig] = useState<ExtensionConfig | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [showManualPAT, setShowManualPAT] = useState(false);
+  const [showPATGuide, setShowPATGuide] = useState(false);
   const [saved, setSaved] = useState(false);
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
@@ -191,9 +192,55 @@ export default function OptionsApp() {
                   If you prefer not to use 1-click OAuth or have a custom GitHub instance, manually enter your Personal Access Token below:
                 </p>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 500, marginBottom: 4, color: 'var(--text-secondary)' }}>
-                    Personal Access Token
-                  </label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                    <label style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)' }}>
+                      Personal Access Token
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowPATGuide(!showPATGuide)}
+                      title="How to get a GitHub Personal Access Token"
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--sage-dark)',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        padding: 0,
+                      }}
+                    >
+                      <Info size={14} />
+                    </button>
+                  </div>
+
+                  {showPATGuide && (
+                    <div
+                      style={{
+                        marginBottom: 10,
+                        padding: 12,
+                        borderRadius: 'var(--radius-sm)',
+                        backgroundColor: 'var(--bg-surface-hover)',
+                        border: '1px solid var(--border)',
+                        fontSize: 11,
+                        lineHeight: 1.6,
+                        color: 'var(--text-secondary)',
+                      }}
+                    >
+                      <strong style={{ color: 'var(--sage-main)', display: 'block', marginBottom: 4 }}>
+                        How to get a GitHub Personal Access Token (PAT):
+                      </strong>
+                      <ol style={{ paddingLeft: 16, margin: 0 }}>
+                        <li>Go to <a href="https://github.com/settings/tokens" target="_blank" rel="noreferrer" style={{ color: 'var(--sage-light)', textDecoration: 'underline' }}>github.com/settings/tokens</a>.</li>
+                        <li>Click <strong>Generate new token (classic)</strong>.</li>
+                        <li>Add a note (e.g., <code>leetie extension</code>).</li>
+                        <li>Check the <strong><code>repo</code></strong> scope box.</li>
+                        <li>Click <strong>Generate token</strong> at the bottom of the page.</li>
+                        <li>Copy your generated token string (starts with <code>ghp_</code>) and paste it below.</li>
+                      </ol>
+                    </div>
+                  )}
+
                   <input
                     type="password"
                     value={config.githubToken}

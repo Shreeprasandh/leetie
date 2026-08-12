@@ -9,7 +9,7 @@ export const DEFAULT_CONFIG: ExtensionConfig = {
   addHeaderComment: true,
   autoReadme: true,
   preferredDirFormat: 'difficulty-first',
-  proxyUrl: 'https://leetie-proxy.vercel.app/api/exchange',
+  proxyUrl: 'https://leetie-six.vercel.app/api/exchange',
 };
 
 export const INITIAL_STATE: ExtensionState = {

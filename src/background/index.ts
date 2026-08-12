@@ -48,7 +48,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
         try {
           const config = await storage.getConfig();
           const token = await initiateOAuthFlow(
-            import.meta.env.VITE_GITHUB_CLIENT_ID || 'Ov23liXXXXXXXXXX',
+            import.meta.env.VITE_GITHUB_CLIENT_ID || 'Ov23li296L9RxwhuLXOv',
             config.proxyUrl
           );
           const user = await GitHubService.verifyUser(token);
