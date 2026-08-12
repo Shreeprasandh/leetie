@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { storage } from '../shared/storage';
 import { ExtensionConfig, ExtensionState } from '../shared/types';
-import { Github, Settings, CheckCircle, RefreshCw, ExternalLink, AlertCircle, Flame, Target, TrendingUp, Database } from 'lucide-react';
+import { Github, Settings, CheckCircle, RefreshCw, ExternalLink, AlertCircle, Flame, Target, TrendingUp, Database, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 function formatRelativeTime(timestamp: number): string {
@@ -266,7 +266,7 @@ export default function App() {
 
             <div className="card" style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
               <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
-                ⚡ Acceptance
+                <Zap size={12} color="var(--accent-green)" /> Acceptance
               </span>
               <span style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{stats.acceptanceRate}%</span>
             </div>
@@ -335,8 +335,6 @@ export default function App() {
       {/* Footer */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center', fontSize: 10, color: 'var(--text-muted)', opacity: 0.5, marginTop: 'auto' }}>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <span>© 2026 leetie</span>
-          <span>·</span>
           <a
             href="#privacy"
             onClick={() => openOptions()}

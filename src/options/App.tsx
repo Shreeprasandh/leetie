@@ -514,11 +514,6 @@ export default function OptionsApp() {
             </button>
           )}
         </div>
-
-        {/* Copyright Footer */}
-        <div style={{ marginTop: 24, textAlign: 'center', fontSize: 10, color: 'var(--text-muted)', opacity: 0.5 }}>
-          © 2026 leetie · All rights reserved · Built for Sir
-        </div>
       </form>
     </div>
   );
