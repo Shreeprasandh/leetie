@@ -1,6 +1,6 @@
 import { LANGUAGE_EXTENSION_MAP } from '../shared/constants';
 import { storage } from '../shared/storage';
-import { CommitRecord, ExtensionConfig, Submission } from '../shared/types';
+import { CommitRecord, Difficulty, ExtensionConfig, Submission } from '../shared/types';
 import { GitHubService } from './github.service';
 
 export class SyncService {
@@ -33,7 +33,7 @@ export class SyncService {
     return LANGUAGE_EXTENSION_MAP[key] || 'txt';
   }
 
-  static formatFilePath(submission: Submission, config: ExtensionConfig): string {
+  static formatFilePath(submission: Submission, config: ExtensionConfig, existingDifficulty?: Difficulty): string {
     const { problem, lang } = submission;
     const ext = this.getExtension(lang);
     const paddedId = String(problem.id).padStart(4, '0');
@@ -42,19 +42,20 @@ export class SyncService {
 
     const problemDir = `${paddedId}-${problem.slug}`;
     const fileName = `solution.${ext}`;
+    const diff = existingDifficulty || problem.difficulty || 'Easy';
 
     if (!subfolder) {
       if (config.preferredDirFormat === 'flat') {
         return `${problemDir}/${fileName}`;
       }
-      return `${problem.difficulty}/${problemDir}/${fileName}`;
+      return `${diff}/${problemDir}/${fileName}`;
     }
 
     if (config.preferredDirFormat === 'flat') {
       return `${subfolder}/${problemDir}/${fileName}`;
     }
 
-    return `${subfolder}/${problem.difficulty}/${problemDir}/${fileName}`;
+    return `${subfolder}/${diff}/${problemDir}/${fileName}`;
   }
 
   static getCommentStyle(lang: string): { start: string; end: string } {
@@ -207,7 +208,9 @@ ${rows}
       SyncService.ensuredRepos.add(repoKey);
     }
 
-    const filePath = this.formatFilePath(submission, config);
+    const existingSameProblem = existingCommits.find(c => c.problemSlug === submission.problem.slug);
+    const existingDiff = existingSameProblem?.difficulty as Difficulty | undefined;
+    const filePath = this.formatFilePath(submission, config, existingDiff);
     const fileContent = config.addHeaderComment ? this.formatSolutionHeader(submission) : submission.code;
     const commitMessage = `leetie: Add ${submission.problem.id}. ${submission.problem.title} [${submission.problem.difficulty}] (${submission.lang})`;
     

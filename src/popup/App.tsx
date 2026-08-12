@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { storage } from '../shared/storage';
 import { ExtensionConfig, ExtensionState } from '../shared/types';
-import { Github, Settings, CheckCircle, RefreshCw, ExternalLink, AlertCircle, Flame, Target, TrendingUp, Database, Zap } from 'lucide-react';
+import { Github, Settings, CheckCircle, RefreshCw, ExternalLink, AlertCircle, Target, TrendingUp, Database } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 function formatRelativeTime(timestamp: number): string {
@@ -248,68 +248,79 @@ export default function App() {
             </span>
           </div>
 
-          {/* 4 Core Stats Grid */}
+          {/* 2 Primary Stats Cards: Solved & Submissions */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
             <div className="card" style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
               <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
                 <Target size={12} color="var(--accent-green)" /> Solved
               </span>
-              <span style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{stats.totalSolved}</span>
+              <span style={{ fontSize: 20, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{stats.totalSolved}</span>
             </div>
 
             <div className="card" style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
               <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
                 <TrendingUp size={12} color="var(--primary)" /> Submissions
               </span>
-              <span style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{stats.totalSubmissions}</span>
-            </div>
-
-            <div className="card" style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
-                <Zap size={12} color="var(--accent-green)" /> Acceptance
-              </span>
-              <span style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{stats.acceptanceRate}%</span>
-            </div>
-
-            <div className="card" style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
-                <Flame size={12} color="var(--warning-amber)" /> Streak
-              </span>
-              <span style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
-                {stats.streak} <span style={{ fontSize: 10, fontWeight: 400, color: 'var(--text-muted)' }}>days</span>
-              </span>
+              <span style={{ fontSize: 20, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{stats.totalSubmissions}</span>
             </div>
           </div>
 
-          {/* Difficulty Proportion Breakdown */}
-          <div className="card" style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 500 }}>
-              <span style={{ color: 'var(--accent-green)' }}>Easy: {stats.easySolved}</span>
-              <span style={{ color: 'var(--warning-amber)' }}>Med: {stats.mediumSolved}</span>
-              <span style={{ color: '#f87171' }}>Hard: {stats.hardSolved}</span>
+          {/* Easy / Medium / Hard Individual Progress Bars */}
+          <div className="card" style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)' }}>Difficulty Breakdown</span>
+            
+            {/* Easy Row */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 500 }}>
+                <span style={{ color: 'var(--accent-green)' }}>Easy</span>
+                <span style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{stats.easySolved}</span>
+              </div>
+              <div style={{ width: '100%', height: 6, backgroundColor: 'var(--bg-primary)', borderRadius: 3, overflow: 'hidden' }}>
+                <div
+                  style={{
+                    width: `${stats.totalSolved > 0 ? (stats.easySolved / stats.totalSolved) * 100 : 0}%`,
+                    height: '100%',
+                    backgroundColor: 'var(--accent-green)',
+                    transition: 'width 0.3s ease',
+                  }}
+                />
+              </div>
             </div>
-            <div style={{ width: '100%', height: 6, backgroundColor: 'var(--bg-primary)', borderRadius: 3, display: 'flex', overflow: 'hidden' }}>
-              <div
-                style={{
-                  width: `${stats.totalSolved > 0 ? (stats.easySolved / stats.totalSolved) * 100 : 0}%`,
-                  height: '100%',
-                  backgroundColor: 'var(--accent-green)',
-                }}
-              />
-              <div
-                style={{
-                  width: `${stats.totalSolved > 0 ? (stats.mediumSolved / stats.totalSolved) * 100 : 0}%`,
-                  height: '100%',
-                  backgroundColor: 'var(--warning-amber)',
-                }}
-              />
-              <div
-                style={{
-                  width: `${stats.totalSolved > 0 ? (stats.hardSolved / stats.totalSolved) * 100 : 0}%`,
-                  height: '100%',
-                  backgroundColor: '#f87171',
-                }}
-              />
+
+            {/* Medium Row */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 500 }}>
+                <span style={{ color: 'var(--warning-amber)' }}>Medium</span>
+                <span style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{stats.mediumSolved}</span>
+              </div>
+              <div style={{ width: '100%', height: 6, backgroundColor: 'var(--bg-primary)', borderRadius: 3, overflow: 'hidden' }}>
+                <div
+                  style={{
+                    width: `${stats.totalSolved > 0 ? (stats.mediumSolved / stats.totalSolved) * 100 : 0}%`,
+                    height: '100%',
+                    backgroundColor: 'var(--warning-amber)',
+                    transition: 'width 0.3s ease',
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Hard Row */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 500 }}>
+                <span style={{ color: '#f87171' }}>Hard</span>
+                <span style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>{stats.hardSolved}</span>
+              </div>
+              <div style={{ width: '100%', height: 6, backgroundColor: 'var(--bg-primary)', borderRadius: 3, overflow: 'hidden' }}>
+                <div
+                  style={{
+                    width: `${stats.totalSolved > 0 ? (stats.hardSolved / stats.totalSolved) * 100 : 0}%`,
+                    height: '100%',
+                    backgroundColor: '#f87171',
+                    transition: 'width 0.3s ease',
+                  }}
+                />
+              </div>
             </div>
           </div>
 
