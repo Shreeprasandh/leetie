@@ -89,7 +89,7 @@
 
       // Only inspect submission-related endpoints, ignore interpret/test runs
       if (
-        (url.includes('/graphql') || url.includes('/submissions/detail/') || url.includes('/check/')) &&
+        (url.includes('/graphql') || url.includes('/submissions/') || url.includes('/check/')) &&
         !url.includes('/interpret') &&
         !url.includes('/runcode/')
       ) {
@@ -104,10 +104,11 @@
             const gql = data?.data?.submissionDetails || data?.data?.submissionResult;
             const details = gql || data;
 
-            // Extract numeric submission ID from URL if missing from body
-            const urlMatch = url.match(/\/submissions\/detail\/(\d+)\/check/);
-            if (urlMatch && urlMatch[1] && !details.submission_id && !details.id && !details.submissionId) {
-              details.submission_id = urlMatch[1];
+            // Extract numeric submission ID from URL or body
+            const urlMatch = url.match(/submissions\/(?:detail\/)?(\d+)/);
+            const extractedId = urlMatch?.[1] || details?.submission_id || details?.id || details?.submissionId;
+            if (extractedId) {
+              data._submission_id = String(extractedId);
             }
 
             const code = details?.code || extractMonacoCode();
@@ -124,7 +125,7 @@
               })
             );
 
-            console.log('[leetie] Accepted submission dispatched from main world:', details.submission_id || 'detected');
+            console.log('[leetie] Accepted submission dispatched from main world:', data._submission_id || 'detected');
           })
           .catch(() => {
             // Non-JSON response — ignore silently

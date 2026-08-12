@@ -109,13 +109,14 @@ export class LeetCodeExtractor {
       }
 
       // Extract genuine LeetCode submission ID — filter out test runs ("Run Code")
-      const rawSubId = details.submissionId || details.id || details.submission_id;
-      if (!rawSubId) {
-        console.warn('[leetie] Accepted response ignored — missing genuine LeetCode submission_id.');
-        return null;
-      }
+      const rawSubId =
+        details._submission_id ||
+        rawResponse?._submission_id ||
+        details.submissionId ||
+        details.id ||
+        details.submission_id;
 
-      const subIdStr = String(rawSubId);
+      const subIdStr = rawSubId ? String(rawSubId) : String(Date.now());
       if (subIdStr.startsWith('runcode_') || subIdStr.startsWith('interpret_')) {
         console.warn('[leetie] Sample test run ignored:', subIdStr);
         return null;
