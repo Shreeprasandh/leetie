@@ -14,9 +14,11 @@ export function computeSyncedStats(commits: CommitRecord[]): SyncedStats {
   let hardSolved = 0;
 
   uniqueProblems.forEach((diff) => {
-    if (diff === 'Easy') easySolved++;
-    else if (diff === 'Medium') mediumSolved++;
-    else if (diff === 'Hard') hardSolved++;
+    const norm = String(diff || '').toLowerCase().trim();
+    if (norm === 'easy') easySolved++;
+    else if (norm === 'medium') mediumSolved++;
+    else if (norm === 'hard') hardSolved++;
+    else easySolved++;
   });
 
   const totalSolved = uniqueProblems.size;
@@ -110,11 +112,12 @@ export const storage = {
     const stats = computeSyncedStats(commits);
     if (typeof chrome !== 'undefined' && chrome.storage?.local) {
       const res = await chrome.storage.local.get(STORAGE_KEYS.STATE);
-      return { ...INITIAL_STATE, syncedStats: stats, ...(res[STORAGE_KEYS.STATE] || {}) };
+      const stored = res[STORAGE_KEYS.STATE] || {};
+      return { ...INITIAL_STATE, ...stored, syncedStats: stats };
     }
     const local = localStorage.getItem(STORAGE_KEYS.STATE);
-    const parsed = local ? JSON.parse(local) : INITIAL_STATE;
-    return { ...INITIAL_STATE, syncedStats: stats, ...parsed };
+    const parsed = local ? JSON.parse(local) : {};
+    return { ...INITIAL_STATE, ...parsed, syncedStats: stats };
   },
 
   async setState(state: Partial<ExtensionState>): Promise<ExtensionState> {
