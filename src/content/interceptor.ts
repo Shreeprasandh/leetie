@@ -8,7 +8,13 @@ export function setupFetchInterceptor(onAccepted: (submission: Submission) => vo
     const response = await originalFetch(...args);
 
     try {
-      const url = typeof args[0] === 'string' ? args[0] : (args[0] as Request)?.url || '';
+      const rawUrl = args[0];
+      const url =
+        typeof rawUrl === 'string'
+          ? rawUrl
+          : rawUrl instanceof URL
+          ? rawUrl.href
+          : (rawUrl as Request)?.url || '';
       
       if (url.includes('/graphql')) {
         const clone = response.clone();

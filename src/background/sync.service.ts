@@ -16,7 +16,7 @@ export class SyncService {
   }
 
   static toBase64(str: string): string {
-    return btoa(unescape(encodeURIComponent(str)));
+    return btoa(unescape(encodeURIComponent(str || '')));
   }
 
   static getExtension(lang: string): string {

@@ -101,7 +101,7 @@ export class LeetCodeExtractor {
         memory: details.memory || details.status_memory || 'N/A',
         runtimePercentile: Math.round(details.runtimePercentile || details.runtime_percentile || 0),
         memoryPercentile: Math.round(details.memoryPercentile || details.memory_percentile || 0),
-        timestamp: Math.floor(Date.now() / 1000),
+        timestamp: Date.now(),
       };
     } catch (err) {
       console.error('[leetie] Error parsing submission GraphQL response', err);
