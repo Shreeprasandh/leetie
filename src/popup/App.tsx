@@ -81,6 +81,12 @@ export default function App() {
     }
   };
 
+  const handleDisconnect = async () => {
+    await storage.setConfig({ githubToken: '', githubUsername: '' });
+    await storage.setState({ isAuthenticated: false, recentCommits: [], totalSynced: 0, lastError: null });
+    loadData();
+  };
+
   return (
     <div style={{ width: 360, minHeight: 460, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Header */}
@@ -150,7 +156,17 @@ export default function App() {
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Target Repository</span>
-            <span className="badge badge-easy">Active</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span className="badge badge-easy">Active</span>
+              <button
+                className="btn btn-secondary"
+                style={{ padding: '2px 8px', fontSize: 10, color: '#f87171', border: 'none', background: 'none', cursor: 'pointer' }}
+                onClick={handleDisconnect}
+                title="Unlink GitHub Account"
+              >
+                Unlink
+              </button>
+            </div>
           </div>
           <div style={{ fontSize: 13, fontWeight: 600, fontFamily: 'var(--font-mono)' }}>
             {config.githubUsername || 'user'}/{config.repoName}

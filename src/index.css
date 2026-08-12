@@ -1,26 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  /* Human-Crafted Organic Color Palette */
-  --bg-primary: #121614;
-  --bg-surface: #1a211e;
-  --bg-surface-hover: #222b27;
-  --border: #2a3530;
+  /* Human-Crafted Warm Earthy Color Palette */
+  --bg-primary: #161614;
+  --bg-surface: #22221f;
+  --bg-surface-hover: #2c2c28;
+  --border: #3d3d37;
 
-  --sage-dark: #84B179;
-  --sage-main: #A2CB8B;
-  --sage-light: #C7EABB;
-  --sage-cream: #E8F5BD;
+  --stone-dark: #57564F;
+  --stone-mid: #7A7A73;
+  --parchment: #DDDAD0;
+  --cream: #F8F3CE;
 
-  --primary: #84B179;
-  --primary-hover: #A2CB8B;
-  --accent-green: #A2CB8B;
+  --primary: #DDDAD0;
+  --primary-hover: #F8F3CE;
+  --accent-green: #F8F3CE;
   --warning-amber: #d97706;
-  --error-red: #dc2626;
+  --error-red: #ef4444;
 
-  --text-primary: #e8f2ea;
-  --text-secondary: #9bb3a1;
-  --text-muted: #5e7365;
+  --text-primary: #F8F3CE;
+  --text-secondary: #DDDAD0;
+  --text-muted: #7A7A73;
 
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -65,12 +65,12 @@ code, pre, .font-mono {
 }
 
 .btn-primary {
-  background-color: var(--sage-dark);
-  color: #121614;
+  background-color: var(--parchment);
+  color: #161614;
 }
 
 .btn-primary:hover {
-  background-color: var(--sage-main);
+  background-color: var(--cream);
 }
 
 .btn-secondary {
@@ -101,24 +101,24 @@ code, pre, .font-mono {
 }
 
 .badge-easy {
-  background: rgba(162, 203, 139, 0.15);
-  color: #A2CB8B;
+  background: rgba(248, 243, 206, 0.15);
+  color: #F8F3CE;
 }
 
 .badge-medium {
-  background: rgba(232, 245, 189, 0.15);
-  color: #E8F5BD;
+  background: rgba(221, 218, 208, 0.15);
+  color: #DDDAD0;
 }
 
 .badge-hard {
-  background: rgba(220, 38, 38, 0.15);
+  background: rgba(239, 68, 68, 0.15);
   color: #f87171;
 }
 
 .footer-legal {
   font-size: 10px;
   color: var(--text-muted);
-  opacity: 0.65;
+  opacity: 0.6;
   display: flex;
   align-items: center;
   gap: 12px;

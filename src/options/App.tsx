@@ -44,6 +44,18 @@ export default function OptionsApp() {
     setTestResult(null);
   };
 
+  const handleDisconnect = async () => {
+    if (confirm('Are you sure you want to unlink your GitHub account from leetie?')) {
+      await storage.setConfig({ githubToken: '', githubUsername: '' });
+      await storage.setState({ isAuthenticated: false, recentCommits: [], totalSynced: 0, lastError: null });
+      const updated = await storage.getConfig();
+      setConfig(updated);
+      setInitialConfig(updated);
+      setIsEditing(true);
+      setTestResult({ success: true, message: 'Successfully unlinked your GitHub account.' });
+    }
+  };
+
   const handle1ClickConnect = () => {
     setTesting(true);
     setTestResult(null);
@@ -153,15 +165,27 @@ export default function OptionsApp() {
             <p style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
               No need to generate or paste keys manually. Click below to securely connect your GitHub account in 1 click.
             </p>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handle1ClickConnect}
-              disabled={!isEditing || testing}
-              style={{ alignSelf: 'flex-start', padding: '8px 16px', opacity: !isEditing ? 0.7 : 1 }}
-            >
-              <Github size={16} /> {testing ? 'Connecting...' : '1-Click Connect GitHub'}
-            </button>
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handle1ClickConnect}
+                disabled={!isEditing || testing}
+                style={{ alignSelf: 'flex-start', padding: '8px 16px', opacity: !isEditing ? 0.7 : 1 }}
+              >
+                <Github size={16} /> {testing ? 'Connecting...' : '1-Click Connect GitHub'}
+              </button>
+              {config.githubUsername && (
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={handleDisconnect}
+                  style={{ padding: '8px 14px', color: '#f87171', fontSize: 12 }}
+                >
+                  Unlink Account
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Secondary Option: Manual Personal Access Token (PAT) */}
