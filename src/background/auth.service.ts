@@ -60,6 +60,9 @@ export async function decryptToken(encryptedBase64: string): Promise<string> {
 
     return new TextDecoder().decode(decrypted);
   } catch (err) {
+    if (encryptedBase64.startsWith('ghp_') || encryptedBase64.startsWith('gho_')) {
+      return encryptedBase64;
+    }
     console.error('[leetie] Decryption failed, returning empty string', err);
     return '';
   }
