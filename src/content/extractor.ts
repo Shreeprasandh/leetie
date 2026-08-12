@@ -22,17 +22,32 @@ export class LeetCodeExtractor {
     if (match) {
       id = match[1];
       title = match[2];
+    } else {
+      // Check DOM elements for title header like "2958. Length of Longest..."
+      const h4 = document.querySelector('h4, [data-cy="question-title"], .text-title-large, a[href*="/problems/"]');
+      if (h4 && h4.textContent) {
+        const h4Match = h4.textContent.trim().match(/^(\d+)\.\s*(.+)$/);
+        if (h4Match) {
+          id = h4Match[1];
+          title = h4Match[2];
+        }
+      }
     }
 
     // Difficulty extraction from page DOM elements
     let difficulty: Difficulty = 'Easy';
     const diffElement = document.querySelector(
-      '[class*="text-difficulty-"], [class*="text-sd-easy"], [class*="text-sd-medium"], [class*="text-sd-hard"]'
+      '[class*="text-difficulty-"], [class*="text-sd-easy"], [class*="text-sd-medium"], [class*="text-sd-hard"], [class*="text-easy"], [class*="text-medium"], [class*="text-hard"], div[class*="difficulty"]'
     );
-    if (diffElement) {
-      const text = diffElement.textContent?.trim();
-      if (text === 'Medium') difficulty = 'Medium';
-      if (text === 'Hard') difficulty = 'Hard';
+    if (diffElement && diffElement.textContent) {
+      const text = diffElement.textContent.trim().toLowerCase();
+      if (text.includes('medium')) difficulty = 'Medium';
+      else if (text.includes('hard')) difficulty = 'Hard';
+      else if (text.includes('easy')) difficulty = 'Easy';
+    } else {
+      const bodyText = document.body?.innerText || '';
+      if (bodyText.includes('Medium')) difficulty = 'Medium';
+      else if (bodyText.includes('Hard')) difficulty = 'Hard';
     }
 
     return {
@@ -90,13 +105,24 @@ export class LeetCodeExtractor {
 
       const question = details.question || {};
       const problemId =
+        question.questionFrontendId ||
+        question.frontendQuestionId ||
+        details.question_frontend_id ||
+        details.frontend_question_id ||
+        (domMeta.id !== '0' ? domMeta.id : null) ||
         question.questionId ||
         details.question_id ||
-        domMeta.id ||
         '0';
+
       const problemTitle = question.title || domMeta.title || slug;
-      const difficulty: Difficulty =
-        (question.difficulty as Difficulty) || domMeta.difficulty || 'Easy';
+      const rawDiff = question.difficulty || details.difficulty || domMeta.difficulty;
+      let difficulty: Difficulty = 'Easy';
+      if (rawDiff) {
+        const dStr = String(rawDiff).toLowerCase();
+        if (dStr.includes('medium')) difficulty = 'Medium';
+        else if (dStr.includes('hard')) difficulty = 'Hard';
+        else if (dStr.includes('easy')) difficulty = 'Easy';
+      }
       const topicTags = (question.topicTags || []).map((t: any) => t.name || t);
 
       // Code priority: (1) caller-provided override from MAIN world Monaco extraction,
