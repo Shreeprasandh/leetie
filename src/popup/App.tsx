@@ -1,20 +1,32 @@
 import { useEffect, useState } from 'react';
 import { storage } from '../shared/storage';
 import { ExtensionConfig, ExtensionState } from '../shared/types';
-import { Github, Settings, CheckCircle, RefreshCw, ExternalLink } from 'lucide-react';
+import { Github, Settings, CheckCircle, RefreshCw, ExternalLink, AlertCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+function formatRelativeTime(timestamp: number): string {
+  const diffSec = Math.floor((Date.now() - timestamp) / 1000);
+  if (diffSec < 60) return 'Just now';
+  if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
+  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+  return `${Math.floor(diffSec / 86400)}d ago`;
+}
 
 export default function App() {
   const [config, setConfig] = useState<ExtensionConfig | null>(null);
   const [state, setState] = useState<ExtensionState | null>(null);
 
+  const loadData = async () => {
+    const c = await storage.getConfig();
+    const s = await storage.getState();
+    setConfig(c);
+    setState(s);
+  };
+
   useEffect(() => {
-    async function loadData() {
-      const c = await storage.getConfig();
-      const s = await storage.getState();
-      setConfig(c);
-      setState(s);
-    }
     loadData();
+    const interval = setInterval(loadData, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   const openOptions = () => {
@@ -28,35 +40,74 @@ export default function App() {
   if (!config || !state) {
     return (
       <div style={{ width: 360, height: 440, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <RefreshCw className="animate-spin" size={20} />
+        <RefreshCw className="animate-spin" size={20} color="var(--primary)" />
       </div>
     );
   }
 
+  const getStatusColor = () => {
+    if (state.syncStatus === 'syncing') return 'var(--warning-amber)';
+    if (state.syncStatus === 'error') return 'var(--error-red)';
+    return state.isAuthenticated ? 'var(--accent-green)' : 'var(--text-muted)';
+  };
+
+  const getStatusLabel = () => {
+    if (state.syncStatus === 'syncing') return 'Syncing...';
+    if (state.syncStatus === 'error') return 'Error';
+    return state.isAuthenticated ? 'Live' : 'Offline';
+  };
+
   return (
-    <div style={{ width: 360, minHeight: 440, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div style={{ width: 360, minHeight: 460, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <h1 style={{ fontSize: 18, fontWeight: 700, letterSpacing: '-0.02em' }}>leetie</h1>
+          <h1 style={{ fontSize: 18, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>leetie</h1>
           <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>v1.0.0</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              backgroundColor: state.isAuthenticated ? 'var(--accent-green)' : 'var(--text-muted)',
-            }}
-          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 500, color: 'var(--text-secondary)' }}>
+            <motion.div
+              animate={state.syncStatus === 'syncing' ? { scale: [1, 1.3, 1] } : {}}
+              transition={{ repeat: Infinity, duration: 1 }}
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                backgroundColor: getStatusColor(),
+              }}
+            />
+            {getStatusLabel()}
+          </div>
           <button className="btn btn-secondary" style={{ padding: 6 }} onClick={openOptions} title="Settings">
             <Settings size={14} />
           </button>
         </div>
       </div>
 
-      {/* Auth Card / Active Card */}
+      {/* Error Banner */}
+      {state.lastError && (
+        <div
+          className="card"
+          style={{
+            padding: 10,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            backgroundColor: 'rgba(239, 68, 68, 0.15)',
+            borderColor: 'rgba(239, 68, 68, 0.3)',
+            color: '#f87171',
+            fontSize: 12,
+          }}
+        >
+          <AlertCircle size={16} style={{ flexShrink: 0 }} />
+          <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {state.lastError}
+          </span>
+        </div>
+      )}
+
+      {/* Auth Card / Active Connection Card */}
       {!state.isAuthenticated ? (
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 12, textAlign: 'center' }}>
           <Github size={32} style={{ margin: '0 auto', color: 'var(--primary)' }} />
@@ -67,7 +118,7 @@ export default function App() {
             </p>
           </div>
           <button className="btn btn-primary" onClick={openOptions}>
-            <Github size={16} /> Configure Connection
+            <Github size={16} /> Configure Token & Repo
           </button>
           <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>100% client-side. Data stays in your browser.</span>
         </div>
@@ -75,19 +126,23 @@ export default function App() {
         <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Target Repository</span>
-            <span className="badge badge-easy">Connected</span>
+            <span className="badge badge-easy">Active</span>
           </div>
           <div style={{ fontSize: 13, fontWeight: 600, fontFamily: 'var(--font-mono)' }}>
-            {config.githubUsername || 'user'}/{config.repoName} ({config.branch})
+            {config.githubUsername || 'user'}/{config.repoName}
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', display: 'flex', justifyContent: 'space-between' }}>
+            <span>Branch: <code>{config.branch}</code></span>
+            <span>Subfolder: <code>{config.solutionSubfolder || 'solutions'}</code></span>
           </div>
         </div>
       )}
 
-      {/* Recent Activity */}
+      {/* Recent Activity List */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>Recent Commits</h2>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{state.recentCommits.length} synced</span>
+          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{state.recentCommits.length} total synced</span>
         </div>
 
         {state.recentCommits.length === 0 ? (
@@ -100,29 +155,41 @@ export default function App() {
               fontSize: 12,
             }}
           >
-            No solutions synced yet. Solve a problem on LeetCode to test!
+            No solutions synced yet. Solve a problem on LeetCode to trigger auto-sync!
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {state.recentCommits.slice(0, 4).map((item) => (
-              <div
-                key={item.submissionId}
-                className="card"
-                style={{
-                  padding: '10px 12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  fontSize: 12,
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <CheckCircle size={14} color="var(--accent-green)" />
-                  <span style={{ fontWeight: 500 }}>{item.problemTitle}</span>
-                </div>
-                <span className={`badge badge-${item.difficulty.toLowerCase()}`}>{item.difficulty}</span>
-              </div>
-            ))}
+            <AnimatePresence>
+              {state.recentCommits.slice(0, 4).map((item) => (
+                <motion.div
+                  key={item.submissionId}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="card"
+                  style={{
+                    padding: '10px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    fontSize: 12,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden' }}>
+                    <CheckCircle size={14} color="var(--accent-green)" style={{ flexShrink: 0 }} />
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span style={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {item.problemTitle}
+                      </span>
+                      <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>
+                        {item.lang} · {formatRelativeTime(item.committedAt)}
+                      </span>
+                    </div>
+                  </div>
+                  <span className={`badge badge-${item.difficulty.toLowerCase()}`}>{item.difficulty}</span>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         )}
       </div>
