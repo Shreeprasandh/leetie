@@ -102,9 +102,10 @@ ${submission.code}`;
 
     if (commitDate) {
       const username = githubUsername || 'leetie-user';
+      const cleanEmail = `${username.toLowerCase()}@users.noreply.github.com`;
       const committerObj = {
         name: username,
-        email: `${username}@users.noreply.github.com`,
+        email: cleanEmail,
         date: commitDate,
       };
       body.author = committerObj;
@@ -119,7 +120,9 @@ ${submission.code}`;
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => ({}));
-      throw new Error(errorData.message || `GitHub Commit Failed (${res.status})`);
+      const errorMsg = errorData.message || errorData.error || `HTTP ${res.status}`;
+      console.error(`[leetie] GitHub API PUT error (${res.status}) on ${path}:`, errorData);
+      throw new Error(`GitHub API Error (${res.status}): ${errorMsg}`);
     }
 
     const resData = await res.json();
