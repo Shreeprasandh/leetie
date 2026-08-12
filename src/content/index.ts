@@ -1,3 +1,18 @@
+import { setupFetchInterceptor } from './interceptor';
+import { Message } from '../shared/messages';
+
 console.log('[leetie] Content script active on LeetCode.');
 
-// Interception logic will be mounted in Phase 2
+setupFetchInterceptor((submission) => {
+  if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+    const msg: Message = {
+      type: 'SUBMISSION_DETECTED',
+      payload: submission,
+    };
+    chrome.runtime.sendMessage(msg, (response) => {
+      if (response?.success) {
+        console.log('[leetie] Background confirmed submission receipt:', response);
+      }
+    });
+  }
+});

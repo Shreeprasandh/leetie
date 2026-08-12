@@ -35,6 +35,13 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
       return true;
     }
 
+    if (message.type === 'SUBMISSION_DETECTED') {
+      const submission = message.payload;
+      console.log('[leetie] Background worker received accepted submission:', submission);
+      sendResponse({ success: true, message: 'Submission received by background worker.' });
+      return true;
+    }
+
     return false;
   });
 }
