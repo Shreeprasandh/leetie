@@ -46,14 +46,20 @@ export const storage = {
   },
 
   async setState(state: Partial<ExtensionState>): Promise<ExtensionState> {
-    const current = await this.getState();
-    const updated = { ...current, ...state };
+    let current: ExtensionState;
     if (typeof chrome !== 'undefined' && chrome.storage?.local) {
+      const res = await chrome.storage.local.get(STORAGE_KEYS.STATE);
+      current = { ...INITIAL_STATE, ...(res[STORAGE_KEYS.STATE] || {}) };
+      const updated = { ...current, ...state };
       await chrome.storage.local.set({ [STORAGE_KEYS.STATE]: updated });
+      return updated;
     } else {
+      const local = localStorage.getItem(STORAGE_KEYS.STATE);
+      current = local ? JSON.parse(local) : INITIAL_STATE;
+      const updated = { ...current, ...state };
       localStorage.setItem(STORAGE_KEYS.STATE, JSON.stringify(updated));
+      return updated;
     }
-    return updated;
   },
 
   async getCommits(): Promise<CommitRecord[]> {
