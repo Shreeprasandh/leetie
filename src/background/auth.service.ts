@@ -1,73 +1,3 @@
-// Web Crypto API AES-GCM encryption/decryption module for GitHub Access Tokens
-
-const ENCRYPTION_SALT = 'leetie_auth_salt_v1';
-
-async function getKey(): Promise<CryptoKey> {
-  const encoder = new TextEncoder();
-  const keyMaterial = await crypto.subtle.importKey(
-    'raw',
-    encoder.encode(ENCRYPTION_SALT),
-    { name: 'PBKDF2' },
-    false,
-    ['deriveKey']
-  );
-
-  return crypto.subtle.deriveKey(
-    {
-      name: 'PBKDF2',
-      salt: encoder.encode('leetie_salt'),
-      iterations: 100000,
-      hash: 'SHA-256',
-    },
-    keyMaterial,
-    { name: 'AES-GCM', length: 256 },
-    false,
-    ['encrypt', 'decrypt']
-  );
-}
-
-export async function encryptToken(plainToken: string): Promise<string> {
-  if (!plainToken) return '';
-  const key = await getKey();
-  const encoder = new TextEncoder();
-  const iv = crypto.getRandomValues(new Uint8Array(12));
-  const encrypted = await crypto.subtle.encrypt(
-    { name: 'AES-GCM', iv },
-    key,
-    encoder.encode(plainToken)
-  );
-
-  const combined = new Uint8Array(iv.length + encrypted.byteLength);
-  combined.set(iv, 0);
-  combined.set(new Uint8Array(encrypted), iv.length);
-
-  return btoa(String.fromCharCode(...combined));
-}
-
-export async function decryptToken(encryptedBase64: string): Promise<string> {
-  if (!encryptedBase64) return '';
-  try {
-    const key = await getKey();
-    const combined = Uint8Array.from(atob(encryptedBase64), (c) => c.charCodeAt(0));
-    const iv = combined.slice(0, 12);
-    const data = combined.slice(12);
-
-    const decrypted = await crypto.subtle.decrypt(
-      { name: 'AES-GCM', iv },
-      key,
-      data
-    );
-
-    return new TextDecoder().decode(decrypted);
-  } catch (err) {
-    if (encryptedBase64.startsWith('ghp_') || encryptedBase64.startsWith('gho_')) {
-      return encryptedBase64;
-    }
-    console.error('[leetie] Decryption failed, returning empty string', err);
-    return '';
-  }
-}
-
 export async function initiateOAuthFlow(clientId: string, proxyUrl: string): Promise<string> {
   if (typeof chrome === 'undefined' || !chrome.identity?.launchWebAuthFlow) {
     throw new Error('OAuth flow requires Chrome Extension environment with chrome.identity permission.');
@@ -101,12 +31,27 @@ export async function initiateOAuthFlow(clientId: string, proxyUrl: string): Pro
     throw new Error('No authorization code returned from GitHub.');
   }
 
-  // Exchange code for access token via proxy or GitHub API
-  const tokenRes = await fetch(proxyUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ code }),
-  });
+  // Exchange code for access token via proxy
+  // Abort after 10s so a dead proxy doesn't hang the OAuth flow indefinitely
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10_000);
+
+  let tokenRes: Response;
+  try {
+    tokenRes = await fetch(proxyUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code }),
+      signal: controller.signal,
+    });
+  } catch (err: any) {
+    if (err.name === 'AbortError') {
+      throw new Error('Token exchange timed out. Check your proxy URL in Settings.');
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 
   if (!tokenRes.ok) {
     const errData = await tokenRes.json().catch(() => ({}));

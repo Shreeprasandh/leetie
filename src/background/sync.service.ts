@@ -6,6 +6,10 @@ import { GitHubService } from './github.service';
 export class SyncService {
   private static BASE_URL = 'https://api.github.com';
 
+  // Cache repos confirmed to exist this session to avoid redundant API calls
+  // during history recovery (500 submissions = 500 ensureRepo calls without this).
+  private static ensuredRepos = new Set<string>();
+
   private static getHeaders(token: string) {
     return {
       Authorization: `Bearer ${token}`,
@@ -16,7 +20,12 @@ export class SyncService {
   }
 
   static toBase64(str: string): string {
-    return btoa(unescape(encodeURIComponent(str || '')));
+    // TextEncoder correctly handles multi-byte Unicode (CJK, emoji, etc.)
+    // btoa(unescape(encodeURIComponent(...))) is deprecated and unreliable.
+    const bytes = new TextEncoder().encode(str || '');
+    let binary = '';
+    for (const byte of bytes) binary += String.fromCharCode(byte);
+    return btoa(binary);
   }
 
   static getExtension(lang: string): string {
@@ -28,34 +37,52 @@ export class SyncService {
     const { problem, lang } = submission;
     const ext = this.getExtension(lang);
     const paddedId = String(problem.id).padStart(4, '0');
-    const subfolder = config.solutionSubfolder || 'solutions';
+    const rawSubfolder = (config.solutionSubfolder || 'solutions').trim();
+    const subfolder = rawSubfolder.replace(/^\/+|\/+$/g, '');
 
-    if (config.preferredDirFormat === 'flat') {
-      return `${subfolder}/${paddedId}-${problem.slug}/solution.${ext}`;
+    const problemDir = `${paddedId}-${problem.slug}`;
+    const fileName = `solution.${ext}`;
+
+    if (!subfolder) {
+      if (config.preferredDirFormat === 'flat') {
+        return `${problemDir}/${fileName}`;
+      }
+      return `${problem.difficulty}/${problemDir}/${fileName}`;
     }
 
-    // Default: difficulty-first
-    return `${subfolder}/${problem.difficulty}/${paddedId}-${problem.slug}/solution.${ext}`;
+    if (config.preferredDirFormat === 'flat') {
+      return `${subfolder}/${problemDir}/${fileName}`;
+    }
+
+    return `${subfolder}/${problem.difficulty}/${problemDir}/${fileName}`;
+  }
+
+  static getCommentStyle(lang: string): { start: string; end: string } {
+    const ext = this.getExtension(lang);
+    if (['html', 'xml'].includes(ext)) return { start: '<!--', end: ' -->' };
+    if (['py', 'rb', 'sh', 'ex'].includes(ext)) return { start: '#', end: '' };
+    if (['sql', 'hs', 'vhdl'].includes(ext)) return { start: '--', end: '' };
+    if (['erl', 'rkt', 'clj'].includes(ext)) return { start: ';', end: '' };
+    // JS, TS, Java, C, C++, Go, Rust, Kotlin, Swift, Dart, Scala, CS, etc.
+    return { start: '//', end: '' };
   }
 
   static formatSolutionHeader(submission: Submission): string {
     const { problem, lang, runtime, memory, runtimePercentile, memoryPercentile } = submission;
     const link = `https://leetcode.com/problems/${problem.slug}/`;
     const tags = problem.topicTags.length > 0 ? problem.topicTags.join(', ') : 'N/A';
+    const { start: cs, end: ce } = this.getCommentStyle(lang);
 
-    const commentChar = ['html', 'xml'].includes(this.getExtension(lang)) ? '<!--' : '#';
-    const commentEnd = ['html', 'xml'].includes(this.getExtension(lang)) ? '-->' : '';
-
-    return `${commentChar} ──────────────────────────────────────────────────
-${commentChar} Problem  : ${problem.id}. ${problem.title}
-${commentChar} Difficulty: ${problem.difficulty}
-${commentChar} Tags     : ${tags}
-${commentChar} Link     : ${link}
-${commentChar} Runtime  : ${runtime} (beats ${runtimePercentile}%)
-${commentChar} Memory   : ${memory} (beats ${memoryPercentile}%)
-${commentChar} Language : ${lang}
-${commentChar} Synced by: leetie
-${commentChar} ────────────────────────────────────────────────── ${commentEnd}
+    return `${cs} ──────────────────────────────────────────────────${ce ? ' ' + ce : ''}
+${cs} Problem  : ${problem.id}. ${problem.title}${ce ? ' ' + ce : ''}
+${cs} Difficulty: ${problem.difficulty}${ce ? ' ' + ce : ''}
+${cs} Tags     : ${tags}${ce ? ' ' + ce : ''}
+${cs} Link     : ${link}${ce ? ' ' + ce : ''}
+${cs} Runtime  : ${runtime} (beats ${runtimePercentile}%)${ce ? ' ' + ce : ''}
+${cs} Memory   : ${memory} (beats ${memoryPercentile}%)${ce ? ' ' + ce : ''}
+${cs} Language : ${lang}${ce ? ' ' + ce : ''}
+${cs} Synced by: leetie${ce ? ' ' + ce : ''}
+${cs} ──────────────────────────────────────────────────${ce ? ' ' + ce : ''}
 
 ${submission.code}`;
   }
@@ -68,7 +95,8 @@ ${submission.code}`;
     branch: string
   ): Promise<string | null> {
     try {
-      const res = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, {
+      const safePath = path.split('/').map((s) => encodeURIComponent(s)).join('/');
+      const res = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/contents/${safePath}?ref=${encodeURIComponent(branch)}`, {
         headers: this.getHeaders(token),
       });
       if (res.ok) {
@@ -112,13 +140,19 @@ ${submission.code}`;
       body.committer = committerObj;
     }
 
-    const res = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/contents/${path}`, {
+    const safePath = path.split('/').map((s) => encodeURIComponent(s)).join('/');
+    const res = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/contents/${safePath}`, {
       method: 'PUT',
       headers: this.getHeaders(token),
       body: JSON.stringify(body),
     });
 
     if (!res.ok) {
+      // Surface GitHub rate-limit info so the recovery service can backoff
+      if (res.status === 429) {
+        const retryAfter = parseInt(res.headers.get('Retry-After') || '60', 10);
+        throw new Error(`GitHub API rate limited (429). Retry after ${retryAfter}s`);
+      }
       const errorData = await res.json().catch(() => ({}));
       const errorMsg = errorData.message || errorData.error || `HTTP ${res.status}`;
       console.error(`[leetie] GitHub API PUT error (${res.status}) on ${path}:`, errorData);
@@ -129,12 +163,11 @@ ${submission.code}`;
     return resData.content?.sha || resData.commit?.sha || 'success';
   }
 
-  static generateReadmeContent(commits: CommitRecord[], config: ExtensionConfig): string {
-    const subfolder = config.solutionSubfolder || 'solutions';
+  static generateReadmeContent(commits: CommitRecord[], _config: ExtensionConfig): string {
     const rows = commits
       .map((c) => {
         const link = `https://leetcode.com/problems/${c.problemSlug}/`;
-        const solutionLink = `./${c.githubPath.replace(`${subfolder}/`, '')}`;
+        const solutionLink = `./${c.githubPath}`;
         const safeTitle = c.problemTitle.replace(/\|/g, '\\|');
         return `| ${c.problemSlug} | ${safeTitle} | ${c.difficulty} | ${c.lang} | [Problem](${link}) | [Solution](${solutionLink}) |`;
       })
@@ -142,12 +175,12 @@ ${submission.code}`;
 
     return `# My LeetCode Solutions
 
-> *Automatically synced by [leetie](https://github.com/Shreeprasandh/leetie).*
+> *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
 ## Progress Summary: ${commits.length} Solved
 
-| ID | Problem | Difficulty | Language | Problem Link | Solution Code |
-|---|---------|-----------|----------|--------------|---------------|
+| Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
+|------|---------|-----------|----------|--------------|---------------|
 ${rows}
 `;
   }
@@ -159,8 +192,20 @@ ${rows}
       throw new Error('GitHub token or username not configured. Please open leetie options.');
     }
 
-    // Ensure repo exists
-    await GitHubService.ensureRepo(config.githubToken, config.githubUsername, config.repoName);
+    // Check if already committed recently to avoid double-processing
+    const existingCommits = await storage.getCommits();
+    const existing = existingCommits.find(c => c.submissionId === submission.submissionId);
+    if (existing) {
+      console.log('[leetie] Submission already committed, skipping:', submission.submissionId);
+      return existing;
+    }
+
+    // Ensure repo exists — cached per session to avoid redundant API calls during recovery
+    const repoKey = `${config.githubUsername}/${config.repoName}`;
+    if (!SyncService.ensuredRepos.has(repoKey)) {
+      await GitHubService.ensureRepo(config.githubToken, config.githubUsername, config.repoName);
+      SyncService.ensuredRepos.add(repoKey);
+    }
 
     const filePath = this.formatFilePath(submission, config);
     const fileContent = config.addHeaderComment ? this.formatSolutionHeader(submission) : submission.code;
@@ -206,7 +251,7 @@ ${rows}
     // Auto-update README if enabled
     if (config.autoReadme) {
       try {
-        const readmePath = `${config.solutionSubfolder || 'solutions'}/README.md`;
+        const readmePath = 'README.md'; // Root level so GitHub renders it on the repo homepage
         const readmeContent = this.generateReadmeContent(updatedCommits, config);
         await this.putFile(
           config.githubToken,

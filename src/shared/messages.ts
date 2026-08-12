@@ -11,7 +11,10 @@ export type MessageType =
   | 'TEST_CONNECTION'
   | 'START_OAUTH'
   | 'FETCH_REPOS'
-  | 'GET_STATE';
+  | 'GET_STATE'
+  // Proxies a LeetCode GraphQL request through the content script,
+  // which shares the user's browser cookie session (MV3 SW cannot).
+  | 'PROXY_GRAPHQL';
 
 export interface Message<T = unknown> {
   type: MessageType;

@@ -28,9 +28,8 @@ export default function OptionsApp() {
     if (!config) return;
     await storage.setConfig(config);
     setInitialConfig(config);
-    if (config.githubToken && config.githubUsername) {
-      await storage.setState({ isAuthenticated: true });
-    }
+    // NOTE: We do NOT set isAuthenticated:true here — a token can only be
+    // confirmed valid after a TEST_CONNECTION or START_OAUTH round-trip.
     setIsEditing(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
@@ -66,6 +65,7 @@ export default function OptionsApp() {
           storage.getConfig().then((c) => {
             setConfig(c);
             setInitialConfig(c);
+            setIsEditing(false); // Exit editing mode after successful OAuth
           });
           setTestResult({ success: true, message: `Successfully connected as @${res.user.login} via GitHub OAuth!` });
         } else {
@@ -96,6 +96,8 @@ export default function OptionsApp() {
           (res) => {
             setTesting(false);
             if (res?.success) {
+              // Reload config so the verified githubUsername reflects immediately in the UI
+              storage.getConfig().then((c) => { setConfig(c); setInitialConfig(c); });
               setTestResult({ success: true, message: `Connected as @${res.user.login}. Repository '${config.repoName}' verified.` });
             } else {
               setTestResult({ success: false, message: res?.error || 'Connection failed.' });
@@ -294,7 +296,7 @@ export default function OptionsApp() {
                     value={config.githubUsername}
                     disabled={!isEditing}
                     onChange={(e) => setConfig({ ...config, githubUsername: e.target.value })}
-                    placeholder="e.g. Shreeprasandh"
+                    placeholder="e.g. your-github-username"
                     style={{
                       width: '100%',
                       padding: '8px 12px',
@@ -449,15 +451,17 @@ export default function OptionsApp() {
               >
                 <X size={14} /> Cancel
               </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={handleTestConnection}
-                disabled={testing}
-                style={{ padding: '10px 16px' }}
-              >
-                {testing ? 'Testing...' : 'Test Manual Token'}
-              </button>
+              {showManualPAT && (
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={handleTestConnection}
+                  disabled={testing}
+                  style={{ padding: '10px 16px' }}
+                >
+                  {testing ? 'Testing...' : 'Test Manual Token'}
+                </button>
+              )}
               <button type="submit" className="btn btn-primary" style={{ padding: '10px 20px' }}>
                 <Save size={16} /> Save Changes
               </button>

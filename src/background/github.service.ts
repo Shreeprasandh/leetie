@@ -71,8 +71,14 @@ export class GitHubService {
     }
 
     if (checkRes.status === 404) {
+      // Determine if personal or org to use correct creation endpoint
+      const userRes = await fetch(`${this.BASE_URL}/user`, { headers: this.getHeaders(token) });
+      const user = await userRes.json();
+      const isPersonal = user.login?.toLowerCase() === username.toLowerCase();
+      const createUrl = isPersonal ? `${this.BASE_URL}/user/repos` : `${this.BASE_URL}/orgs/${username}/repos`;
+
       // Create repo
-      const createRes = await fetch(`${this.BASE_URL}/user/repos`, {
+      const createRes = await fetch(createUrl, {
         method: 'POST',
         headers: {
           ...this.getHeaders(token),
@@ -83,6 +89,7 @@ export class GitHubService {
           description: 'My LeetCode solutions synced automatically by leetie.',
           private: false,
           auto_init: true,
+          default_branch: 'main',
         }),
       });
 

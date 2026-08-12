@@ -5,38 +5,61 @@ import { SyncService } from './sync.service';
 export interface RecoveryProgress {
   current: number;
   total: number;
-  currentSlug: string;
-  isPaused: boolean;
 }
 
 export class RecoveryService {
-  private static LEETCODE_GRAPHQL = 'https://leetcode.com/graphql';
   private static isRunning = false;
 
   static stopRecovery() {
     this.isRunning = false;
   }
 
-  private static async getHeaders(): Promise<Record<string, string>> {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      'Referer': 'https://leetcode.com',
-      'Origin': 'https://leetcode.com',
-      'x-requested-with': 'XMLHttpRequest',
-    };
+  // ---------------------------------------------------------------------------
+  // fetchGraphQL
+  // Routes all LeetCode GraphQL requests through the active content script tab.
+  // Reason: MV3 service workers do NOT share the browser cookie jar, so
+  // fetch(..., { credentials: 'include' }) from a SW returns unauthenticated
+  // responses. The content script runs in a real page context and has cookies.
+  // ---------------------------------------------------------------------------
+  private static async fetchGraphQL(requestBody: Record<string, unknown>): Promise<any> {
+    if (typeof chrome === 'undefined' || !chrome.tabs) {
+      throw new Error('Chrome tabs API not available.');
+    }
 
-    if (typeof chrome !== 'undefined' && chrome.cookies) {
+    // Only target tabs where the content script is injected (matches manifest content_scripts pattern)
+    const tabs = await chrome.tabs.query({ url: 'https://leetcode.com/problems/*' });
+    if (!tabs.length) {
+      throw new Error(
+        'No active LeetCode problem page found. Please open any problem (e.g. leetcode.com/problems/two-sum/) and try again.'
+      );
+    }
+
+    let lastErr: Error | null = null;
+    for (const tab of tabs) {
+      if (tab.id == null) continue;
       try {
-        const cookie = await chrome.cookies.get({ url: 'https://leetcode.com', name: 'csrftoken' });
-        if (cookie?.value) {
-          headers['x-csrftoken'] = cookie.value;
-        }
-      } catch (e) {
-        // Ignore cookie failure
+        const res = await new Promise<any>((resolve, reject) => {
+          chrome.tabs.sendMessage(
+            tab.id!,
+            { type: 'PROXY_GRAPHQL', payload: { body: JSON.stringify(requestBody) } },
+            (response) => {
+              if (chrome.runtime.lastError) {
+                return reject(new Error(chrome.runtime.lastError.message));
+              }
+              if (!response?.success) {
+                return reject(new Error(response?.error || 'GraphQL proxy request failed.'));
+              }
+              resolve(response.data);
+            }
+          );
+        });
+        return res;
+      } catch (err: any) {
+        lastErr = err;
       }
     }
 
-    return headers;
+    throw new Error(`LeetCode tab unreachable: ${lastErr?.message || 'Please refresh your LeetCode page.'}`);
   }
 
   static async fetchSubmissionList(offset: number, limit = 20): Promise<{ submissions: any[]; hasNext: boolean }> {
@@ -55,23 +78,12 @@ export class RecoveryService {
       }
     `;
 
-    const headers = await this.getHeaders();
-    const res = await fetch(this.LEETCODE_GRAPHQL, {
-      method: 'POST',
-      headers,
-      credentials: 'include',
-      body: JSON.stringify({
-        operationName: 'submissionList',
-        query,
-        variables: { offset, limit },
-      }),
+    const data = await this.fetchGraphQL({
+      operationName: 'submissionList',
+      query,
+      variables: { offset, limit },
     });
 
-    if (!res.ok) {
-      throw new Error(`LeetCode API request failed: ${res.statusText}`);
-    }
-
-    const data = await res.json();
     const list = data?.data?.submissionList;
     return {
       submissions: list?.submissions || [],
@@ -104,25 +116,18 @@ export class RecoveryService {
       }
     `;
 
-    const headers = await this.getHeaders();
-    const res = await fetch(this.LEETCODE_GRAPHQL, {
-      method: 'POST',
-      headers,
-      credentials: 'include',
-      body: JSON.stringify({
+    let data: any;
+    try {
+      data = await this.fetchGraphQL({
         operationName: 'submissionDetails',
         query,
         variables: { submissionId: Number(id) },
-      }),
-    });
-
-    if (!res.ok) {
-      const errText = await res.text().catch(() => '');
-      console.warn(`[leetie] fetchSubmissionDetail HTTP error ${res.status} for id ${id}:`, errText);
+      });
+    } catch (err) {
+      console.warn(`[leetie] fetchSubmissionDetail proxy error for id ${id}:`, err);
       return null;
     }
 
-    const data = await res.json();
     const details = data?.data?.submissionDetails;
 
     if (!details) {
@@ -181,7 +186,12 @@ export class RecoveryService {
         return;
       }
 
-      await storage.setState({ syncStatus: 'recovering', lastError: null });
+      // Show the recovery card immediately with an indeterminate state
+      await storage.setState({
+        syncStatus: 'recovering',
+        lastError: null,
+        recoveryProgress: { current: 0, total: 0 },
+      });
 
       // Step 1: Paginate to collect all submission metadata
       const allSubmissions: any[] = [];
@@ -189,13 +199,20 @@ export class RecoveryService {
       const limit = 20;
 
       while (this.isRunning) {
-        const page = await this.fetchSubmissionList(offset, limit);
+        let page: { submissions: any[]; hasNext: boolean };
+        try {
+          page = await this.fetchSubmissionList(offset, limit);
+        } catch (err: any) {
+          // Most likely cause: user closed the LeetCode problem tab.
+          const msg = `Recovery paused: ${err.message}. Re-open a LeetCode problem page and try again.`;
+          await storage.setState({ syncStatus: 'error', lastError: msg, recoveryProgress: null });
+          this.isRunning = false;
+          return;
+        }
         allSubmissions.push(...page.submissions);
-
-        await storage.setState({
-          recoveryProgress: { current: allSubmissions.length, total: allSubmissions.length + (page.hasNext ? limit : 0) },
-        });
-
+        // Note: progress bar is only updated during the commit phase (Step 3)
+        // to give a meaningful indicator. Showing progress here is misleading
+        // because current ≈ total at all times during pagination.
         if (!page.hasNext) break;
         offset += limit;
         await new Promise((r) => setTimeout(r, 300));
@@ -228,9 +245,12 @@ export class RecoveryService {
           }
         } catch (err: any) {
           console.warn(`[leetie] Failed to commit item ${subMeta.id}:`, err);
-          if (err.message && err.message.includes('429')) {
-            console.warn('[leetie] Rate limit encountered. Backing off for 5 seconds...');
-            await new Promise((r) => setTimeout(r, 5000));
+          // Handle both LeetCode and GitHub rate limits
+          if (err.message && (err.message.includes('429') || err.message.includes('rate limited'))) {
+            const match = err.message.match(/Retry after (\d+)s/);
+            const waitMs = match ? parseInt(match[1]) * 1000 : 60000;
+            console.warn(`[leetie] Rate limited. Backing off for ${waitMs / 1000}s...`);
+            await new Promise((r) => setTimeout(r, waitMs));
           } else {
             await storage.setState({ lastError: `Commit error on #${subMeta.titleSlug}: ${err.message}` });
           }

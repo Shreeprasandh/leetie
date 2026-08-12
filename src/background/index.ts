@@ -8,6 +8,33 @@ import { initiateOAuthFlow } from './auth.service';
 
 console.log('[leetie] Background service worker initialized.');
 
+// ---------------------------------------------------------------------------
+// Service Worker Keep-Alive
+// MV3 service workers are terminated after ~30s of inactivity. During a long
+// commit (or recovery), the SW must stay alive. A lightweight getPlatformInfo
+// ping every 20s prevents termination without any meaningful overhead.
+// ---------------------------------------------------------------------------
+let _keepAliveTimer: ReturnType<typeof setInterval> | null = null;
+
+function keepAlive() {
+  if (_keepAliveTimer) return;
+  _keepAliveTimer = setInterval(() => {
+    chrome.runtime.getPlatformInfo(() => { void chrome.runtime.lastError; });
+  }, 20_000);
+}
+
+function releaseKeepAlive() {
+  if (_keepAliveTimer) {
+    clearInterval(_keepAliveTimer);
+    _keepAliveTimer = null;
+  }
+}
+
+// Tracks submissions currently being committed to prevent duplicate commits
+// when both the check endpoint and the GraphQL submissionDetails query fire
+// for the same accepted submission in quick succession.
+const inFlightSubmissions = new Set<string>();
+
 if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
   chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) => {
     if (message.type === 'GET_STATE') {
@@ -16,7 +43,8 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
     }
 
     if (message.type === 'RECOVERY_START') {
-      RecoveryService.startRecovery();
+      keepAlive(); // Recovery is long-running — prevent SW termination
+      RecoveryService.startRecovery().finally(() => releaseKeepAlive());
       sendResponse({ success: true, message: 'History recovery started.' });
       return true;
     }
@@ -28,12 +56,16 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
     }
 
     if (message.type === 'TEST_CONNECTION') {
-      const { token, repoName } = message.payload as { token: string; username: string; repoName: string };
+      const { token, username, repoName } = message.payload as { token: string; username: string; repoName: string };
       (async () => {
         try {
+          // Verify token first, then check repo — only save config if BOTH succeed.
+          // Saving before ensureRepo can leave an inconsistent state where a valid
+          // token is stored but isAuthenticated:false if the repo check fails.
           const user = await GitHubService.verifyUser(token);
-          await storage.setConfig({ githubToken: token, githubUsername: user.login });
-          const repoOk = await GitHubService.ensureRepo(token, user.login, repoName);
+          const targetUsername = username || user.login;
+          const repoOk = await GitHubService.ensureRepo(token, targetUsername, repoName);
+          await storage.setConfig({ githubToken: token, githubUsername: targetUsername });
           await storage.setState({ isAuthenticated: true, lastError: null });
           sendResponse({ success: true, user, repoOk });
         } catch (err: any) {
@@ -46,6 +78,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
 
     if (message.type === 'START_OAUTH') {
       (async () => {
+        keepAlive();
         try {
           const config = await storage.getConfig();
           const token = await initiateOAuthFlow(
@@ -53,13 +86,16 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
             config.proxyUrl
           );
           const user = await GitHubService.verifyUser(token);
-          await storage.setConfig({ githubToken: token, githubUsername: user.login });
+          // Save config only after BOTH verifyUser AND ensureRepo succeed
           await GitHubService.ensureRepo(token, user.login, config.repoName);
+          await storage.setConfig({ githubToken: token, githubUsername: user.login });
           await storage.setState({ isAuthenticated: true, lastError: null });
           sendResponse({ success: true, user });
         } catch (err: any) {
           await storage.setState({ isAuthenticated: false, lastError: err.message });
           sendResponse({ success: false, error: err.message });
+        } finally {
+          releaseKeepAlive();
         }
       })();
       return true;
@@ -75,8 +111,18 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
 
     if (message.type === 'SUBMISSION_DETECTED') {
       const submission = message.payload as Submission;
+
+      // Drop duplicate events for the same submission (check endpoint + GraphQL can both fire)
+      if (inFlightSubmissions.has(submission.submissionId)) {
+        console.log('[leetie] Duplicate submission event ignored:', submission.submissionId);
+        sendResponse({ success: false, error: 'Already processing this submission.' });
+        return true;
+      }
+      inFlightSubmissions.add(submission.submissionId);
+
       console.log('[leetie] Background worker orchestrating commit for:', submission);
       (async () => {
+        keepAlive(); // Prevent SW termination during async commit
         try {
           await storage.setState({ syncStatus: 'syncing' });
           const record = await SyncService.commitSubmission(submission);
@@ -95,6 +141,9 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
         } catch (err: any) {
           await storage.setState({ syncStatus: 'error', lastError: err.message });
           sendResponse({ success: false, error: err.message });
+        } finally {
+          inFlightSubmissions.delete(submission.submissionId);
+          releaseKeepAlive(); // Allow SW to sleep once work is done
         }
       })();
       return true;

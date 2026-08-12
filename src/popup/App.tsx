@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { storage } from '../shared/storage';
 import { ExtensionConfig, ExtensionState } from '../shared/types';
 import { Github, Settings, CheckCircle, RefreshCw, ExternalLink, AlertCircle } from 'lucide-react';
@@ -23,17 +23,34 @@ export default function App() {
     setState(s);
   };
 
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     loadData();
-    const interval = setInterval(loadData, 2000);
-    return () => clearInterval(interval);
+    // Debounced onChange: during recovery, storage is written on every commit.
+    // Without debouncing, the popup would re-render 500+ times over 8 minutes.
+    const onChange = () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => {
+        debounceRef.current = null;
+        loadData();
+      }, 500);
+    };
+    if (typeof chrome !== 'undefined' && chrome.storage?.onChanged) {
+      chrome.storage.onChanged.addListener(onChange);
+      return () => {
+        chrome.storage.onChanged.removeListener(onChange);
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+      };
+    }
+    return undefined;
   }, []);
 
   const openOptions = () => {
     if (typeof chrome !== 'undefined' && chrome.runtime?.openOptionsPage) {
       chrome.runtime.openOptionsPage();
     } else {
-      window.open('/src/options/index.html', '_blank');
+      window.open('/options/index.html', '_blank');
     }
   };
 
@@ -53,25 +70,34 @@ export default function App() {
 
   const getStatusLabel = () => {
     if (state.syncStatus === 'syncing') return 'Syncing...';
+    if (state.syncStatus === 'recovering') return 'Recovering...';
     if (state.syncStatus === 'error') return 'Error';
     return state.isAuthenticated ? 'Live' : 'Offline';
   };
 
   const handleStartRecovery = () => {
     if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
-      chrome.runtime.sendMessage({ type: 'RECOVERY_START' });
+      chrome.runtime.sendMessage({ type: 'RECOVERY_START' }, () => {
+        void chrome.runtime.lastError; // suppress 'Unchecked lastError' warning
+      });
     }
   };
 
   const handleStopRecovery = () => {
     if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
-      chrome.runtime.sendMessage({ type: 'RECOVERY_STOP' });
+      chrome.runtime.sendMessage({ type: 'RECOVERY_STOP' }, () => {
+        void chrome.runtime.lastError; // suppress 'Unchecked lastError' warning
+      });
     }
   };
 
   const handleConnectGitHub = () => {
     if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
       chrome.runtime.sendMessage({ type: 'START_OAUTH' }, (res) => {
+        if (chrome.runtime.lastError) {
+          console.warn('[leetie] OAuth could not reach background SW:', chrome.runtime.lastError.message);
+          return;
+        }
         if (res?.success) {
           loadData();
         }
@@ -175,8 +201,16 @@ export default function App() {
           {state.syncStatus === 'recovering' && state.recoveryProgress ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-secondary)' }}>
-                <span>Recovering History...</span>
-                <span>{state.recoveryProgress.current} / {state.recoveryProgress.total}</span>
+                <span>
+                  {state.recoveryProgress.total === 0
+                    ? 'Fetching submissions...'
+                    : 'Committing to GitHub...'}
+                </span>
+                <span>
+                  {state.recoveryProgress.total > 0
+                    ? `${state.recoveryProgress.current} / ${state.recoveryProgress.total}`
+                    : ''}
+                </span>
               </div>
               <div style={{ width: '100%', height: 6, backgroundColor: 'var(--bg-primary)', borderRadius: 3, overflow: 'hidden' }}>
                 <div
@@ -209,7 +243,7 @@ export default function App() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>Recent Commits</h2>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{state.recentCommits.length} total synced</span>
+          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{state.totalSynced} total synced</span>
         </div>
 
         {state.recentCommits.length === 0 ? (

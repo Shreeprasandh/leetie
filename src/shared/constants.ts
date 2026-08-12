@@ -2,7 +2,7 @@ import { ExtensionConfig, ExtensionState } from './types';
 
 export const DEFAULT_CONFIG: ExtensionConfig = {
   githubToken: '',
-  githubUsername: 'Shreeprasandh',
+  githubUsername: '',
   repoName: 'leetie',
   branch: 'main',
   solutionSubfolder: 'solutions',

@@ -1,6 +1,18 @@
 import { DEFAULT_CONFIG, INITIAL_STATE, STORAGE_KEYS } from './constants';
 import { CommitRecord, ExtensionConfig, ExtensionState } from './types';
-import { decryptToken, encryptToken } from '../background/auth.service';
+
+// GitHub token prefixes to distinguish plaintext tokens from stale AES-GCM-encrypted
+// values left by a previous build. chrome.storage.local is sandboxed to this extension,
+// so plaintext storage is the correct and safe approach.
+const GITHUB_TOKEN_PREFIXES = ['ghp_', 'gho_', 'github_pat_'];
+
+function sanitizeToken(token: string): string {
+  if (!token) return '';
+  if (GITHUB_TOKEN_PREFIXES.some((p) => token.startsWith(p))) return token;
+  // Stale encrypted blob from a previous version — clear it so the user is prompted to reconnect.
+  console.warn('[leetie] Stale encrypted token cleared. Please reconnect your GitHub account.');
+  return '';
+}
 
 export const storage = {
   async getConfig(): Promise<ExtensionConfig> {
@@ -12,26 +24,18 @@ export const storage = {
       const local = localStorage.getItem(STORAGE_KEYS.CONFIG);
       rawConfig = local ? JSON.parse(local) : DEFAULT_CONFIG;
     }
-
-    if (rawConfig.githubToken) {
-      rawConfig.githubToken = await decryptToken(rawConfig.githubToken);
-    }
+    // Migrate: clear any stale encrypted token from previous versions
+    rawConfig.githubToken = sanitizeToken(rawConfig.githubToken);
     return rawConfig;
   },
 
   async setConfig(config: Partial<ExtensionConfig>): Promise<ExtensionConfig> {
     const current = await this.getConfig();
     const updated = { ...current, ...config };
-    const toSave = { ...updated };
-
-    if (toSave.githubToken) {
-      toSave.githubToken = await encryptToken(toSave.githubToken);
-    }
-
     if (typeof chrome !== 'undefined' && chrome.storage?.local) {
-      await chrome.storage.local.set({ [STORAGE_KEYS.CONFIG]: toSave });
+      await chrome.storage.local.set({ [STORAGE_KEYS.CONFIG]: updated });
     } else {
-      localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(toSave));
+      localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(updated));
     }
     return updated;
   },
@@ -73,13 +77,26 @@ export const storage = {
 
   async addCommit(record: CommitRecord): Promise<CommitRecord[]> {
     const commits = await this.getCommits();
+
+    // Dedup: if this submissionId is already recorded, skip silently.
+    // Prevents duplicate entries when both the check endpoint and the
+    // GraphQL submissionDetails query fire for the same accepted submission.
+    if (commits.some((c) => c.submissionId === record.submissionId)) {
+      return commits;
+    }
+
     const updated = [record, ...commits].slice(0, 100);
     if (typeof chrome !== 'undefined' && chrome.storage?.local) {
       await chrome.storage.local.set({ [STORAGE_KEYS.COMMITS]: updated });
     } else {
       localStorage.setItem(STORAGE_KEYS.COMMITS, JSON.stringify(updated));
     }
-    await this.setState({ recentCommits: updated, totalSynced: updated.length });
+
+    // totalSynced is a running counter, not list.length.
+    // The list is capped at 100 but the user may have synced many more.
+    const currentState = await this.getState();
+    const newTotal = (currentState.totalSynced || 0) + 1;
+    await this.setState({ recentCommits: updated, totalSynced: newTotal });
     return updated;
   },
 };

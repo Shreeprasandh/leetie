@@ -14,8 +14,8 @@ export class LeetCodeExtractor {
   static extractFromDOM(): Partial<Problem> {
     const slug = this.extractProblemSlug();
 
-    // Problem Title & ID from DOM title or heading
-    let title = document.title.replace('- LeetCode', '').trim();
+    // Strip both '- LeetCode' (legacy) and '| LeetCode' (current) title formats
+    let title = document.title.replace(/[|\-]\s*LeetCode\s*$/i, '').trim();
     let id = '0';
 
     const match = title.match(/^(\d+)\.\s*(.+)$/);
@@ -60,34 +60,58 @@ export class LeetCodeExtractor {
     return null;
   }
 
-  static parseSubmissionResponse(graphqlResponse: any): Submission | null {
+  static parseSubmissionResponse(rawResponse: any, codeOverride?: string): Submission | null {
     try {
-      const data = graphqlResponse?.data;
-      const details = data?.submissionDetails || data?.submissionResult;
+      // --- Shape 1: GraphQL submissionDetails / submissionResult ---
+      // Fired when the user navigates to a submission detail page.
+      // { data: { submissionDetails: { statusDisplay, lang, code, question: {...} } } }
+      const gqlDetails =
+        rawResponse?.data?.submissionDetails || rawResponse?.data?.submissionResult;
 
+      // --- Shape 2: Submission check polling endpoint ---
+      // Fired repeatedly by LeetCode until the judge returns a verdict.
+      // Flat object: { state, status_msg, lang, submission_id, runtime, memory, ... }
+      // This is the primary trigger in LeetCode's current submission flow.
+      const isCheckShape =
+        !gqlDetails &&
+        (rawResponse?.status_msg != null || rawResponse?.state != null);
+      const checkDetails = isCheckShape ? rawResponse : null;
+
+      const details = gqlDetails || checkDetails;
       if (!details) return null;
 
-      const status = details.statusDisplay || details.status_display;
+      const status =
+        details.statusDisplay ||
+        details.status_display ||
+        details.status_msg;
       if (status !== 'Accepted') return null;
 
       const slug = this.extractProblemSlug();
       const domMeta = this.extractFromDOM();
 
       const question = details.question || {};
-      const problemId = question.questionId || domMeta.id || '0';
+      const problemId =
+        question.questionId ||
+        details.question_id ||
+        domMeta.id ||
+        '0';
       const problemTitle = question.title || domMeta.title || slug;
-      const difficulty: Difficulty = (question.difficulty as Difficulty) || domMeta.difficulty || 'Easy';
+      const difficulty: Difficulty =
+        (question.difficulty as Difficulty) || domMeta.difficulty || 'Easy';
       const topicTags = (question.topicTags || []).map((t: any) => t.name || t);
 
-      const code = details.code || this.extractFromMonaco() || '';
-
+      // Code priority: (1) caller-provided override from MAIN world Monaco extraction,
+      // (2) API response field, (3) direct Monaco extraction (only works in MAIN world).
+      const code = codeOverride || details.code || this.extractFromMonaco() || '';
       if (!code) {
         console.warn('[leetie] Accepted submission detected, but solution code could not be retrieved.');
         return null;
       }
 
       return {
-        submissionId: String(details.submissionId || details.id || Date.now()),
+        submissionId: String(
+          details.submissionId || details.id || details.submission_id || Date.now()
+        ),
         problem: {
           id: String(problemId),
           slug,
@@ -99,12 +123,16 @@ export class LeetCodeExtractor {
         code,
         runtime: details.runtime || details.status_runtime || 'N/A',
         memory: details.memory || details.status_memory || 'N/A',
-        runtimePercentile: Math.round(details.runtimePercentile || details.runtime_percentile || 0),
-        memoryPercentile: Math.round(details.memoryPercentile || details.memory_percentile || 0),
+        runtimePercentile: Math.round(
+          details.runtimePercentile || details.runtime_percentile || 0
+        ),
+        memoryPercentile: Math.round(
+          details.memoryPercentile || details.memory_percentile || 0
+        ),
         timestamp: Date.now(),
       };
     } catch (err) {
-      console.error('[leetie] Error parsing submission GraphQL response', err);
+      console.error('[leetie] Error parsing submission response', err);
       return null;
     }
   }

@@ -14,7 +14,11 @@
 
   --primary: #DDDAD0;
   --primary-hover: #F8F3CE;
-  --accent-green: #F8F3CE;
+  --accent-green: #a2cb8b;
+
+  --sage-dark: #7fa66a;
+  --sage-main: #a2cb8b;
+  --sage-light: #c2e8af;
   --warning-amber: #d97706;
   --error-red: #ef4444;
 
