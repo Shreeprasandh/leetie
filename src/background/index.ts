@@ -1,6 +1,8 @@
 import { storage } from '../shared/storage';
 import { Message } from '../shared/messages';
+import { Submission } from '../shared/types';
 import { GitHubService } from './github.service';
+import { SyncService } from './sync.service';
 
 console.log('[leetie] Background service worker initialized.');
 
@@ -36,9 +38,19 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
     }
 
     if (message.type === 'SUBMISSION_DETECTED') {
-      const submission = message.payload;
-      console.log('[leetie] Background worker received accepted submission:', submission);
-      sendResponse({ success: true, message: 'Submission received by background worker.' });
+      const submission = message.payload as Submission;
+      console.log('[leetie] Background worker orchestrating commit for:', submission);
+      (async () => {
+        try {
+          await storage.setState({ syncStatus: 'syncing' });
+          const record = await SyncService.commitSubmission(submission);
+          await storage.setState({ syncStatus: 'idle', lastError: null });
+          sendResponse({ success: true, record });
+        } catch (err: any) {
+          await storage.setState({ syncStatus: 'error', lastError: err.message });
+          sendResponse({ success: false, error: err.message });
+        }
+      })();
       return true;
     }
 
