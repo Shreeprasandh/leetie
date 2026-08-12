@@ -6,7 +6,7 @@ $targetDirs = @(
     "C:\Users\shree\shree_projects\leetie\src\assets"
 )
 
-# Colors matching custom palette #DDDAD0 and #F8F3CE
+# Colors matching dark theme #DDDAD0 and #F8F3CE
 $parchment = [System.Drawing.ColorTranslator]::FromHtml("#DDDAD0")
 $cream = [System.Drawing.ColorTranslator]::FromHtml("#F8F3CE")
 
@@ -59,4 +59,4 @@ foreach ($dir in $targetDirs) {
     }
 }
 
-Write-Host "Warm palette transparent PNG icons generated successfully."
+Write-Host "Dark theme transparent PNG icons restored successfully."
