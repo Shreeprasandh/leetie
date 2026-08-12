@@ -1,21 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --bg-primary: hsl(224, 20%, 10%);
-  --bg-surface: hsl(224, 16%, 14%);
-  --bg-surface-hover: hsl(224, 16%, 18%);
-  --border: hsl(224, 12%, 22%);
-  
-  --primary: hsl(222, 89%, 55%);
-  --primary-hover: hsl(222, 89%, 62%);
-  --accent-green: hsl(142, 71%, 45%);
-  --warning-amber: hsl(38, 92%, 50%);
-  --error-red: hsl(0, 72%, 51%);
-  
-  --text-primary: hsl(220, 20%, 95%);
-  --text-secondary: hsl(220, 12%, 70%);
-  --text-muted: hsl(220, 10%, 50%);
-  
+  /* Human-Crafted Organic Color Palette */
+  --bg-primary: #121614;
+  --bg-surface: #1a211e;
+  --bg-surface-hover: #222b27;
+  --border: #2a3530;
+
+  --sage-dark: #84B179;
+  --sage-main: #A2CB8B;
+  --sage-light: #C7EABB;
+  --sage-cream: #E8F5BD;
+
+  --primary: #84B179;
+  --primary-hover: #A2CB8B;
+  --accent-green: #A2CB8B;
+  --warning-amber: #d97706;
+  --error-red: #dc2626;
+
+  --text-primary: #e8f2ea;
+  --text-secondary: #9bb3a1;
+  --text-muted: #5e7365;
+
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
@@ -54,20 +60,17 @@ code, pre, .font-mono {
   font-size: 13px;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: background-color 0.15s ease, transform 0.1s ease;
-}
-
-.btn:active {
-  transform: translateY(1px);
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+  box-shadow: none !important;
 }
 
 .btn-primary {
-  background-color: var(--primary);
-  color: #ffffff;
+  background-color: var(--sage-dark);
+  color: #121614;
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-hover);
+  background-color: var(--sage-main);
 }
 
 .btn-secondary {
@@ -85,6 +88,7 @@ code, pre, .font-mono {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 16px;
+  box-shadow: none !important;
 }
 
 .badge {
@@ -97,16 +101,35 @@ code, pre, .font-mono {
 }
 
 .badge-easy {
-  background: rgba(34, 197, 94, 0.15);
-  color: #4ade80;
+  background: rgba(162, 203, 139, 0.15);
+  color: #A2CB8B;
 }
 
 .badge-medium {
-  background: rgba(234, 179, 8, 0.15);
-  color: #facc15;
+  background: rgba(232, 245, 189, 0.15);
+  color: #E8F5BD;
 }
 
 .badge-hard {
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(220, 38, 38, 0.15);
   color: #f87171;
+}
+
+.footer-legal {
+  font-size: 10px;
+  color: var(--text-muted);
+  opacity: 0.65;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-legal a {
+  color: var(--text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.footer-legal a:hover {
+  opacity: 1;
 }

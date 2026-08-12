@@ -69,6 +69,18 @@ export default function App() {
     }
   };
 
+  const handleConnectGitHub = () => {
+    if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+      chrome.runtime.sendMessage({ type: 'START_OAUTH' }, (res) => {
+        if (res?.success) {
+          loadData();
+        }
+      });
+    } else {
+      openOptions();
+    }
+  };
+
   return (
     <div style={{ width: 360, minHeight: 460, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Header */}
@@ -129,8 +141,8 @@ export default function App() {
               Auto-archive your accepted LeetCode solutions directly to your repository.
             </p>
           </div>
-          <button className="btn btn-primary" onClick={openOptions}>
-            <Github size={16} /> Configure Token & Repo
+          <button className="btn btn-primary" onClick={handleConnectGitHub}>
+            <Github size={16} /> 1-Click Connect GitHub
           </button>
           <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>100% client-side. Data stays in your browser.</span>
         </div>
@@ -234,16 +246,27 @@ export default function App() {
       </div>
 
       {/* Footer */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, color: 'var(--text-muted)' }}>
-        <span>leetie by Sir</span>
-        <a
-          href="https://leetcode.com"
-          target="_blank"
-          rel="noreferrer"
-          style={{ color: 'var(--text-muted)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}
-        >
-          LeetCode <ExternalLink size={10} />
-        </a>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center', fontSize: 10, color: 'var(--text-muted)', opacity: 0.5, marginTop: 8 }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <span>© 2026 leetie</span>
+          <span>·</span>
+          <a
+            href="#privacy"
+            onClick={() => openOptions()}
+            style={{ color: 'var(--text-muted)', textDecoration: 'underline' }}
+          >
+            Privacy Policy
+          </a>
+          <span>·</span>
+          <a
+            href="https://leetcode.com"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: 'var(--text-muted)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 2 }}
+          >
+            LeetCode <ExternalLink size={9} />
+          </a>
+        </div>
       </div>
     </div>
   );

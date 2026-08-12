@@ -4,6 +4,7 @@ import { Submission } from '../shared/types';
 import { GitHubService } from './github.service';
 import { SyncService } from './sync.service';
 import { RecoveryService } from './recovery.service';
+import { initiateOAuthFlow } from './auth.service';
 
 console.log('[leetie] Background service worker initialized.');
 
@@ -34,6 +35,27 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
           const repoOk = await GitHubService.ensureRepo(token, user.login, repoName);
           await storage.setState({ isAuthenticated: true, lastError: null });
           sendResponse({ success: true, user, repoOk });
+        } catch (err: any) {
+          await storage.setState({ isAuthenticated: false, lastError: err.message });
+          sendResponse({ success: false, error: err.message });
+        }
+      })();
+      return true;
+    }
+
+    if (message.type === 'START_OAUTH') {
+      (async () => {
+        try {
+          const config = await storage.getConfig();
+          const token = await initiateOAuthFlow(
+            import.meta.env.VITE_GITHUB_CLIENT_ID || 'Ov23liXXXXXXXXXX',
+            config.proxyUrl
+          );
+          const user = await GitHubService.verifyUser(token);
+          await storage.setConfig({ githubToken: token, githubUsername: user.login });
+          await GitHubService.ensureRepo(token, user.login, config.repoName);
+          await storage.setState({ isAuthenticated: true, lastError: null });
+          sendResponse({ success: true, user });
         } catch (err: any) {
           await storage.setState({ isAuthenticated: false, lastError: err.message });
           sendResponse({ success: false, error: err.message });

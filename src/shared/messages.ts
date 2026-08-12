@@ -9,6 +9,7 @@ export type MessageType =
   | 'AUTH_SUCCESS'
   | 'AUTH_ERROR'
   | 'TEST_CONNECTION'
+  | 'START_OAUTH'
   | 'FETCH_REPOS'
   | 'GET_STATE';
 
