@@ -165,7 +165,16 @@ ${rows}
     const filePath = this.formatFilePath(submission, config);
     const fileContent = config.addHeaderComment ? this.formatSolutionHeader(submission) : submission.code;
     const commitMessage = `leetie: Add ${submission.problem.id}. ${submission.problem.title} [${submission.problem.difficulty}] (${submission.lang})`;
-    const commitDate = submission.timestamp ? new Date(submission.timestamp).toISOString() : undefined;
+    
+    let commitDate: string | undefined;
+    if (submission.timestamp) {
+      const ts = Number(submission.timestamp);
+      const ms = ts < 10000000000 ? ts * 1000 : ts;
+      const d = new Date(ms);
+      if (!isNaN(d.getTime())) {
+        commitDate = d.toISOString();
+      }
+    }
 
     // Commit solution file
     const sha = await this.putFile(
