@@ -58,8 +58,8 @@ export class RecoveryService {
 
   static async fetchSubmissionDetail(id: number, rawTimestamp?: number): Promise<Submission | null> {
     const query = `
-      query submissionDetails($id: Int!) {
-        submissionDetails(submissionId: $id) {
+      query submissionDetails($submissionId: Int!) {
+        submissionDetails(submissionId: $submissionId) {
           statusDisplay
           lang
           code
@@ -88,16 +88,26 @@ export class RecoveryService {
       },
       body: JSON.stringify({
         query,
-        variables: { id: Number(id) },
+        variables: { submissionId: Number(id) },
       }),
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.warn(`[leetie] fetchSubmissionDetail HTTP error ${res.status} for id ${id}`);
+      return null;
+    }
 
     const data = await res.json();
     const details = data?.data?.submissionDetails;
 
-    if (!details || details.statusDisplay !== 'Accepted') return null;
+    if (!details) {
+      console.warn(`[leetie] fetchSubmissionDetail returned null details for id ${id}:`, data);
+      return null;
+    }
+
+    if (details.statusDisplay !== 'Accepted') {
+      return null;
+    }
 
     const q = details.question || {};
     const unixTs = Number(details.timestamp || rawTimestamp || 0);
