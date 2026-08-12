@@ -47,8 +47,16 @@
   // -------------------------------------------------------------------------
   // Response shape detection helpers
   // -------------------------------------------------------------------------
-  function isAcceptedResponse(data: any): boolean {
+  function isAcceptedResponse(data: any, url: string): boolean {
     if (!data) return false;
+
+    // Filter out "Run Code" sample test runs
+    if (url.includes('/interpret') || url.includes('/runcode/')) {
+      return false;
+    }
+    if (data.interpret_id != null || data.interpret_code != null || data.task_name === 'interpret') {
+      return false;
+    }
 
     // Shape 1 — GraphQL submissionDetails
     const gql = data?.data?.submissionDetails || data?.data?.submissionResult;
@@ -79,14 +87,18 @@
           ? rawUrl.href
           : (rawUrl as Request)?.url || '';
 
-      // Only inspect submission-related endpoints
-      if (url.includes('/graphql') || url.includes('/submissions/detail/')) {
+      // Only inspect submission-related endpoints, ignore interpret/test runs
+      if (
+        (url.includes('/graphql') || url.includes('/submissions/detail/')) &&
+        !url.includes('/interpret') &&
+        !url.includes('/runcode/')
+      ) {
         const clone = response.clone();
 
         clone
           .json()
           .then((data: any) => {
-            if (!isAcceptedResponse(data)) return;
+            if (!isAcceptedResponse(data, url)) return;
 
             // Try to get code from the response first; fall back to Monaco
             const gql = data?.data?.submissionDetails || data?.data?.submissionResult;
