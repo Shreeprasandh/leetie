@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { storage } from '../shared/storage';
 import { ExtensionConfig } from '../shared/types';
-import { Save, Check, Key, GitBranch, FolderTree, Lock, Unlock, Edit3, X } from 'lucide-react';
+import { Save, Check, Key, GitBranch, FolderTree, Lock, Unlock, Edit3, X, Github, ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function OptionsApp() {
   const [config, setConfig] = useState<ExtensionConfig | null>(null);
   const [initialConfig, setInitialConfig] = useState<ExtensionConfig | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [showManualPAT, setShowManualPAT] = useState(false);
   const [saved, setSaved] = useState(false);
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
@@ -15,7 +16,6 @@ export default function OptionsApp() {
     storage.getConfig().then((c) => {
       setConfig(c);
       setInitialConfig(c);
-      // If token/username are empty, start in edit mode automatically
       if (!c.githubToken || !c.githubUsername) {
         setIsEditing(true);
       }
@@ -41,6 +41,28 @@ export default function OptionsApp() {
     }
     setIsEditing(false);
     setTestResult(null);
+  };
+
+  const handle1ClickConnect = () => {
+    setTesting(true);
+    setTestResult(null);
+    if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+      chrome.runtime.sendMessage({ type: 'START_OAUTH' }, (res) => {
+        setTesting(false);
+        if (res?.success) {
+          storage.getConfig().then((c) => {
+            setConfig(c);
+            setInitialConfig(c);
+          });
+          setTestResult({ success: true, message: `Successfully connected as @${res.user.login} via GitHub OAuth!` });
+        } else {
+          setTestResult({ success: false, message: res?.error || 'GitHub OAuth authorization failed.' });
+        }
+      });
+    } else {
+      setTesting(false);
+      setTestResult({ success: false, message: 'OAuth requires extension runtime environment.' });
+    }
   };
 
   const handleTestConnection = async () => {
@@ -83,117 +105,139 @@ export default function OptionsApp() {
 
   return (
     <div style={{ maxWidth: 640, margin: '40px auto', padding: '0 20px' }}>
-      {/* Top Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
         <div>
           <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>leetie Settings</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: 13, marginTop: 4 }}>
             Configure your GitHub connection, repository target, and commit preferences.
           </p>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          {!isEditing ? (
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => setIsEditing(true)}
-              style={{ display: 'flex', alignItems: 'center', gap: 6 }}
-            >
-              <Edit3 size={14} color="var(--sage-dark)" /> Edit Settings
-            </button>
-          ) : (
-            <span style={{ fontSize: 11, color: 'var(--sage-dark)', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 4 }}>
-              <Unlock size={12} /> Editing Mode
-            </span>
-          )}
-        </div>
+        <span style={{ fontSize: 11, color: isEditing ? 'var(--sage-dark)' : 'var(--text-muted)', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 6 }}>
+          {isEditing ? <Unlock size={14} /> : <Lock size={14} />}
+          {isEditing ? 'Editing Mode' : 'Settings Locked'}
+        </span>
       </div>
 
-      {/* Lock Indicator Banner */}
-      {!isEditing && (
-        <div
-          className="card"
-          style={{
-            marginBottom: 20,
-            padding: '10px 14px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            fontSize: 12,
-            backgroundColor: 'var(--bg-surface)',
-            borderColor: 'var(--border)',
-            color: 'var(--text-secondary)',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Lock size={14} color="var(--sage-dark)" />
-            <span>Settings are locked to prevent accidental modifications.</span>
-          </div>
-          <button
-            className="btn btn-secondary"
-            style={{ padding: '4px 10px', fontSize: 11 }}
-            onClick={() => setIsEditing(true)}
-          >
-            Unlock & Edit
-          </button>
-        </div>
-      )}
-
       <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-        {/* GitHub Authorization */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 16, opacity: isEditing ? 1 : 0.85 }}>
+        {/* GitHub Connection Card */}
+        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 16, opacity: isEditing ? 1 : 0.9 }}>
           <h2 style={{ fontSize: 15, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Key size={16} color="var(--sage-dark)" /> GitHub Authorization
+            <Github size={18} color="var(--sage-dark)" /> GitHub Authorization
           </h2>
 
-          <div>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 500, marginBottom: 6, color: 'var(--text-secondary)' }}>
-              Personal Access Token (or OAuth Token)
-            </label>
-            <input
-              type="password"
-              value={config.githubToken}
-              disabled={!isEditing}
-              onChange={(e) => setConfig({ ...config, githubToken: e.target.value })}
-              placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-              style={{
-                width: '100%',
-                padding: '8px 12px',
-                borderRadius: 'var(--radius-sm)',
-                border: '1px solid var(--border)',
-                backgroundColor: isEditing ? 'var(--bg-primary)' : 'var(--bg-surface-hover)',
-                color: 'var(--text-primary)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: 13,
-                cursor: isEditing ? 'text' : 'not-allowed',
-              }}
-            />
-            <span style={{ fontSize: 11, color: 'var(--text-muted)', display: 'block', marginTop: 4 }}>
-              Requires <code>repo</code> scope to commit to your GitHub repository.
-            </span>
+          {/* Primary Option: 1-Click OAuth (Recommended) */}
+          <div
+            style={{
+              padding: 16,
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border)',
+              backgroundColor: 'var(--bg-primary)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <span style={{ fontSize: 13, fontWeight: 600 }}>Primary Method: 1-Click OAuth</span>
+                <span className="badge badge-easy" style={{ marginLeft: 8 }}>Recommended</span>
+              </div>
+              {config.githubUsername && (
+                <span style={{ fontSize: 12, color: 'var(--sage-main)', fontWeight: 500 }}>
+                  Connected as @{config.githubUsername}
+                </span>
+              )}
+            </div>
+            <p style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
+              No need to generate or paste keys manually. Click below to securely connect your GitHub account in 1 click.
+            </p>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handle1ClickConnect}
+              disabled={!isEditing || testing}
+              style={{ alignSelf: 'flex-start', padding: '8px 16px', opacity: !isEditing ? 0.7 : 1 }}
+            >
+              <Github size={16} /> {testing ? 'Connecting...' : '1-Click Connect GitHub'}
+            </button>
           </div>
 
-          <div>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 500, marginBottom: 6, color: 'var(--text-secondary)' }}>
-              GitHub Username
-            </label>
-            <input
-              type="text"
-              value={config.githubUsername}
-              disabled={!isEditing}
-              onChange={(e) => setConfig({ ...config, githubUsername: e.target.value })}
-              placeholder="e.g. Shreeprasandh"
+          {/* Secondary Option: Manual Personal Access Token (PAT) */}
+          <div style={{ marginTop: 4 }}>
+            <button
+              type="button"
+              onClick={() => setShowManualPAT(!showManualPAT)}
               style={{
-                width: '100%',
-                padding: '8px 12px',
-                borderRadius: 'var(--radius-sm)',
-                border: '1px solid var(--border)',
-                backgroundColor: isEditing ? 'var(--bg-primary)' : 'var(--bg-surface-hover)',
-                color: 'var(--text-primary)',
-                fontSize: 13,
-                cursor: isEditing ? 'text' : 'not-allowed',
+                background: 'none',
+                border: 'none',
+                color: 'var(--text-secondary)',
+                fontSize: 12,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: 0,
               }}
-            />
+            >
+              <Key size={14} color="var(--sage-dark)" />
+              <span>Secondary Option: Manual Personal Access Token (Advanced / Fallback)</span>
+              {showManualPAT ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            </button>
+
+            {showManualPAT && (
+              <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 12, paddingLeft: 12, borderLeft: '2px solid var(--border)' }}>
+                <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                  If you prefer not to use 1-click OAuth or have a custom GitHub instance, manually enter your Personal Access Token below:
+                </p>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 500, marginBottom: 4, color: 'var(--text-secondary)' }}>
+                    Personal Access Token
+                  </label>
+                  <input
+                    type="password"
+                    value={config.githubToken}
+                    disabled={!isEditing}
+                    onChange={(e) => setConfig({ ...config, githubToken: e.target.value })}
+                    placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                    style={{
+                      width: '100%',
+                      padding: '8px 12px',
+                      borderRadius: 'var(--radius-sm)',
+                      border: '1px solid var(--border)',
+                      backgroundColor: isEditing ? 'var(--bg-primary)' : 'var(--bg-surface-hover)',
+                      color: 'var(--text-primary)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 13,
+                      cursor: isEditing ? 'text' : 'not-allowed',
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 500, marginBottom: 4, color: 'var(--text-secondary)' }}>
+                    GitHub Username
+                  </label>
+                  <input
+                    type="text"
+                    value={config.githubUsername}
+                    disabled={!isEditing}
+                    onChange={(e) => setConfig({ ...config, githubUsername: e.target.value })}
+                    placeholder="e.g. Shreeprasandh"
+                    style={{
+                      width: '100%',
+                      padding: '8px 12px',
+                      borderRadius: 'var(--radius-sm)',
+                      border: '1px solid var(--border)',
+                      backgroundColor: isEditing ? 'var(--bg-primary)' : 'var(--bg-surface-hover)',
+                      color: 'var(--text-primary)',
+                      fontSize: 13,
+                      cursor: isEditing ? 'text' : 'not-allowed',
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {testResult && (
@@ -213,7 +257,7 @@ export default function OptionsApp() {
         </div>
 
         {/* Repository Configuration */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 16, opacity: isEditing ? 1 : 0.85 }}>
+        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 16, opacity: isEditing ? 1 : 0.9 }}>
           <h2 style={{ fontSize: 15, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
             <GitBranch size={16} color="var(--sage-dark)" /> Repository Configuration
           </h2>
@@ -288,7 +332,7 @@ export default function OptionsApp() {
         </div>
 
         {/* Sync Preferences */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 16, opacity: isEditing ? 1 : 0.85 }}>
+        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 16, opacity: isEditing ? 1 : 0.9 }}>
           <h2 style={{ fontSize: 15, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
             <FolderTree size={16} color="var(--sage-dark)" /> Commit Options
           </h2>
@@ -322,7 +366,7 @@ export default function OptionsApp() {
           </label>
         </div>
 
-        {/* Action Controls */}
+        {/* Action Controls — Single Primary Control Row */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
           {isEditing ? (
             <>
@@ -341,7 +385,7 @@ export default function OptionsApp() {
                 disabled={testing}
                 style={{ padding: '10px 16px' }}
               >
-                {testing ? 'Testing...' : 'Test Connection'}
+                {testing ? 'Testing...' : 'Test Manual Token'}
               </button>
               <button type="submit" className="btn btn-primary" style={{ padding: '10px 20px' }}>
                 <Save size={16} /> Save Changes
