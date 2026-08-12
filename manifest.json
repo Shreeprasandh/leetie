@@ -12,7 +12,8 @@
   ],
   "host_permissions": [
     "https://leetcode.com/*",
-    "https://api.github.com/*"
+    "https://api.github.com/*",
+    "https://*.vercel.app/*"
   ],
   "background": {
     "service_worker": "background/index.js",
