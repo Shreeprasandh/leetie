@@ -17,6 +17,27 @@ export class RecoveryService {
     this.isRunning = false;
   }
 
+  private static async getHeaders(): Promise<Record<string, string>> {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'Referer': 'https://leetcode.com',
+      'Origin': 'https://leetcode.com',
+    };
+
+    if (typeof chrome !== 'undefined' && chrome.cookies) {
+      try {
+        const cookie = await chrome.cookies.get({ url: 'https://leetcode.com', name: 'csrftoken' });
+        if (cookie?.value) {
+          headers['x-csrftoken'] = cookie.value;
+        }
+      } catch (e) {
+        // Ignore cookie failure
+      }
+    }
+
+    return headers;
+  }
+
   static async fetchSubmissionList(offset: number, limit = 20): Promise<{ submissions: any[]; hasNext: boolean }> {
     const query = `
       query submissionList($offset: Int!, $limit: Int!) {
@@ -33,11 +54,11 @@ export class RecoveryService {
       }
     `;
 
+    const headers = await this.getHeaders();
     const res = await fetch(this.LEETCODE_GRAPHQL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
+      credentials: 'include',
       body: JSON.stringify({
         query,
         variables: { offset, limit },
@@ -81,11 +102,11 @@ export class RecoveryService {
       }
     `;
 
+    const headers = await this.getHeaders();
     const res = await fetch(this.LEETCODE_GRAPHQL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
+      credentials: 'include',
       body: JSON.stringify({
         query,
         variables: { submissionId: Number(id) },
