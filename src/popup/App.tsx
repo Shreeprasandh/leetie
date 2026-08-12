@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { storage } from '../shared/storage';
 import { ExtensionConfig, ExtensionState } from '../shared/types';
-import { Github, Settings, CheckCircle, RefreshCw, ExternalLink, AlertCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Github, Settings, CheckCircle, RefreshCw, ExternalLink, AlertCircle, Flame, Target, TrendingUp, Database } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 function formatRelativeTime(timestamp: number): string {
   const diffSec = Math.floor((Date.now() - timestamp) / 1000);
@@ -27,8 +27,6 @@ export default function App() {
 
   useEffect(() => {
     loadData();
-    // Debounced onChange: during recovery, storage is written on every commit.
-    // Without debouncing, the popup would re-render 500+ times over 8 minutes.
     const onChange = () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
       debounceRef.current = setTimeout(() => {
@@ -75,18 +73,10 @@ export default function App() {
     return state.isAuthenticated ? 'Live' : 'Offline';
   };
 
-  const handleStartRecovery = () => {
-    if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
-      chrome.runtime.sendMessage({ type: 'RECOVERY_START' }, () => {
-        void chrome.runtime.lastError; // suppress 'Unchecked lastError' warning
-      });
-    }
-  };
-
   const handleStopRecovery = () => {
     if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
       chrome.runtime.sendMessage({ type: 'RECOVERY_STOP' }, () => {
-        void chrome.runtime.lastError; // suppress 'Unchecked lastError' warning
+        void chrome.runtime.lastError;
       });
     }
   };
@@ -113,8 +103,20 @@ export default function App() {
     loadData();
   };
 
+  const stats = state.syncedStats || {
+    easySolved: 0,
+    mediumSolved: 0,
+    hardSolved: 0,
+    totalSolved: state.totalSynced || 0,
+    totalSubmissions: state.recentCommits.length,
+    acceptanceRate: 0,
+    streak: 0,
+  };
+
+  const latestCommit = state.recentCommits && state.recentCommits.length > 0 ? state.recentCommits[0] : null;
+
   return (
-    <div style={{ width: 360, minHeight: 460, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div style={{ width: 360, minHeight: 480, padding: 16, display: 'flex', flexDirection: 'column', gap: 14 }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -179,7 +181,7 @@ export default function App() {
           <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>100% client-side. Data stays in your browser.</span>
         </div>
       ) : (
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Target Repository</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -227,76 +229,111 @@ export default function App() {
               </button>
             </div>
           ) : (
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 }}>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-                Subfolder: <code>{config.solutionSubfolder || 'solutions'}</code>
-              </div>
-              <button className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }} onClick={handleStartRecovery}>
-                <RefreshCw size={12} /> Recover History
-              </button>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
+              Subfolder: <code>{config.solutionSubfolder || 'solutions'}</code>
             </div>
           )}
         </div>
       )}
 
-      {/* Recent Activity List */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>Recent Commits</h2>
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{state.totalSynced} total synced</span>
-        </div>
+      {/* LeetCode Performance Overview Card */}
+      {state.isAuthenticated && (
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Target size={14} color="var(--primary)" /> Overview
+            </h2>
+            <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <Database size={10} /> Git Synced Archive
+            </span>
+          </div>
 
-        {state.recentCommits.length === 0 ? (
-          <div
-            className="card"
-            style={{
-              padding: 24,
-              textAlign: 'center',
-              color: 'var(--text-muted)',
-              fontSize: 12,
-            }}
-          >
-            No solutions synced yet. Solve a problem on LeetCode to trigger auto-sync!
+          {/* 4 Core Stats Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+            <div className="card" style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                <Target size={12} color="var(--accent-green)" /> Solved
+              </span>
+              <span style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{stats.totalSolved}</span>
+            </div>
+
+            <div className="card" style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                <TrendingUp size={12} color="var(--primary)" /> Submissions
+              </span>
+              <span style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{stats.totalSubmissions}</span>
+            </div>
+
+            <div className="card" style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                ⚡ Acceptance
+              </span>
+              <span style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{stats.acceptanceRate}%</span>
+            </div>
+
+            <div className="card" style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                <Flame size={12} color="var(--warning-amber)" /> Streak
+              </span>
+              <span style={{ fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+                {stats.streak} <span style={{ fontSize: 10, fontWeight: 400, color: 'var(--text-muted)' }}>days</span>
+              </span>
+            </div>
           </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <AnimatePresence>
-              {state.recentCommits.slice(0, 4).map((item) => (
-                <motion.div
-                  key={item.submissionId}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="card"
-                  style={{
-                    padding: '10px 12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    fontSize: 12,
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden' }}>
-                    <CheckCircle size={14} color="var(--accent-green)" style={{ flexShrink: 0 }} />
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      <span style={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {item.problemTitle}
-                      </span>
-                      <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>
-                        {item.lang} · {formatRelativeTime(item.committedAt)}
-                      </span>
-                    </div>
-                  </div>
-                  <span className={`badge badge-${item.difficulty.toLowerCase()}`}>{item.difficulty}</span>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+
+          {/* Difficulty Proportion Breakdown */}
+          <div className="card" style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 500 }}>
+              <span style={{ color: 'var(--accent-green)' }}>Easy: {stats.easySolved}</span>
+              <span style={{ color: 'var(--warning-amber)' }}>Med: {stats.mediumSolved}</span>
+              <span style={{ color: '#f87171' }}>Hard: {stats.hardSolved}</span>
+            </div>
+            <div style={{ width: '100%', height: 6, backgroundColor: 'var(--bg-primary)', borderRadius: 3, display: 'flex', overflow: 'hidden' }}>
+              <div
+                style={{
+                  width: `${stats.totalSolved > 0 ? (stats.easySolved / stats.totalSolved) * 100 : 0}%`,
+                  height: '100%',
+                  backgroundColor: 'var(--accent-green)',
+                }}
+              />
+              <div
+                style={{
+                  width: `${stats.totalSolved > 0 ? (stats.mediumSolved / stats.totalSolved) * 100 : 0}%`,
+                  height: '100%',
+                  backgroundColor: 'var(--warning-amber)',
+                }}
+              />
+              <div
+                style={{
+                  width: `${stats.totalSolved > 0 ? (stats.hardSolved / stats.totalSolved) * 100 : 0}%`,
+                  height: '100%',
+                  backgroundColor: '#f87171',
+                }}
+              />
+            </div>
           </div>
-        )}
-      </div>
+
+          {/* Latest Sync Ticker */}
+          {latestCommit && (
+            <div className="card" style={{ padding: '8px 10px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 11 }}>
+              <CheckCircle size={12} color="var(--accent-green)" style={{ flexShrink: 0 }} />
+              <span style={{ color: 'var(--text-muted)', flexShrink: 0 }}>Latest:</span>
+              <span style={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                {latestCommit.problemTitle}
+              </span>
+              <span style={{ fontSize: 10, color: 'var(--text-muted)', flexShrink: 0 }}>{formatRelativeTime(latestCommit.committedAt)}</span>
+            </div>
+          )}
+
+          {/* Footnote requested by user */}
+          <div style={{ fontSize: 9, color: 'var(--text-muted)', textAlign: 'center', opacity: 0.6 }}>
+            * Data based on synced Git storage, not live LeetCode account.
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center', fontSize: 10, color: 'var(--text-muted)', opacity: 0.5, marginTop: 8 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'center', fontSize: 10, color: 'var(--text-muted)', opacity: 0.5, marginTop: 'auto' }}>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <span>© 2026 leetie</span>
           <span>·</span>
@@ -321,3 +358,4 @@ export default function App() {
     </div>
   );
 }
+

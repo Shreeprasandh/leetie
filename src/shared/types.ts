@@ -45,6 +45,16 @@ export interface ExtensionConfig {
   proxyUrl: string;
 }
 
+export interface SyncedStats {
+  easySolved: number;
+  mediumSolved: number;
+  hardSolved: number;
+  totalSolved: number;
+  totalSubmissions: number;
+  acceptanceRate: number;
+  streak: number;
+}
+
 export interface ExtensionState {
   isAuthenticated: boolean;
   syncStatus: SyncStatus;
@@ -52,4 +62,5 @@ export interface ExtensionState {
   recentCommits: CommitRecord[];
   lastError: string | null;
   recoveryProgress: { current: number; total: number } | null;
+  syncedStats?: SyncedStats;
 }

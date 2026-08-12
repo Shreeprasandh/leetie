@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { storage } from '../shared/storage';
 import { ExtensionConfig } from '../shared/types';
-import { Save, Check, Key, GitBranch, FolderTree, Lock, Unlock, Edit3, X, Github, ChevronDown, ChevronUp, Info } from 'lucide-react';
+import { Save, Check, Key, GitBranch, FolderTree, Lock, Unlock, Edit3, X, Github, ChevronDown, ChevronUp, Info, RefreshCw } from 'lucide-react';
 
 export default function OptionsApp() {
   const [config, setConfig] = useState<ExtensionConfig | null>(null);
@@ -75,6 +75,18 @@ export default function OptionsApp() {
     } else {
       setTesting(false);
       setTestResult({ success: false, message: 'OAuth requires extension runtime environment.' });
+    }
+  };
+
+  const handleStartRecovery = () => {
+    if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+      chrome.runtime.sendMessage({ type: 'RECOVERY_START' }, (res) => {
+        if (chrome.runtime.lastError) {
+          alert('Could not start recovery: ' + chrome.runtime.lastError.message);
+        } else if (res?.success) {
+          alert('History recovery started in the background! Check your extension popup for live progress.');
+        }
+      });
     }
   };
 
@@ -429,6 +441,30 @@ export default function OptionsApp() {
             />
             Auto-generate and update <code>README.md</code> progress index in repository root
           </label>
+        </div>
+
+        {/* History Recovery & Maintenance */}
+        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <h2 style={{ fontSize: 15, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <RefreshCw size={16} color="var(--primary)" /> History Recovery & Maintenance
+          </h2>
+          <p style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
+            Recover past accepted LeetCode submissions and auto-sync them to your GitHub repository.
+            Make sure a LeetCode problem page is open in Chrome before starting recovery.
+          </p>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginTop: 4 }}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{ padding: '8px 16px', fontSize: 12 }}
+              onClick={handleStartRecovery}
+            >
+              <RefreshCw size={14} /> Recover History
+            </button>
+            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+              1s polite delay applied between commits.
+            </span>
+          </div>
         </div>
 
         {/* Legal & Terms Checkbox */}

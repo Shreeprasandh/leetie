@@ -1,5 +1,70 @@
 import { DEFAULT_CONFIG, INITIAL_STATE, STORAGE_KEYS } from './constants';
-import { CommitRecord, ExtensionConfig, ExtensionState } from './types';
+import { CommitRecord, Difficulty, ExtensionConfig, ExtensionState, SyncedStats } from './types';
+
+export function computeSyncedStats(commits: CommitRecord[]): SyncedStats {
+  const uniqueProblems = new Map<string, Difficulty>();
+  for (const c of commits) {
+    if (c.problemSlug && !uniqueProblems.has(c.problemSlug)) {
+      uniqueProblems.set(c.problemSlug, c.difficulty || 'Easy');
+    }
+  }
+
+  let easySolved = 0;
+  let mediumSolved = 0;
+  let hardSolved = 0;
+
+  uniqueProblems.forEach((diff) => {
+    if (diff === 'Easy') easySolved++;
+    else if (diff === 'Medium') mediumSolved++;
+    else if (diff === 'Hard') hardSolved++;
+  });
+
+  const totalSolved = uniqueProblems.size;
+  const totalSubmissions = commits.length;
+  const acceptanceRate = totalSubmissions > 0 ? Math.round((totalSolved / totalSubmissions) * 1000) / 10 : 0;
+
+  // Streak calculation based on distinct commit dates
+  const commitDays = Array.from(
+    new Set(
+      commits
+        .map((c) => (c.committedAt ? new Date(c.committedAt).toISOString().split('T')[0] : ''))
+        .filter(Boolean)
+    )
+  ).sort().reverse();
+
+  let streak = 0;
+  if (commitDays.length > 0) {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const yesterdayDate = new Date();
+    yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+    const yesterdayStr = yesterdayDate.toISOString().split('T')[0];
+
+    let currentCheckDate =
+      commitDays[0] === todayStr || commitDays[0] === yesterdayStr ? new Date(commitDays[0]) : null;
+
+    if (currentCheckDate) {
+      for (const dayStr of commitDays) {
+        const expectedStr = currentCheckDate.toISOString().split('T')[0];
+        if (dayStr === expectedStr) {
+          streak++;
+          currentCheckDate.setDate(currentCheckDate.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+    }
+  }
+
+  return {
+    easySolved,
+    mediumSolved,
+    hardSolved,
+    totalSolved,
+    totalSubmissions,
+    acceptanceRate,
+    streak,
+  };
+}
 
 // GitHub token prefixes to distinguish plaintext tokens from stale AES-GCM-encrypted
 // values left by a previous build. chrome.storage.local is sandboxed to this extension,
@@ -41,12 +106,15 @@ export const storage = {
   },
 
   async getState(): Promise<ExtensionState> {
+    const commits = await this.getCommits();
+    const stats = computeSyncedStats(commits);
     if (typeof chrome !== 'undefined' && chrome.storage?.local) {
       const res = await chrome.storage.local.get(STORAGE_KEYS.STATE);
-      return { ...INITIAL_STATE, ...(res[STORAGE_KEYS.STATE] || {}) };
+      return { ...INITIAL_STATE, syncedStats: stats, ...(res[STORAGE_KEYS.STATE] || {}) };
     }
     const local = localStorage.getItem(STORAGE_KEYS.STATE);
-    return local ? JSON.parse(local) : INITIAL_STATE;
+    const parsed = local ? JSON.parse(local) : INITIAL_STATE;
+    return { ...INITIAL_STATE, syncedStats: stats, ...parsed };
   },
 
   async setState(state: Partial<ExtensionState>): Promise<ExtensionState> {
@@ -96,7 +164,8 @@ export const storage = {
     // The list is capped at 100 but the user may have synced many more.
     const currentState = await this.getState();
     const newTotal = (currentState.totalSynced || 0) + 1;
-    await this.setState({ recentCommits: updated, totalSynced: newTotal });
+    const stats = computeSyncedStats(updated);
+    await this.setState({ recentCommits: updated, totalSynced: newTotal, syncedStats: stats });
     return updated;
   },
 };
