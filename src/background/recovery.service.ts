@@ -22,6 +22,7 @@ export class RecoveryService {
       'Content-Type': 'application/json',
       'Referer': 'https://leetcode.com',
       'Origin': 'https://leetcode.com',
+      'x-requested-with': 'XMLHttpRequest',
     };
 
     if (typeof chrome !== 'undefined' && chrome.cookies) {
@@ -116,7 +117,8 @@ export class RecoveryService {
     });
 
     if (!res.ok) {
-      console.warn(`[leetie] fetchSubmissionDetail HTTP error ${res.status} for id ${id}`);
+      const errText = await res.text().catch(() => '');
+      console.warn(`[leetie] fetchSubmissionDetail HTTP error ${res.status} for id ${id}:`, errText);
       return null;
     }
 
