@@ -1,23 +1,37 @@
 import { DEFAULT_CONFIG, INITIAL_STATE, STORAGE_KEYS } from './constants';
 import { CommitRecord, ExtensionConfig, ExtensionState } from './types';
+import { decryptToken, encryptToken } from '../background/auth.service';
 
 export const storage = {
   async getConfig(): Promise<ExtensionConfig> {
+    let rawConfig: ExtensionConfig;
     if (typeof chrome !== 'undefined' && chrome.storage?.local) {
       const res = await chrome.storage.local.get(STORAGE_KEYS.CONFIG);
-      return { ...DEFAULT_CONFIG, ...(res[STORAGE_KEYS.CONFIG] || {}) };
+      rawConfig = { ...DEFAULT_CONFIG, ...(res[STORAGE_KEYS.CONFIG] || {}) };
+    } else {
+      const local = localStorage.getItem(STORAGE_KEYS.CONFIG);
+      rawConfig = local ? JSON.parse(local) : DEFAULT_CONFIG;
     }
-    const local = localStorage.getItem(STORAGE_KEYS.CONFIG);
-    return local ? JSON.parse(local) : DEFAULT_CONFIG;
+
+    if (rawConfig.githubToken) {
+      rawConfig.githubToken = await decryptToken(rawConfig.githubToken);
+    }
+    return rawConfig;
   },
 
   async setConfig(config: Partial<ExtensionConfig>): Promise<ExtensionConfig> {
     const current = await this.getConfig();
     const updated = { ...current, ...config };
+    const toSave = { ...updated };
+
+    if (toSave.githubToken) {
+      toSave.githubToken = await encryptToken(toSave.githubToken);
+    }
+
     if (typeof chrome !== 'undefined' && chrome.storage?.local) {
-      await chrome.storage.local.set({ [STORAGE_KEYS.CONFIG]: updated });
+      await chrome.storage.local.set({ [STORAGE_KEYS.CONFIG]: toSave });
     } else {
-      localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(updated));
+      localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(toSave));
     }
     return updated;
   },

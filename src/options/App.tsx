@@ -6,6 +6,8 @@ import { Save, Check, Key, GitBranch, FolderTree } from 'lucide-react';
 export default function OptionsApp() {
   const [config, setConfig] = useState<ExtensionConfig | null>(null);
   const [saved, setSaved] = useState(false);
+  const [testing, setTesting] = useState(false);
+  const [testResult, setTestResult] = useState<{ success: boolean; message: string } | null>(null);
 
   useEffect(() => {
     storage.getConfig().then(setConfig);
@@ -20,6 +22,43 @@ export default function OptionsApp() {
     }
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  const handleTestConnection = async () => {
+    if (!config?.githubToken) {
+      setTestResult({ success: false, message: 'Please enter a GitHub Personal Access Token first.' });
+      return;
+    }
+    setTesting(true);
+    setTestResult(null);
+
+    try {
+      if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+        chrome.runtime.sendMessage(
+          {
+            type: 'TEST_CONNECTION',
+            payload: { token: config.githubToken, username: config.githubUsername, repoName: config.repoName },
+          },
+          (res) => {
+            setTesting(false);
+            if (res?.success) {
+              setTestResult({ success: true, message: `Connected as @${res.user.login}. Repository '${config.repoName}' verified.` });
+            } else {
+              setTestResult({ success: false, message: res?.error || 'Connection failed.' });
+            }
+          }
+        );
+      } else {
+        // Local testing fallback
+        const { GitHubService } = await import('../background/github.service');
+        const user = await GitHubService.verifyUser(config.githubToken);
+        setTesting(false);
+        setTestResult({ success: true, message: `Connected as @${user.login}.` });
+      }
+    } catch (err: any) {
+      setTesting(false);
+      setTestResult({ success: false, message: err.message || 'Connection failed.' });
+    }
   };
 
   if (!config) return null;
@@ -85,6 +124,21 @@ export default function OptionsApp() {
               }}
             />
           </div>
+
+          {testResult && (
+            <div
+              style={{
+                padding: '10px 12px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: 12,
+                backgroundColor: testResult.success ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+                color: testResult.success ? '#4ade80' : '#f87171',
+                border: `1px solid ${testResult.success ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+              }}
+            >
+              {testResult.message}
+            </div>
+          )}
         </div>
 
         {/* Repository Settings */}
@@ -160,8 +214,17 @@ export default function OptionsApp() {
           </label>
         </div>
 
-        {/* Save Button */}
+        {/* Action Buttons */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleTestConnection}
+            disabled={testing}
+            style={{ padding: '10px 16px' }}
+          >
+            {testing ? 'Testing...' : 'Test Connection'}
+          </button>
           <button type="submit" className="btn btn-primary" style={{ padding: '10px 20px' }}>
             {saved ? <Check size={16} /> : <Save size={16} />}
             {saved ? 'Saved!' : 'Save Preferences'}

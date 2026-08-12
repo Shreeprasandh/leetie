@@ -7,6 +7,8 @@ export type MessageType =
   | 'RECOVERY_COMPLETE'
   | 'AUTH_SUCCESS'
   | 'AUTH_ERROR'
+  | 'TEST_CONNECTION'
+  | 'FETCH_REPOS'
   | 'GET_STATE';
 
 export interface Message<T = unknown> {
