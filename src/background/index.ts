@@ -130,12 +130,17 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
           await storage.setState({ syncStatus: 'idle', lastError: null });
 
           if (typeof chrome !== 'undefined' && chrome.notifications) {
-            chrome.notifications.create({
-              type: 'basic',
-              iconUrl: 'assets/icon-48.png',
-              title: 'leetie — Solution Synced!',
-              message: `Successfully committed ${submission.problem.id}. ${submission.problem.title} [${submission.problem.difficulty}] to GitHub.`,
-            });
+            try {
+              const iconUrl = chrome.runtime?.getURL ? chrome.runtime.getURL('assets/icon-48.png') : 'assets/icon-48.png';
+              chrome.notifications.create({
+                type: 'basic',
+                iconUrl,
+                title: 'leetie — Solution Synced!',
+                message: `Successfully committed ${submission.problem.id}. ${submission.problem.title} [${submission.problem.difficulty}] to GitHub.`,
+              });
+            } catch (nErr) {
+              console.warn('[leetie] Notification creation skipped:', nErr);
+            }
           }
 
           sendResponse({ success: true, record });
