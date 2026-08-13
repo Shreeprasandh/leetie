@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { storage } from '../shared/storage';
 import { ExtensionConfig, ExtensionState } from '../shared/types';
-import { Github, Settings, CheckCircle, RefreshCw, ExternalLink, AlertCircle, Target, TrendingUp, Database } from 'lucide-react';
+import { Github, Settings, CheckCircle, RefreshCw, ExternalLink, AlertCircle, Target, TrendingUp, Database, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 function formatRelativeTime(timestamp: number): string {
@@ -15,6 +15,8 @@ function formatRelativeTime(timestamp: number): string {
 export default function App() {
   const [config, setConfig] = useState<ExtensionConfig | null>(null);
   const [state, setState] = useState<ExtensionState | null>(null);
+  const [showRecoveryDropdown, setShowRecoveryDropdown] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const loadData = async () => {
     const c = await storage.getConfig();
@@ -77,6 +79,20 @@ export default function App() {
     if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
       chrome.runtime.sendMessage({ type: 'RECOVERY_STOP' }, () => {
         void chrome.runtime.lastError;
+      });
+    }
+  };
+
+  const handleStartRecovery = () => {
+    setShowConfirmModal(false);
+    setShowRecoveryDropdown(false);
+    if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+      chrome.runtime.sendMessage({ type: 'RECOVERY_START' }, (res) => {
+        if (chrome.runtime.lastError) {
+          console.warn('[leetie] Recovery start error:', chrome.runtime.lastError.message);
+        } else if (res?.success) {
+          loadData();
+        }
       });
     }
   };
@@ -229,8 +245,61 @@ export default function App() {
               </button>
             </div>
           ) : (
-            <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
-              Subfolder: <code>{config.solutionSubfolder || 'solutions'}</code>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 2 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                Subfolder: <code>{config.solutionSubfolder || 'solutions'}</code>
+              </div>
+
+              {/* Minimal Low-Opacity Dropdown for History Recovery */}
+              <button
+                type="button"
+                onClick={() => setShowRecoveryDropdown(!showRecoveryDropdown)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--text-muted)',
+                  fontSize: 11,
+                  cursor: 'pointer',
+                  opacity: 0.65,
+                  padding: '4px 0 0 0',
+                }}
+              >
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <RefreshCw size={11} /> History Recovery
+                </span>
+                {showRecoveryDropdown ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+              </button>
+
+              {showRecoveryDropdown && (
+                <div
+                  style={{
+                    marginTop: 4,
+                    padding: 8,
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: 'var(--bg-primary)',
+                    border: '1px solid var(--border)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 8,
+                  }}
+                >
+                  <span style={{ fontSize: 10, color: 'var(--text-muted)', lineHeight: 1.4 }}>
+                    Recover past accepted submissions directly to your Git repository. Ensure a LeetCode tab is open.
+                  </span>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    style={{ padding: '3px 10px', fontSize: 10, alignSelf: 'flex-start', opacity: 0.85 }}
+                    onClick={() => setShowConfirmModal(true)}
+                  >
+                    Start Recovery
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -364,6 +433,60 @@ export default function App() {
           </a>
         </div>
       </div>
+      {showConfirmModal && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 100,
+            padding: 20,
+          }}
+        >
+          <div
+            className="card"
+            style={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12,
+              backgroundColor: 'var(--bg-surface)',
+              border: '1px solid var(--border)',
+            }}
+          >
+            <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
+              Start History Recovery?
+            </h3>
+            <p style={{ fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              Please ensure LeetCode is open in a browser tab. leetie will recover your past accepted solutions and sync them to GitHub.
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 4 }}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                style={{ padding: '5px 12px', fontSize: 11 }}
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                style={{ padding: '5px 14px', fontSize: 11 }}
+                onClick={handleStartRecovery}
+              >
+                Start Recovery
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

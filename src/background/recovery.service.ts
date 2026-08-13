@@ -37,8 +37,9 @@ export class RecoveryService {
     let lastErr: Error | null = null;
     for (const tab of tabs) {
       if (tab.id == null) continue;
-      try {
-        const res = await new Promise<any>((resolve, reject) => {
+
+      const trySendMessage = (): Promise<any> =>
+        new Promise<any>((resolve, reject) => {
           chrome.tabs.sendMessage(
             tab.id!,
             { type: 'PROXY_GRAPHQL', payload: { body: JSON.stringify(requestBody) } },
@@ -53,9 +54,32 @@ export class RecoveryService {
             }
           );
         });
+
+      try {
+        const res = await trySendMessage();
         return res;
       } catch (err: any) {
         lastErr = err;
+        // If content script is disconnected (e.g. extension reloaded while tab was open), re-inject content script dynamically
+        if (
+          err.message &&
+          (err.message.includes('Could not establish connection') || err.message.includes('Receiving end does not exist'))
+        ) {
+          if (chrome.scripting) {
+            try {
+              await chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                files: ['content/index.js'],
+              });
+              // Brief delay for listener registration
+              await new Promise((r) => setTimeout(r, 150));
+              const retryRes = await trySendMessage();
+              return retryRes;
+            } catch (injErr: any) {
+              console.warn('[leetie] Dynamic content script injection failed:', injErr);
+            }
+          }
+        }
       }
     }
 
