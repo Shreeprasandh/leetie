@@ -1,6 +1,6 @@
 export type Difficulty = 'Easy' | 'Medium' | 'Hard';
 
-export type SyncStatus = 'idle' | 'syncing' | 'recovering' | 'error';
+export type SyncStatus = 'idle' | 'syncing' | 'error';
 
 export interface Problem {
   id: string;
@@ -61,6 +61,5 @@ export interface ExtensionState {
   totalSynced: number;
   recentCommits: CommitRecord[];
   lastError: string | null;
-  recoveryProgress: { current: number; total: number } | null;
   syncedStats?: SyncedStats;
 }

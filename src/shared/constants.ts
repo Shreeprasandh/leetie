@@ -18,7 +18,6 @@ export const INITIAL_STATE: ExtensionState = {
   totalSynced: 0,
   recentCommits: [],
   lastError: null,
-  recoveryProgress: null,
 };
 
 export const STORAGE_KEYS = {

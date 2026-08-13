@@ -3,7 +3,6 @@ import { Message } from '../shared/messages';
 import { Submission } from '../shared/types';
 import { GitHubService } from './github.service';
 import { SyncService } from './sync.service';
-import { RecoveryService } from './recovery.service';
 import { initiateOAuthFlow } from './auth.service';
 
 console.log('[leetie] Background service worker initialized.');
@@ -11,7 +10,7 @@ console.log('[leetie] Background service worker initialized.');
 // ---------------------------------------------------------------------------
 // Service Worker Keep-Alive
 // MV3 service workers are terminated after ~30s of inactivity. During a long
-// commit (or recovery), the SW must stay alive. A lightweight getPlatformInfo
+// commit, the SW must stay alive. A lightweight getPlatformInfo
 // ping every 20s prevents termination without any meaningful overhead.
 // ---------------------------------------------------------------------------
 let _keepAliveTimer: ReturnType<typeof setInterval> | null = null;
@@ -39,19 +38,6 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
   chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) => {
     if (message.type === 'GET_STATE') {
       storage.getState().then((state) => sendResponse(state));
-      return true;
-    }
-
-    if (message.type === 'RECOVERY_START') {
-      keepAlive(); // Recovery is long-running — prevent SW termination
-      RecoveryService.startRecovery().finally(() => releaseKeepAlive());
-      sendResponse({ success: true, message: 'History recovery started.' });
-      return true;
-    }
-
-    if (message.type === 'RECOVERY_STOP') {
-      RecoveryService.stopRecovery();
-      sendResponse({ success: true, message: 'History recovery stopped.' });
       return true;
     }
 
