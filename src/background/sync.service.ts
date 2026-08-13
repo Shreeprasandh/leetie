@@ -334,10 +334,16 @@ ${rows}
       else if (item.path.includes('/Medium/')) difficulty = 'Medium';
       else if (item.path.includes('/Hard/')) difficulty = 'Hard';
 
-      const problemDir = parts.find((p) => /^\d+[-_]/.test(p)) || parts[parts.length - 2] || 'problem';
-      const slugMatch = problemDir.match(/^\d+[-_](.+)$/);
-      const slug = slugMatch ? slugMatch[1] : problemDir;
-      const title = slug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+      // Strictly require a directory starting with digits (e.g., '0001-two-sum' or '0009-palindrome-number')
+      const problemDir = parts.find((p) => /^\d+[-_]/.test(p));
+      if (!problemDir) continue;
+
+      const slugMatch = problemDir.match(/^(\d+)[-_](.+)$/);
+      if (!slugMatch) continue;
+
+      const problemNum = parseInt(slugMatch[1], 10);
+      const slug = slugMatch[2];
+      const title = `${problemNum}. ${slug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}`;
 
       const record: CommitRecord = {
         submissionId: `git_${slug}_${extToLang[ext]}`,
