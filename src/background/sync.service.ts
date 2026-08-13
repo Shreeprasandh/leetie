@@ -354,17 +354,7 @@ ${rows}
     }
 
     const newRecords = Array.from(commitMap.values());
-    for (const rec of newRecords) {
-      await storage.addCommit(rec);
-    }
-
-    const updatedState = await storage.getState();
-    await storage.setState({
-      syncStatus: 'idle',
-      lastError: null,
-      totalSynced: updatedState.recentCommits.length,
-    });
-
+    await storage.setCommits(newRecords);
     return { count: newRecords.length };
   }
 }

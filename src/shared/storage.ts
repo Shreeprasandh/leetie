@@ -171,4 +171,16 @@ export const storage = {
     await this.setState({ recentCommits: updated, totalSynced: newTotal, syncedStats: stats });
     return updated;
   },
+
+  async setCommits(commits: CommitRecord[]): Promise<CommitRecord[]> {
+    const updated = commits.slice(0, 100);
+    if (typeof chrome !== 'undefined' && chrome.storage?.local) {
+      await chrome.storage.local.set({ [STORAGE_KEYS.COMMITS]: updated });
+    } else {
+      localStorage.setItem(STORAGE_KEYS.COMMITS, JSON.stringify(updated));
+    }
+    const stats = computeSyncedStats(updated);
+    await this.setState({ recentCommits: updated, totalSynced: stats.totalSolved, syncedStats: stats });
+    return updated;
+  },
 };
