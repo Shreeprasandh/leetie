@@ -6,4 +6,4 @@
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
-| same-tree | Same Tree | Easy | java | [Problem](https://leetcode.com/problems/same-tree/) | [Solution](./solutions/Easy/0100-same-tree/solution.java) |
+| palindrome-number | Palindrome Number | Easy | java | [Problem](https://leetcode.com/problems/palindrome-number/) | [Solution](./solutions/Easy/0009-palindrome-number/solution.java) |
