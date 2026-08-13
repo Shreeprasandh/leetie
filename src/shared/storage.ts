@@ -180,7 +180,13 @@ export const storage = {
       localStorage.setItem(STORAGE_KEYS.COMMITS, JSON.stringify(updated));
     }
     const stats = computeSyncedStats(updated);
-    await this.setState({ recentCommits: updated, totalSynced: stats.totalSolved, syncedStats: stats });
+    await this.setState({
+      syncStatus: 'idle',
+      recentCommits: updated,
+      totalSynced: stats.totalSolved,
+      syncedStats: stats,
+      lastError: null,
+    });
     return updated;
   },
 };

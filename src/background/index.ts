@@ -46,6 +46,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
         try {
           await storage.setState({ syncStatus: 'syncing', lastError: null });
           const res = await SyncService.syncFromRepo();
+          await storage.setState({ syncStatus: 'idle', lastError: null });
           sendResponse({ success: true, count: res.count });
         } catch (err: any) {
           await storage.setState({ syncStatus: 'error', lastError: err.message });
