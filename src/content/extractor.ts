@@ -96,11 +96,18 @@ export class LeetCodeExtractor {
 
   static parseSubmissionResponse(rawResponse: any, codeOverride?: string): Submission | null {
     try {
-      // Shape 1 — GraphQL submissionDetails / submissionResult / submitCode
+      // Exclude "Run Code" interpret runs
+      if (rawResponse?.interpret_id || rawResponse?.interpret_key || rawResponse?.data?.interpret_id || rawResponse?.data?.interpret_key) {
+        return null;
+      }
+
+      // Shape 1 — GraphQL submissionCheck / submissionDetails / submissionResult / submitCode
       const gqlDetails =
+        rawResponse?.data?.submissionCheck ||
         rawResponse?.data?.submissionDetails ||
         rawResponse?.data?.submissionResult ||
-        rawResponse?.data?.submitCode;
+        rawResponse?.data?.submitCode ||
+        (rawResponse?.data && typeof rawResponse.data === 'object' ? Object.values(rawResponse.data)[0] : null);
 
       // Shape 2 — Submission check polling endpoint / flat object
       const isCheckShape =
@@ -112,6 +119,10 @@ export class LeetCodeExtractor {
 
       const details = gqlDetails || checkDetails;
       if (!details) return null;
+
+      if (details.interpret_id || details.interpret_key || (typeof details.task_id === 'string' && details.task_id.includes('interpret'))) {
+        return null;
+      }
 
       const status =
         details.statusDisplay ||

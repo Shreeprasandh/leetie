@@ -61,20 +61,28 @@
   // -------------------------------------------------------------------------
   // Response shape detection helpers
   // -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // Response shape detection helpers
+  // -------------------------------------------------------------------------
   function isAcceptedResponse(data: any, url: string): boolean {
     if (!data) return false;
 
-    // Only exclude explicit "Run Code" test endpoints
-    if (url.includes('/interpret_solution/')) {
-      return false;
-    }
+    // Explicitly exclude "Run Code" test runs (interpret_solution endpoint or interpret payload keys)
+    if (url.includes('/interpret_solution/')) return false;
+    if (data?.interpret_id || data?.interpret_key || data?.data?.interpret_id || data?.data?.interpret_key) return false;
 
-    // Shape 1 — GraphQL submissionDetails / submissionResult / submitCode
+    // Shape 1 — GraphQL (submissionCheck, submissionDetails, submissionResult, submitCode, or any data operation)
     const gql =
+      data?.data?.submissionCheck ||
       data?.data?.submissionDetails ||
       data?.data?.submissionResult ||
-      data?.data?.submitCode;
+      data?.data?.submitCode ||
+      (data?.data && typeof data.data === 'object' ? (Object.values(data.data)[0] as any) : null);
+
     if (gql) {
+      if (gql.interpret_id || gql.interpret_key || (typeof gql.task_id === 'string' && gql.task_id.includes('interpret'))) {
+        return false;
+      }
       const status = gql.statusDisplay || gql.status_display || gql.status_msg;
       if (status === 'Accepted') return true;
     }
@@ -112,14 +120,16 @@
 
             // Extract code from Monaco editor or DOM
             const gql =
+              data?.data?.submissionCheck ||
               data?.data?.submissionDetails ||
               data?.data?.submissionResult ||
-              data?.data?.submitCode;
+              data?.data?.submitCode ||
+              (data?.data && typeof data.data === 'object' ? (Object.values(data.data)[0] as any) : null);
             const details = gql || data;
 
-            // Extract numeric submission ID from URL if available
+            // Extract numeric submission ID from URL or payload if available
             const urlMatch = url.match(/submissions\/(?:detail\/)?(\d+)/);
-            const extractedId = urlMatch?.[1] || details?.submission_id || details?.id || details?.submissionId;
+            const extractedId = urlMatch?.[1] || details?.submission_id || details?.id || details?.submissionId || details?.question_id;
             if (extractedId) {
               data._submission_id = String(extractedId);
             }
