@@ -6,6 +6,7 @@ export type MessageType =
   | 'AUTH_ERROR'
   | 'TEST_CONNECTION'
   | 'START_OAUTH'
+  | 'SYNC_GITHUB'
   | 'FETCH_REPOS'
   | 'GET_STATE'
   // Proxies a LeetCode GraphQL request through the content script,

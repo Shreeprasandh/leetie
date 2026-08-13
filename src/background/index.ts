@@ -41,6 +41,20 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
       return true;
     }
 
+    if (message.type === 'SYNC_GITHUB') {
+      (async () => {
+        try {
+          await storage.setState({ syncStatus: 'syncing', lastError: null });
+          const res = await SyncService.syncFromRepo();
+          sendResponse({ success: true, count: res.count });
+        } catch (err: any) {
+          await storage.setState({ syncStatus: 'error', lastError: err.message });
+          sendResponse({ success: false, error: err.message });
+        }
+      })();
+      return true;
+    }
+
     if (message.type === 'TEST_CONNECTION') {
       const { token, username, repoName } = message.payload as { token: string; username: string; repoName: string };
       (async () => {

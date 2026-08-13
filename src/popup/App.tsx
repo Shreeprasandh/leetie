@@ -15,6 +15,7 @@ function formatRelativeTime(timestamp: number): string {
 export default function App() {
   const [config, setConfig] = useState<ExtensionConfig | null>(null);
   const [state, setState] = useState<ExtensionState | null>(null);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   const loadData = async () => {
     const c = await storage.getConfig();
@@ -92,6 +93,22 @@ export default function App() {
     await storage.setConfig({ githubToken: '', githubUsername: '' });
     await storage.setState({ isAuthenticated: false, recentCommits: [], totalSynced: 0, lastError: null });
     loadData();
+  };
+
+  const handleSyncFromGitHub = () => {
+    setIsSyncing(true);
+    if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+      chrome.runtime.sendMessage({ type: 'SYNC_GITHUB' }, (res) => {
+        setIsSyncing(false);
+        if (chrome.runtime.lastError) {
+          console.warn('[leetie] GitHub sync error:', chrome.runtime.lastError.message);
+        } else if (res?.success) {
+          loadData();
+        }
+      });
+    } else {
+      setIsSyncing(false);
+    }
   };
 
   const stats = state.syncedStats || {
@@ -204,9 +221,22 @@ export default function App() {
             <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 6 }}>
               <Target size={14} color="var(--primary)" /> Overview
             </h2>
-            <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
-              <Database size={10} /> Git Synced Archive
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 10, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                <Database size={10} /> Git Synced Archive
+              </span>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                style={{ padding: '2px 6px', fontSize: 10, display: 'flex', alignItems: 'center', gap: 4 }}
+                onClick={handleSyncFromGitHub}
+                disabled={isSyncing}
+                title="Fetch stats from your GitHub repository"
+              >
+                <RefreshCw size={10} className={isSyncing ? 'animate-spin' : ''} />
+                {isSyncing ? 'Syncing...' : 'Sync'}
+              </button>
+            </div>
           </div>
 
           {/* 2 Primary Stats Cards: Solved & Submissions */}

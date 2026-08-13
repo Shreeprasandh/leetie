@@ -106,4 +106,21 @@ export class GitHubService {
 
     throw new Error(`Error verifying repository '${repoName}': ${checkRes.statusText}`);
   }
+
+  static async fetchRepoTree(token: string, username: string, repoName: string, branch = 'main'): Promise<{ path: string; size?: number; sha?: string }[]> {
+    const res = await fetch(`${this.BASE_URL}/repos/${username}/${repoName}/git/trees/${branch}?recursive=1`, {
+      headers: this.getHeaders(token),
+    });
+
+    if (!res.ok) {
+      if (res.status === 404) return [];
+      throw new Error(`Failed to fetch repository tree (${res.status}): ${res.statusText}`);
+    }
+
+    const data = await res.json();
+    if (!data?.tree || !Array.isArray(data.tree)) return [];
+    return data.tree
+      .filter((item: any) => item.type === 'blob')
+      .map((item: any) => ({ path: item.path, size: item.size, sha: item.sha }));
+  }
 }

@@ -283,4 +283,88 @@ ${rows}
 
     return record;
   }
+
+  static async syncFromRepo(): Promise<{ count: number }> {
+    const config = await storage.getConfig();
+    if (!config.githubToken || !config.githubUsername) {
+      throw new Error('GitHub token or username not configured.');
+    }
+
+    const tree = await GitHubService.fetchRepoTree(
+      config.githubToken,
+      config.githubUsername,
+      config.repoName,
+      config.branch
+    );
+
+    if (!tree.length) {
+      return { count: 0 };
+    }
+
+    const extToLang: Record<string, string> = {
+      py: 'python3',
+      js: 'javascript',
+      ts: 'typescript',
+      cpp: 'cpp',
+      c: 'c',
+      java: 'java',
+      cs: 'csharp',
+      go: 'golang',
+      rs: 'rust',
+      rb: 'ruby',
+      kt: 'kotlin',
+      swift: 'swift',
+      sql: 'mysql',
+    };
+
+    const commitMap = new Map<string, CommitRecord>();
+
+    for (const item of tree) {
+      if (item.path.toLowerCase().endsWith('readme.md') || !item.path.includes('/')) continue;
+
+      const parts = item.path.split('/');
+      const filename = parts[parts.length - 1];
+      const extMatch = filename.match(/\.([a-z0-9]+)$/i);
+      if (!extMatch) continue;
+      const ext = extMatch[1].toLowerCase();
+      if (!extToLang[ext]) continue;
+
+      let difficulty: Difficulty = 'Easy';
+      if (item.path.includes('/Easy/')) difficulty = 'Easy';
+      else if (item.path.includes('/Medium/')) difficulty = 'Medium';
+      else if (item.path.includes('/Hard/')) difficulty = 'Hard';
+
+      const problemDir = parts.find((p) => /^\d+[-_]/.test(p)) || parts[parts.length - 2] || 'problem';
+      const slugMatch = problemDir.match(/^\d+[-_](.+)$/);
+      const slug = slugMatch ? slugMatch[1] : problemDir;
+      const title = slug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+
+      const record: CommitRecord = {
+        submissionId: `git_${slug}_${extToLang[ext]}`,
+        problemSlug: slug,
+        problemTitle: title,
+        difficulty,
+        commitSha: item.sha || 'git-synced',
+        githubPath: item.path,
+        committedAt: Date.now(),
+        lang: extToLang[ext],
+      };
+
+      commitMap.set(slug, record);
+    }
+
+    const newRecords = Array.from(commitMap.values());
+    for (const rec of newRecords) {
+      await storage.addCommit(rec);
+    }
+
+    const updatedState = await storage.getState();
+    await storage.setState({
+      syncStatus: 'idle',
+      lastError: null,
+      totalSynced: updatedState.recentCommits.length,
+    });
+
+    return { count: newRecords.length };
+  }
 }
