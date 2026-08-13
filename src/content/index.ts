@@ -63,31 +63,36 @@ chrome.runtime.onMessage.addListener((message: Message, sender, sendResponse) =>
   if (message.type === 'PROXY_GRAPHQL') {
     const { body } = message.payload as { body: string };
 
-    const csrfToken =
-      document.cookie
-        .split(';')
-        .find((c) => c.trim().startsWith('csrftoken='))
-        ?.split('=')?.[1]
-        ?.trim() || '';
+    const csrfMatch = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
+    const csrfToken = csrfMatch ? csrfMatch[1].trim() : '';
 
-    nativeFetch('https://leetcode.com/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Referer': 'https://leetcode.com',
-        'Origin': 'https://leetcode.com',
-        'x-requested-with': 'XMLHttpRequest',
-        ...(csrfToken ? { 'x-csrftoken': csrfToken } : {}),
-      },
-      credentials: 'include',
-      body,
-    })
+    const fetchGql = (url: string) =>
+      nativeFetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Referer': 'https://leetcode.com/',
+          'Origin': 'https://leetcode.com',
+          'x-requested-with': 'XMLHttpRequest',
+          ...(csrfToken ? { 'x-csrftoken': csrfToken } : {}),
+        },
+        credentials: 'include',
+        body,
+      });
+
+    fetchGql('https://leetcode.com/graphql/')
       .then(async (res) => {
         if (!res.ok) {
-          if (res.status === 403) {
-            throw new Error('LeetCode session expired or CSRF token invalid. Please refresh your LeetCode tab.');
+          // Retry without trailing slash if 400/404
+          const retryRes = await fetchGql('https://leetcode.com/graphql');
+          if (!retryRes.ok) {
+            if (retryRes.status === 403 || res.status === 403) {
+              throw new Error('LeetCode session expired or CSRF token invalid. Please refresh your LeetCode tab.');
+            }
+            const errText = await retryRes.text().catch(() => '');
+            throw new Error(`LeetCode GraphQL returned HTTP ${retryRes.status}${errText ? `: ${errText.slice(0, 100)}` : ''}`);
           }
-          throw new Error(`LeetCode GraphQL returned HTTP ${res.status}`);
+          return retryRes.json();
         }
         return res.json();
       })
