@@ -193,13 +193,10 @@ ${rows}
       throw new Error('GitHub token or username not configured. Please open leetie options.');
     }
 
-    // Check if already committed recently to avoid double-processing
     const existingCommits = await storage.getCommits();
-    const existing = existingCommits.find(c => c.submissionId === submission.submissionId);
-    if (existing) {
-      console.log('[leetie] Submission already committed, skipping:', submission.submissionId);
-      return existing;
-    }
+    const existingSameProblem = existingCommits.find(c => c.problemSlug === submission.problem.slug);
+    const existingDiff = existingSameProblem?.difficulty as Difficulty | undefined;
+    const filePath = this.formatFilePath(submission, config, existingDiff);
 
     // Ensure repo exists — cached per session to avoid redundant API calls during recovery
     const repoKey = `${config.githubUsername}/${config.repoName}`;
@@ -208,9 +205,23 @@ ${rows}
       SyncService.ensuredRepos.add(repoKey);
     }
 
-    const existingSameProblem = existingCommits.find(c => c.problemSlug === submission.problem.slug);
-    const existingDiff = existingSameProblem?.difficulty as Difficulty | undefined;
-    const filePath = this.formatFilePath(submission, config, existingDiff);
+    // Check if already committed recently to avoid double-processing
+    const existing = existingCommits.find(c => c.submissionId === submission.submissionId);
+    if (existing) {
+      // Verify whether the file still exists on GitHub (in case user deleted it on GitHub)
+      const remoteSha = await this.getFileSha(
+        config.githubToken,
+        config.githubUsername,
+        config.repoName,
+        filePath,
+        config.branch
+      );
+      if (remoteSha) {
+        console.log('[leetie] Submission already committed and verified on GitHub, skipping:', submission.submissionId);
+        return existing;
+      }
+      console.log('[leetie] File missing on GitHub (deleted by user). Re-committing solution:', filePath);
+    }
     const fileContent = config.addHeaderComment ? this.formatSolutionHeader(submission) : submission.code;
     const commitMessage = `leetie: Add ${submission.problem.id}. ${submission.problem.title} [${submission.problem.difficulty}] (${submission.lang})`;
     
