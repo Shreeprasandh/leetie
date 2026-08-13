@@ -25,14 +25,28 @@
       // Monaco may be under window.monaco or window._monaco
       const monaco = win.monaco || win._monaco;
       if (monaco?.editor) {
-        const models = monaco.editor.getModels();
+        // Priority 1: Active editor instances
+        const editors = monaco.editor.getEditors?.();
+        if (editors && editors.length > 0) {
+          for (const ed of editors) {
+            const val = ed.getModel?.()?.getValue?.();
+            if (val && val.trim()) return val;
+          }
+        }
+        // Priority 2: All models in memory — find first non-empty code model
+        const models = monaco.editor.getModels?.();
         if (models && models.length > 0) {
-          const val = models[0].getValue();
-          if (val) return val;
+          for (const model of models) {
+            const val = model.getValue?.();
+            // Skip empty models, JSON schemas, or internal CSS
+            if (val && val.trim() && !model.uri?.path?.endsWith('.json')) {
+              return val;
+            }
+          }
         }
       }
 
-      // Fallback: check DOM editor containers or textareas if Monaco model is empty
+      // Priority 3: Fallback DOM textareas & view lines
       const textarea = document.querySelector('textarea.inputarea, textarea[aria-label*="code"]') as HTMLTextAreaElement;
       if (textarea && textarea.value) return textarea.value;
 

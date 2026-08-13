@@ -73,6 +73,9 @@ export class GitHubService {
     if (checkRes.status === 404) {
       // Determine if personal or org to use correct creation endpoint
       const userRes = await fetch(`${this.BASE_URL}/user`, { headers: this.getHeaders(token) });
+      if (!userRes.ok) {
+        throw new Error(`Failed to verify GitHub user profile (${userRes.status}): ${userRes.statusText}`);
+      }
       const user = await userRes.json();
       const isPersonal = user.login?.toLowerCase() === username.toLowerCase();
       const createUrl = isPersonal ? `${this.BASE_URL}/user/repos` : `${this.BASE_URL}/orgs/${username}/repos`;
@@ -96,6 +99,8 @@ export class GitHubService {
       if (!createRes.ok) {
         throw new Error(`Failed to create repository '${repoName}': ${createRes.statusText}`);
       }
+      // Brief delay to allow GitHub's async auto_init to populate default main branch
+      await new Promise((r) => setTimeout(r, 1500));
       return true;
     }
 

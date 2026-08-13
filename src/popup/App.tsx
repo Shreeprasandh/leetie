@@ -32,7 +32,7 @@ export default function App() {
       debounceRef.current = setTimeout(() => {
         debounceRef.current = null;
         loadData();
-      }, 500);
+      }, 100);
     };
     if (typeof chrome !== 'undefined' && chrome.storage?.onChanged) {
       chrome.storage.onChanged.addListener(onChange);

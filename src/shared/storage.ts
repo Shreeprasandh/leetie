@@ -71,7 +71,7 @@ export function computeSyncedStats(commits: CommitRecord[]): SyncedStats {
 // GitHub token prefixes to distinguish plaintext tokens from stale AES-GCM-encrypted
 // values left by a previous build. chrome.storage.local is sandboxed to this extension,
 // so plaintext storage is the correct and safe approach.
-const GITHUB_TOKEN_PREFIXES = ['ghp_', 'gho_', 'github_pat_'];
+const GITHUB_TOKEN_PREFIXES = ['ghp_', 'gho_', 'ghu_', 'ghr_', 'ghs_', 'github_pat_'];
 
 function sanitizeToken(token: string): string {
   if (!token) return '';

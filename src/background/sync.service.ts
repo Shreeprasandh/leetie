@@ -186,7 +186,7 @@ ${rows}
 `;
   }
 
-  static async commitSubmission(submission: Submission): Promise<CommitRecord> {
+  static async commitSubmission(submission: Submission, skipReadme = false): Promise<CommitRecord> {
     const config = await storage.getConfig();
 
     if (!config.githubToken || !config.githubUsername) {
@@ -251,8 +251,8 @@ ${rows}
     // Save record to local storage
     const updatedCommits = await storage.addCommit(record);
 
-    // Auto-update README if enabled
-    if (config.autoReadme) {
+    // Auto-update README if enabled and not skipped for bulk ops
+    if (config.autoReadme && !skipReadme) {
       try {
         const readmePath = 'README.md'; // Root level so GitHub renders it on the repo homepage
         const readmeContent = this.generateReadmeContent(updatedCommits, config);

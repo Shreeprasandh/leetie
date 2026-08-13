@@ -82,7 +82,15 @@ chrome.runtime.onMessage.addListener((message: Message, sender, sendResponse) =>
       credentials: 'include',
       body,
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) {
+          if (res.status === 403) {
+            throw new Error('LeetCode session expired or CSRF token invalid. Please refresh your LeetCode tab.');
+          }
+          throw new Error(`LeetCode GraphQL returned HTTP ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => sendResponse({ success: true, data }))
       .catch((err) => sendResponse({ success: false, error: (err as Error).message }));
 

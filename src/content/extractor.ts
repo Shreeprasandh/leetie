@@ -24,12 +24,19 @@ export class LeetCodeExtractor {
       title = match[2];
     } else {
       // Check DOM elements for title header like "2958. Length of Longest..."
-      const h4 = document.querySelector('h4, [data-cy="question-title"], .text-title-large, a[href*="/problems/"]');
-      if (h4 && h4.textContent) {
-        const h4Match = h4.textContent.trim().match(/^(\d+)\.\s*(.+)$/);
+      const candidates = document.querySelectorAll('h4, [data-cy="question-title"], .text-title-large, a[href*="/problems/"]');
+      for (const el of Array.from(candidates)) {
+        // If candidate is an anchor, ensure it points to the current problem slug
+        const anchor = el.tagName === 'A' ? (el as HTMLAnchorElement) : el.querySelector('a');
+        if (anchor && anchor.href && slug && !anchor.href.includes(`/problems/${slug}`)) {
+          continue; // Skip unrelated "Similar Problems" links
+        }
+        const text = el.textContent?.trim() || '';
+        const h4Match = text.match(/^(\d+)\.\s*(.+)$/);
         if (h4Match) {
           id = h4Match[1];
           title = h4Match[2];
+          break;
         }
       }
     }
@@ -61,12 +68,24 @@ export class LeetCodeExtractor {
 
   static extractFromMonaco(): string | null {
     try {
-      // Access Monaco Editor instance if available on page
       const win = window as any;
-      if (win.monaco?.editor) {
-        const models = win.monaco.editor.getModels();
+      const monaco = win.monaco || win._monaco;
+      if (monaco?.editor) {
+        const editors = monaco.editor.getEditors?.();
+        if (editors && editors.length > 0) {
+          for (const ed of editors) {
+            const val = ed.getModel?.()?.getValue?.();
+            if (val && val.trim()) return val;
+          }
+        }
+        const models = monaco.editor.getModels?.();
         if (models && models.length > 0) {
-          return models[0].getValue();
+          for (const model of models) {
+            const val = model.getValue?.();
+            if (val && val.trim() && !model.uri?.path?.endsWith('.json')) {
+              return val;
+            }
+          }
         }
       }
     } catch (e) {
@@ -133,7 +152,7 @@ export class LeetCodeExtractor {
         return null;
       }
 
-      // Extract submission ID with Date.now() fallback
+      // Extract submission ID with deterministic fallback to prevent duplicate commits
       const rawSubId =
         details._submission_id ||
         rawResponse?._submission_id ||
@@ -141,7 +160,11 @@ export class LeetCodeExtractor {
         details.id ||
         details.submission_id;
 
-      const subIdStr = rawSubId ? String(rawSubId) : String(Date.now());
+      const lang = details.lang || details.language || 'python3';
+      const subIdStr = rawSubId
+        ? String(rawSubId)
+        : `${slug}_${lang}_${Math.floor(Date.now() / 10000)}`;
+
       if (subIdStr.includes('interpret_solution')) {
         return null;
       }

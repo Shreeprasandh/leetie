@@ -26,11 +26,11 @@ export class RecoveryService {
       throw new Error('Chrome tabs API not available.');
     }
 
-    // Only target tabs where the content script is injected (matches manifest content_scripts pattern)
-    const tabs = await chrome.tabs.query({ url: 'https://leetcode.com/problems/*' });
+    // Target any tab on leetcode.com where content script is active
+    const tabs = await chrome.tabs.query({ url: 'https://leetcode.com/*' });
     if (!tabs.length) {
       throw new Error(
-        'No active LeetCode problem page found. Please open any problem (e.g. leetcode.com/problems/two-sum/) and try again.'
+        'No active LeetCode tab found. Please open LeetCode in your browser and try again.'
       );
     }
 
@@ -105,6 +105,7 @@ export class RecoveryService {
           timestamp
           question {
             questionId
+            questionFrontendId
             title
             titleSlug
             difficulty
@@ -141,10 +142,11 @@ export class RecoveryService {
 
     const q = details.question || {};
     const unixTs = Number(details.timestamp || rawTimestamp || 0);
+    const problemId = String(q.questionFrontendId || q.questionId || '0');
     return {
       submissionId: String(id),
       problem: {
-        id: String(q.questionId || '0'),
+        id: problemId,
         slug: q.titleSlug || 'problem',
         title: q.title || 'Problem',
         difficulty: (q.difficulty as Difficulty) || 'Easy',
@@ -240,7 +242,8 @@ export class RecoveryService {
         try {
           const fullSubmission = await this.fetchSubmissionDetail(subMeta.id, subMeta.timestamp);
           if (fullSubmission) {
-            await SyncService.commitSubmission(fullSubmission);
+            // Pass skipReadme = true to avoid rate-limiting GitHub with individual README commits
+            await SyncService.commitSubmission(fullSubmission, true);
             successCount++;
           }
         } catch (err: any) {
@@ -258,6 +261,25 @@ export class RecoveryService {
 
         // 1000ms polite delay to safeguard LeetCode & GitHub APIs
         await new Promise((r) => setTimeout(r, 1000));
+      }
+
+      // Single consolidated README update at the end of recovery if autoReadme is enabled
+      if (config.autoReadme && successCount > 0) {
+        try {
+          const allCommits = await storage.getCommits();
+          const readmeContent = SyncService.generateReadmeContent(allCommits, config);
+          await SyncService.putFile(
+            config.githubToken,
+            config.githubUsername,
+            config.repoName,
+            'README.md',
+            readmeContent,
+            'leetie: Bulk history recovery README update',
+            config.branch
+          );
+        } catch (rErr) {
+          console.warn('[leetie] Consolidated recovery README update failed:', rErr);
+        }
       }
 
       await storage.setState({

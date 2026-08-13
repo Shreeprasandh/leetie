@@ -28,11 +28,23 @@ export default function OptionsApp() {
     if (!config) return;
     await storage.setConfig(config);
     setInitialConfig(config);
-    // NOTE: We do NOT set isAuthenticated:true here — a token can only be
-    // confirmed valid after a TEST_CONNECTION or START_OAUTH round-trip.
     setIsEditing(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
+
+    // If token is present, automatically test connection & set isAuthenticated: true
+    if (config.githubToken) {
+      if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+        chrome.runtime.sendMessage({
+          type: 'TEST_CONNECTION',
+          payload: { token: config.githubToken, username: config.githubUsername, repoName: config.repoName },
+        }, (res) => {
+          if (res?.success) {
+            storage.getConfig().then((c) => { setConfig(c); setInitialConfig(c); });
+          }
+        });
+      }
+    }
   };
 
   const handleCancel = () => {
