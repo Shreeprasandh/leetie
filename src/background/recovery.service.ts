@@ -115,9 +115,33 @@ export class RecoveryService {
     };
   }
 
-  static async fetchSubmissionDetail(id: number, rawTimestamp?: number): Promise<Submission | null> {
-    const query = `
+  static async fetchSubmissionDetail(id: number | string, rawTimestamp?: number): Promise<Submission | null> {
+    const queryInt = `
       query submissionDetails($submissionId: Int!) {
+        submissionDetails(submissionId: $submissionId) {
+          statusDisplay
+          lang
+          code
+          runtime
+          memory
+          runtimePercentile
+          memoryPercentile
+          timestamp
+          question {
+            questionId
+            title
+            titleSlug
+            difficulty
+            topicTags {
+              name
+            }
+          }
+        }
+      }
+    `;
+
+    const queryString = `
+      query submissionDetails($submissionId: String!) {
         submissionDetails(submissionId: $submissionId) {
           statusDisplay
           lang
@@ -144,12 +168,20 @@ export class RecoveryService {
     try {
       data = await this.fetchGraphQL({
         operationName: 'submissionDetails',
-        query,
+        query: queryInt,
         variables: { submissionId: Number(id) },
       });
-    } catch (err: any) {
-      console.warn(`[leetie] fetchSubmissionDetail proxy error for id ${id}:`, err);
-      throw err;
+    } catch (_err: any) {
+      try {
+        data = await this.fetchGraphQL({
+          operationName: 'submissionDetails',
+          query: queryString,
+          variables: { submissionId: String(id) },
+        });
+      } catch (retryErr: any) {
+        console.warn(`[leetie] fetchSubmissionDetail proxy error for id ${id}:`, retryErr);
+        throw retryErr;
+      }
     }
 
     if (data?.errors && data.errors.length > 0) {

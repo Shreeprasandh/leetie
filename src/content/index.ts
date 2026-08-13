@@ -56,11 +56,8 @@ window.addEventListener(LEETIE_EVENT, (e: Event) => {
 // ---------------------------------------------------------------------------
 const nativeFetch = window.fetch.bind(window);
 
-chrome.runtime.onMessage.addListener((message: Message, sender, sendResponse) => {
-  // Only accept messages from our own extension background
-  if (sender.id !== chrome.runtime.id) return false;
-
-  if (message.type === 'PROXY_GRAPHQL') {
+chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) => {
+  if (message?.type === 'PROXY_GRAPHQL') {
     const { body } = message.payload as { body: string };
 
     const csrfMatch = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
