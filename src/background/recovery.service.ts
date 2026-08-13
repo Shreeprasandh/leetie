@@ -129,7 +129,6 @@ export class RecoveryService {
           timestamp
           question {
             questionId
-            questionFrontendId
             title
             titleSlug
             difficulty
