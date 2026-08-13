@@ -202,6 +202,31 @@ export class RecoveryService {
     return Array.from(map.values());
   }
 
+  static categorizeError(err: any, context: string): string {
+    const msg = String(err?.message || err || 'Unknown error');
+    console.error(`[leetie-diag] Error during [${context}]:`, err);
+
+    if (msg.includes('401') || msg.includes('Bad credentials') || msg.includes('Invalid or expired')) {
+      return `[GitHub Auth Error] Invalid or expired GitHub token. Please reconnect GitHub in Settings.`;
+    }
+    if (msg.includes('403') && (msg.includes('resource not accessible') || msg.includes('permission'))) {
+      return `[GitHub Permission Error] Token lacks 'repo' scope permissions. Please verify PAT scopes.`;
+    }
+    if (msg.includes('404') || msg.includes('Not Found')) {
+      return `[GitHub Repo Error] Target repository not found or not accessible on GitHub.`;
+    }
+    if (msg.includes('CSRF') || msg.includes('session expired') || (msg.includes('403') && msg.includes('LeetCode'))) {
+      return `[LeetCode Session Error] LeetCode session expired or CSRF invalid. Please refresh your LeetCode tab.`;
+    }
+    if (msg.includes('tab unreachable') || msg.includes('No active LeetCode tab')) {
+      return `[Tab Bridge Error] ${msg}`;
+    }
+    if (msg.includes('GraphQL')) {
+      return `[LeetCode GraphQL Error] ${msg}`;
+    }
+    return `[Recovery Error] ${context}: ${msg}`;
+  }
+
   static async startRecovery(): Promise<void> {
     if (this.isRunning) return;
     this.isRunning = true;
@@ -209,7 +234,7 @@ export class RecoveryService {
     try {
       const config = await storage.getConfig();
       if (!config.githubToken || !config.githubUsername) {
-        const errMsg = 'GitHub Token or Username is missing. Please connect your GitHub account first.';
+        const errMsg = '[GitHub Auth Error] GitHub Token or Username is missing. Please connect your GitHub account first.';
         await storage.setState({ syncStatus: 'error', lastError: errMsg, recoveryProgress: null });
         this.isRunning = false;
         return;
@@ -232,16 +257,12 @@ export class RecoveryService {
         try {
           page = await this.fetchSubmissionList(offset, limit);
         } catch (err: any) {
-          // Most likely cause: user closed the LeetCode problem tab.
-          const msg = `Recovery paused: ${err.message}. Re-open a LeetCode problem page and try again.`;
+          const msg = this.categorizeError(err, 'Fetching submission list');
           await storage.setState({ syncStatus: 'error', lastError: msg, recoveryProgress: null });
           this.isRunning = false;
           return;
         }
         allSubmissions.push(...page.submissions);
-        // Note: progress bar is only updated during the commit phase (Step 3)
-        // to give a meaningful indicator. Showing progress here is misleading
-        // because current ≈ total at all times during pagination.
         if (!page.hasNext) break;
         offset += limit;
         await new Promise((r) => setTimeout(r, 300));
@@ -256,6 +277,7 @@ export class RecoveryService {
       const uniqueSubmissions = this.deduplicateSubmissions(allSubmissions);
       const total = uniqueSubmissions.length;
       let successCount = 0;
+      let lastDiagnosticError: string | null = null;
 
       // Step 3: Fetch detail and commit
       for (let i = 0; i < total; i++) {
@@ -274,7 +296,10 @@ export class RecoveryService {
             successCount++;
           }
         } catch (err: any) {
-          console.warn(`[leetie] Failed to commit item ${subMeta.id}:`, err);
+          const diagMsg = this.categorizeError(err, `Item #${subMeta.titleSlug || subMeta.id}`);
+          lastDiagnosticError = diagMsg;
+          console.warn(`[leetie] Diagnostic failure on item ${subMeta.id}:`, diagMsg);
+
           // Handle both LeetCode and GitHub rate limits
           if (err.message && (err.message.includes('429') || err.message.includes('rate limited'))) {
             const match = err.message.match(/Retry after (\d+)s/);
@@ -282,7 +307,7 @@ export class RecoveryService {
             console.warn(`[leetie] Rate limited. Backing off for ${waitMs / 1000}s...`);
             await new Promise((r) => setTimeout(r, waitMs));
           } else {
-            await storage.setState({ lastError: `Commit error on #${subMeta.titleSlug}: ${err.message}` });
+            await storage.setState({ lastError: diagMsg });
           }
         }
 
@@ -309,14 +334,23 @@ export class RecoveryService {
         }
       }
 
+      let finalSummaryError: string | null = null;
+      if (successCount === 0 && total > 0) {
+        finalSummaryError = lastDiagnosticError
+          ? `Recovery completed (0/${total} committed). ${lastDiagnosticError}`
+          : `Recovery completed (0/${total} committed). Please check GitHub token permissions.`;
+      } else if (successCount < total) {
+        finalSummaryError = `Recovery partial (${successCount}/${total} committed). Last issue: ${lastDiagnosticError || 'Check console'}`;
+      }
+
       await storage.setState({
         syncStatus: 'idle',
         recoveryProgress: null,
-        lastError: successCount === 0 && total > 0 ? 'Recovery completed but 0 commits succeeded. Please check GitHub permissions.' : null,
+        lastError: finalSummaryError,
       });
     } catch (err: any) {
-      console.error('[leetie] History recovery error:', err);
-      await storage.setState({ syncStatus: 'error', lastError: err.message, recoveryProgress: null });
+      const diagMsg = this.categorizeError(err, 'Recovery process');
+      await storage.setState({ syncStatus: 'error', lastError: diagMsg, recoveryProgress: null });
     } finally {
       this.isRunning = false;
     }
