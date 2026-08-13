@@ -130,8 +130,8 @@ ${submission.code}`;
     if (sha) body.sha = sha;
 
     if (commitDate) {
-      const username = githubUsername || 'leetie-user';
-      const cleanEmail = `${username.toLowerCase()}@users.noreply.github.com`;
+      const username = githubUsername || owner;
+      const cleanEmail = `${username.toLowerCase().replace(/[^a-z0-9]/g, '')}@users.noreply.github.com`;
       const committerObj = {
         name: username,
         email: cleanEmail,
@@ -274,7 +274,9 @@ ${rows}
           readmePath,
           readmeContent,
           `leetie: Update solutions index README`,
-          config.branch
+          config.branch,
+          undefined,
+          config.githubUsername
         );
       } catch (err) {
         console.warn('[leetie] Auto README update failed:', err);
