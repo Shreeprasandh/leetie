@@ -3,8 +3,8 @@
 // Difficulty: Hard
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/longest-substring-of-one-repeating-character/
-// Runtime  : 0 ms (beats 0%)
-// Memory   : 42540000 (beats 0%)
+// Runtime  : 119 ms (beats 34%)
+// Memory   : 157388000 (beats 14%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh K. All rights reserved.
 // Synced by: leetie
