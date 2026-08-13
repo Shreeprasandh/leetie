@@ -147,16 +147,20 @@ export class RecoveryService {
         query,
         variables: { submissionId: Number(id) },
       });
-    } catch (err) {
+    } catch (err: any) {
       console.warn(`[leetie] fetchSubmissionDetail proxy error for id ${id}:`, err);
-      return null;
+      throw err;
+    }
+
+    if (data?.errors && data.errors.length > 0) {
+      throw new Error(`LeetCode GraphQL error: ${data.errors[0].message || 'Unknown GraphQL error'}`);
     }
 
     const details = data?.data?.submissionDetails;
 
     if (!details) {
       console.warn(`[leetie] fetchSubmissionDetail returned null details for id ${id}:`, data);
-      return null;
+      throw new Error(`LeetCode returned null details for submission #${id}`);
     }
 
     if (details.statusDisplay !== 'Accepted') {
