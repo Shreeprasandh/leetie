@@ -4,7 +4,7 @@
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/reverse-integer/
 // Runtime  : 1 ms (beats 100%)
-// Memory   : 42444000 (beats 81%)
+// Memory   : 42664000 (beats 46%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh K. All rights reserved.
 // Synced by: leetie
