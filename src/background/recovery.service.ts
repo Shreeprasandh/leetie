@@ -132,9 +132,6 @@ export class RecoveryService {
             title
             titleSlug
             difficulty
-            topicTags {
-              name
-            }
           }
         }
       }
@@ -156,9 +153,6 @@ export class RecoveryService {
             title
             titleSlug
             difficulty
-            topicTags {
-              name
-            }
           }
         }
       }

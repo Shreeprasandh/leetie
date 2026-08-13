@@ -87,7 +87,15 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
               throw new Error('LeetCode session expired or CSRF token invalid. Please refresh your LeetCode tab.');
             }
             const errText = await retryRes.text().catch(() => '');
-            throw new Error(`LeetCode GraphQL returned HTTP ${retryRes.status}${errText ? `: ${errText.slice(0, 100)}` : ''}`);
+            let parsedDetail = '';
+            try {
+              const j = JSON.parse(errText);
+              if (j.errors?.[0]?.message) parsedDetail = j.errors[0].message;
+              else if (j.error) parsedDetail = j.error;
+            } catch {
+              parsedDetail = errText.slice(0, 100);
+            }
+            throw new Error(`LeetCode GraphQL returned HTTP ${retryRes.status}${parsedDetail ? `: ${parsedDetail}` : ''}`);
           }
           return retryRes.json();
         }
