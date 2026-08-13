@@ -82,6 +82,7 @@ ${cs} Link     : ${link}${ce ? ' ' + ce : ''}
 ${cs} Runtime  : ${runtime} (beats ${runtimePercentile}%)${ce ? ' ' + ce : ''}
 ${cs} Memory   : ${memory} (beats ${memoryPercentile}%)${ce ? ' ' + ce : ''}
 ${cs} Language : ${lang}${ce ? ' ' + ce : ''}
+${cs} Copyright: (c) 2026 Shreeprasandh K. All rights reserved.${ce ? ' ' + ce : ''}
 ${cs} Synced by: leetie${ce ? ' ' + ce : ''}
 ${cs} ──────────────────────────────────────────────────${ce ? ' ' + ce : ''}
 
