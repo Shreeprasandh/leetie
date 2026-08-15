@@ -2,10 +2,12 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 14 Solved
+## Progress Summary: 16 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
+| maximum-length-substring-with-two-occurrences | Maximum Length Substring With Two Occurrences | Easy | java | [Problem](https://leetcode.com/problems/maximum-length-substring-with-two-occurrences/) | [Solution](./solutions/Easy/3090-maximum-length-substring-with-two-occurrences/solution.java) |
+| longest-substring-of-one-repeating-character | Longest Substring of One Repeating Character | Hard | java | [Problem](https://leetcode.com/problems/longest-substring-of-one-repeating-character/) | [Solution](./solutions/Hard/2213-longest-substring-of-one-repeating-character/solution.java) |
 | longest-substring-of-one-repeating-character | Longest Substring of One Repeating Character | Hard | java | [Problem](https://leetcode.com/problems/longest-substring-of-one-repeating-character/) | [Solution](./solutions/Hard/2213-longest-substring-of-one-repeating-character/solution.java) |
 | longest-valid-parentheses | Longest Valid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/longest-valid-parentheses/) | [Solution](./solutions/Hard/0032-longest-valid-parentheses/solution.java) |
 | palindrome-number | Palindrome Number | Easy | java | [Problem](https://leetcode.com/problems/palindrome-number/) | [Solution](./solutions/Easy/0009-palindrome-number/solution.java) |
