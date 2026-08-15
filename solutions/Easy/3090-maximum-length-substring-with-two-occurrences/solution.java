@@ -3,8 +3,8 @@
 // Difficulty: Easy
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/maximum-length-substring-with-two-occurrences/
-// Runtime  : 0 ms (beats 0%)
-// Memory   : 42444000 (beats 0%)
+// Runtime  : 2 ms (beats 54%)
+// Memory   : 43852000 (beats 46%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh K. All rights reserved.
 // Synced by: leetie
