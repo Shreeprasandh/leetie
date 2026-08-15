@@ -3,8 +3,8 @@
 // Difficulty: Medium
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/longest-subsequence-with-non-zero-bitwise-xor/
-// Runtime  : 0 ms (beats 0%)
-// Memory   : 42592000 (beats 0%)
+// Runtime  : 1 ms (beats 100%)
+// Memory   : 133500000 (beats 52%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh K. All rights reserved.
 // Synced by: leetie
