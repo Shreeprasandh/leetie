@@ -3,8 +3,8 @@
 // Difficulty: Medium
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/stone-game-ix/
-// Runtime  : 0 ms (beats 0%)
-// Memory   : 42508000 (beats 0%)
+// Runtime  : 7 ms (beats 29%)
+// Memory   : 114700000 (beats 82%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh K. All rights reserved.
 // Synced by: leetie
