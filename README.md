@@ -2,10 +2,13 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 24 Solved
+## Progress Summary: 27 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
+| binary-tree-maximum-path-sum | Binary Tree Maximum Path Sum | Easy | java | [Problem](https://leetcode.com/problems/binary-tree-maximum-path-sum/) | [Solution](./solutions/Easy/0124-binary-tree-maximum-path-sum/solution.java) |
+| populating-next-right-pointers-in-each-node-ii | Populating Next Right Pointers in Each Node II - BFS Solution | Easy | java | [Problem](https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/) | [Solution](./solutions/Easy/0117-populating-next-right-pointers-in-each-node-ii/solution.java) |
+| populating-next-right-pointers-in-each-node-ii | Populating Next Right Pointers in Each Node II - BFS Solution | Easy | java | [Problem](https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/) | [Solution](./solutions/Easy/0117-populating-next-right-pointers-in-each-node-ii/solution.java) |
 | populating-next-right-pointers-in-each-node | Populating Next Right Pointers in Each NodeMed. | Easy | java | [Problem](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/) | [Solution](./solutions/Easy/0116-populating-next-right-pointers-in-each-node/solution.java) |
 | populating-next-right-pointers-in-each-node | Populating Next Right Pointers in Each NodeMed. | Easy | java | [Problem](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/) | [Solution](./solutions/Easy/0116-populating-next-right-pointers-in-each-node/solution.java) |
 | convert-sorted-list-to-binary-search-tree | Convert Sorted List to Binary Search TreeMed. | Easy | java | [Problem](https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/) | [Solution](./solutions/Easy/0109-convert-sorted-list-to-binary-search-tree/solution.java) |
