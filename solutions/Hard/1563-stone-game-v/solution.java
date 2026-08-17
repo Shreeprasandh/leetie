@@ -3,8 +3,8 @@
 // Difficulty: Hard
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/stone-game-v/
-// Runtime  : 0 ms (beats 0%)
-// Memory   : 42600000 (beats 0%)
+// Runtime  : 238 ms (beats 78%)
+// Memory   : 47616000 (beats 61%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh K. All rights reserved.
 // Synced by: leetie
