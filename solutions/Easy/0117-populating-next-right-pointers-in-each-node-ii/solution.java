@@ -3,8 +3,8 @@
 // Difficulty: Easy
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/
-// Runtime  : 0 ms (beats 0%)
-// Memory   : 42612000 (beats 0%)
+// Runtime  : 1 ms (beats 63%)
+// Memory   : 46440000 (beats 19%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh K. All rights reserved.
 // Synced by: leetie
