@@ -20,11 +20,11 @@ console.log('[leetie] Isolated-world content script active on LeetCode.');
 // ---------------------------------------------------------------------------
 const LEETIE_EVENT = '__leetie_submission__';
 
-window.addEventListener(LEETIE_EVENT, (e: Event) => {
+window.addEventListener(LEETIE_EVENT, async (e: Event) => {
   const { rawData, code } = (e as CustomEvent<{ rawData: any; code: string }>).detail;
 
-  // Parse the raw response into a typed Submission object
-  const submission: Submission | null = LeetCodeExtractor.parseSubmissionResponse(rawData, code);
+  // Parse the raw response into a typed Submission object with metadata fallback
+  const submission: Submission | null = await LeetCodeExtractor.parseSubmissionResponseAsync(rawData, code);
 
   if (!submission) {
     console.warn('[leetie] Could not parse submission from main-world event.');

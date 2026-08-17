@@ -1,6 +1,6 @@
 // ──────────────────────────────────────────────────
 // Problem  : 8. String to Integer (atoi)
-// Difficulty: Easy
+// Difficulty: Medium
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/string-to-integer-atoi/
 // Runtime  : 1 ms (beats 100%)

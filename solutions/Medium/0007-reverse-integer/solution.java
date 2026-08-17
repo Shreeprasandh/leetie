@@ -1,6 +1,6 @@
 // ──────────────────────────────────────────────────
 // Problem  : 7. Reverse Integer
-// Difficulty: Easy
+// Difficulty: Medium
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/reverse-integer/
 // Runtime  : 1 ms (beats 100%)

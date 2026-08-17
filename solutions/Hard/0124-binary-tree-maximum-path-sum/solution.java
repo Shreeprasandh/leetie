@@ -1,6 +1,6 @@
 // ──────────────────────────────────────────────────
 // Problem  : 124. Binary Tree Maximum Path Sum
-// Difficulty: Easy
+// Difficulty: Hard
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/binary-tree-maximum-path-sum/
 // Runtime  : 0 ms (beats 100%)

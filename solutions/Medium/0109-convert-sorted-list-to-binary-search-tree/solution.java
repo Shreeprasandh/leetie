@@ -1,6 +1,6 @@
 // ──────────────────────────────────────────────────
-// Problem  : 109. Convert Sorted List to Binary Search TreeMed.
-// Difficulty: Easy
+// Problem  : 109. Convert Sorted List to Binary Search Tree
+// Difficulty: Medium
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/
 // Runtime  : 0 ms (beats 0%)

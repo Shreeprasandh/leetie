@@ -14,8 +14,10 @@ export class LeetCodeExtractor {
   static extractFromDOM(): Partial<Problem> {
     const slug = this.extractProblemSlug();
 
-    // Strip both '- LeetCode' (legacy) and '| LeetCode' (current) title formats
-    let title = document.title.replace(/[|\-]\s*LeetCode\s*$/i, '').trim();
+    let title = document.title
+      .replace(/[|\-]\s*LeetCode\s*$/i, '')
+      .replace(/(?:Med\.|Medium|Easy|Hard|\s*-\s*BFS Solution|\s*-\s*DFS Solution)\s*$/i, '')
+      .trim();
     let id = '0';
 
     const match = title.match(/^(\d+)\.\s*(.+)$/);
@@ -31,7 +33,10 @@ export class LeetCodeExtractor {
         if (anchor && anchor.href && slug && !anchor.href.includes(`/problems/${slug}`)) {
           continue; // Skip unrelated "Similar Problems" links
         }
-        const text = el.textContent?.trim() || '';
+        // Clone element and remove badge child nodes so text extraction doesn't concatenate badges (e.g. "NodeMed.")
+        const clone = el.cloneNode(true) as HTMLElement;
+        clone.querySelectorAll('[class*="difficulty"], [class*="text-sd-"], [class*="text-difficulty-"], .text-medium, .text-easy, .text-hard, span, button').forEach((c) => c.remove());
+        const text = clone.textContent?.trim() || '';
         const h4Match = text.match(/^(\d+)\.\s*(.+)$/);
         if (h4Match) {
           id = h4Match[1];
@@ -41,20 +46,21 @@ export class LeetCodeExtractor {
       }
     }
 
+    // Clean mangled suffixes from title
+    title = title.replace(/(?:Med\.|Medium|Easy|Hard|\s*-\s*BFS Solution|\s*-\s*DFS Solution)\s*$/i, '').trim();
+
     // Difficulty extraction from page DOM elements
-    let difficulty: Difficulty = 'Easy';
+    let difficulty: Difficulty | undefined = undefined;
     const diffElement = document.querySelector(
-      '[class*="text-difficulty-"], [class*="text-sd-easy"], [class*="text-sd-medium"], [class*="text-sd-hard"], [class*="text-easy"], [class*="text-medium"], [class*="text-hard"], div[class*="difficulty"]'
+      '[data-difficulty], [class*="text-difficulty-"], [class*="text-sd-easy"], [class*="text-sd-medium"], [class*="text-sd-hard"], [class*="text-easy"], [class*="text-medium"], [class*="text-hard"], div[class*="difficulty"]'
     );
-    if (diffElement && diffElement.textContent) {
-      const text = diffElement.textContent.trim().toLowerCase();
-      if (text.includes('medium')) difficulty = 'Medium';
-      else if (text.includes('hard')) difficulty = 'Hard';
-      else if (text.includes('easy')) difficulty = 'Easy';
-    } else {
-      const bodyText = document.body?.innerText || '';
-      if (bodyText.includes('Medium')) difficulty = 'Medium';
-      else if (bodyText.includes('Hard')) difficulty = 'Hard';
+    if (diffElement) {
+      const dataDiff = diffElement.getAttribute('data-difficulty');
+      const textDiff = (diffElement.textContent || '').trim().toLowerCase();
+      const combined = `${dataDiff || ''} ${textDiff}`.toLowerCase();
+      if (combined.includes('hard')) difficulty = 'Hard';
+      else if (combined.includes('medium') || combined.includes('med')) difficulty = 'Medium';
+      else if (combined.includes('easy')) difficulty = 'Easy';
     }
 
     return {
@@ -64,6 +70,53 @@ export class LeetCodeExtractor {
       difficulty,
       topicTags: [],
     };
+  }
+
+  static async fetchProblemMeta(slug: string): Promise<{ id: string; title: string; difficulty: Difficulty; topicTags: string[] } | null> {
+    if (!slug) return null;
+    try {
+      const res = await fetch('https://leetcode.com/graphql/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Referer': 'https://leetcode.com/',
+        },
+        body: JSON.stringify({
+          query: `query questionTitle($titleSlug: String!) {
+            question(titleSlug: $titleSlug) {
+              questionFrontendId
+              title
+              difficulty
+              topicTags {
+                name
+              }
+            }
+          }`,
+          variables: { titleSlug: slug },
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const q = data?.data?.question;
+        if (q) {
+          let diff: Difficulty = 'Easy';
+          const dStr = String(q.difficulty).toLowerCase();
+          if (dStr.includes('medium')) diff = 'Medium';
+          else if (dStr.includes('hard')) diff = 'Hard';
+          else if (dStr.includes('easy')) diff = 'Easy';
+
+          return {
+            id: String(q.questionFrontendId || '0'),
+            title: q.title || slug,
+            difficulty: diff,
+            topicTags: (q.topicTags || []).map((t: any) => t.name || t),
+          };
+        }
+      }
+    } catch (err) {
+      console.warn('[leetie] Failed to fetch GraphQL problem meta for slug:', slug, err);
+    }
+    return null;
   }
 
   static extractFromMonaco(): string | null {
@@ -144,7 +197,9 @@ export class LeetCodeExtractor {
         details.question_id ||
         '0';
 
-      const problemTitle = question.title || domMeta.title || slug;
+      let problemTitle = question.title || domMeta.title || slug;
+      problemTitle = problemTitle.replace(/(?:Med\.|Medium|Easy|Hard|\s*-\s*BFS Solution|\s*-\s*DFS Solution)\s*$/i, '').trim();
+
       const rawDiff = question.difficulty || details.difficulty || domMeta.difficulty;
       let difficulty: Difficulty = 'Easy';
       if (rawDiff) {
@@ -205,5 +260,28 @@ export class LeetCodeExtractor {
       console.error('[leetie] Error parsing submission response', err);
       return null;
     }
+  }
+
+  static async parseSubmissionResponseAsync(rawResponse: any, codeOverride?: string): Promise<Submission | null> {
+    const sub = this.parseSubmissionResponse(rawResponse, codeOverride);
+    if (!sub) return null;
+
+    const hasExplicitDiffInPayload = Boolean(rawResponse?.data?.submissionDetails?.question?.difficulty || rawResponse?.data?.submissionCheck?.question?.difficulty);
+    const isMangledTitle = /(?:Med\.|Medium|Easy|Hard|\s*-\s*BFS Solution|\s*-\s*DFS Solution)$/i.test(sub.problem.title);
+    const needsMetaFetch = !hasExplicitDiffInPayload || isMangledTitle || !sub.problem.id || sub.problem.id === '0';
+
+    if (needsMetaFetch && sub.problem.slug) {
+      const meta = await this.fetchProblemMeta(sub.problem.slug);
+      if (meta) {
+        sub.problem.id = meta.id;
+        sub.problem.title = meta.title;
+        sub.problem.difficulty = meta.difficulty;
+        if (meta.topicTags && meta.topicTags.length > 0) {
+          sub.problem.topicTags = meta.topicTags;
+        }
+      }
+    }
+
+    return sub;
   }
 }

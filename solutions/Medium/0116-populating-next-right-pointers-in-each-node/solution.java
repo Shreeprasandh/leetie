@@ -1,10 +1,10 @@
 // ──────────────────────────────────────────────────
-// Problem  : 117. Populating Next Right Pointers in Each Node II - BFS Solution
-// Difficulty: Easy
+// Problem  : 116. Populating Next Right Pointers in Each Node
+// Difficulty: Medium
 // Tags     : N/A
-// Link     : https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/
-// Runtime  : 1 ms (beats 63%)
-// Memory   : 46440000 (beats 19%)
+// Link     : https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+// Runtime  : 3 ms (beats 34%)
+// Memory   : 46200000 (beats 95%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh K. All rights reserved.
 // Synced by: leetie

@@ -166,12 +166,28 @@ ${submission.code}`;
   }
 
   static generateReadmeContent(commits: CommitRecord[], _config: ExtensionConfig): string {
-    const rows = commits
+    const uniqueMap = new Map<string, CommitRecord>();
+    for (const c of commits) {
+      uniqueMap.set(c.problemSlug, c);
+    }
+    const uniqueCommits = Array.from(uniqueMap.values());
+
+    uniqueCommits.sort((a, b) => {
+      const idA = parseInt(a.problemTitle.match(/^(\d+)\./)?.[1] || '0', 10);
+      const idB = parseInt(b.problemTitle.match(/^(\d+)\./)?.[1] || '0', 10);
+      if (idA && idB) return idA - idB;
+      return a.problemSlug.localeCompare(b.problemSlug);
+    });
+
+    const rows = uniqueCommits
       .map((c) => {
         const link = `https://leetcode.com/problems/${c.problemSlug}/`;
         const solutionLink = `./${c.githubPath}`;
-        const safeTitle = c.problemTitle.replace(/\|/g, '\\|');
-        return `| ${c.problemSlug} | ${safeTitle} | ${c.difficulty} | ${c.lang} | [Problem](${link}) | [Solution](${solutionLink}) |`;
+        const cleanTitle = c.problemTitle
+          .replace(/(?:Med\.|Medium|Easy|Hard|\s*-\s*BFS Solution|\s*-\s*DFS Solution)\s*$/i, '')
+          .replace(/\|/g, '\\|')
+          .trim();
+        return `| ${c.problemSlug} | ${cleanTitle} | ${c.difficulty} | ${c.lang} | [Problem](${link}) | [Solution](${solutionLink}) |`;
       })
       .join('\n');
 
@@ -179,7 +195,7 @@ ${submission.code}`;
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: ${commits.length} Solved
+## Progress Summary: ${uniqueCommits.length} Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|

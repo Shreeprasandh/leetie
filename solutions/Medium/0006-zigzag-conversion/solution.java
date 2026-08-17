@@ -1,6 +1,6 @@
 // ──────────────────────────────────────────────────
 // Problem  : 6. Zigzag Conversion
-// Difficulty: Easy
+// Difficulty: Medium
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/zigzag-conversion/
 // Runtime  : 5 ms (beats 52%)

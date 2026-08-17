@@ -1,6 +1,6 @@
 // ──────────────────────────────────────────────────
-// Problem  : 107. Binary Tree Level Order Traversal IIMed.
-// Difficulty: Easy
+// Problem  : 107. Binary Tree Level Order Traversal II
+// Difficulty: Medium
 // Tags     : N/A
 // Link     : https://leetcode.com/problems/binary-tree-level-order-traversal-ii/
 // Runtime  : 0 ms (beats 0%)
