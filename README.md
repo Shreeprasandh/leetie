@@ -2,10 +2,16 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 18 Solved
+## Progress Summary: 24 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
+| populating-next-right-pointers-in-each-node | Populating Next Right Pointers in Each NodeMed. | Easy | java | [Problem](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/) | [Solution](./solutions/Easy/0116-populating-next-right-pointers-in-each-node/solution.java) |
+| populating-next-right-pointers-in-each-node | Populating Next Right Pointers in Each NodeMed. | Easy | java | [Problem](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/) | [Solution](./solutions/Easy/0116-populating-next-right-pointers-in-each-node/solution.java) |
+| convert-sorted-list-to-binary-search-tree | Convert Sorted List to Binary Search TreeMed. | Easy | java | [Problem](https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/) | [Solution](./solutions/Easy/0109-convert-sorted-list-to-binary-search-tree/solution.java) |
+| binary-tree-level-order-traversal-ii | Binary Tree Level Order Traversal IIMed. | Easy | java | [Problem](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/) | [Solution](./solutions/Easy/0107-binary-tree-level-order-traversal-ii/solution.java) |
+| binary-tree-zigzag-level-order-traversal | Binary Tree Zigzag Level Order Traversal | Medium | java | [Problem](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/) | [Solution](./solutions/Medium/0103-binary-tree-zigzag-level-order-traversal/solution.java) |
+| stone-game-v | Stone Game V | Hard | java | [Problem](https://leetcode.com/problems/stone-game-v/) | [Solution](./solutions/Hard/1563-stone-game-v/solution.java) |
 | stone-game-v | Stone Game V | Hard | java | [Problem](https://leetcode.com/problems/stone-game-v/) | [Solution](./solutions/Hard/1563-stone-game-v/solution.java) |
 | stone-game-ix | Stone Game IX | Medium | java | [Problem](https://leetcode.com/problems/stone-game-ix/) | [Solution](./solutions/Medium/2029-stone-game-ix/solution.java) |
 | stone-game-ix | Stone Game IX | Medium | java | [Problem](https://leetcode.com/problems/stone-game-ix/) | [Solution](./solutions/Medium/2029-stone-game-ix/solution.java) |
