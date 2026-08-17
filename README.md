@@ -2,10 +2,12 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 16 Solved
+## Progress Summary: 18 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
+| stone-game-v | Stone Game V | Hard | java | [Problem](https://leetcode.com/problems/stone-game-v/) | [Solution](./solutions/Hard/1563-stone-game-v/solution.java) |
+| stone-game-ix | Stone Game IX | Medium | java | [Problem](https://leetcode.com/problems/stone-game-ix/) | [Solution](./solutions/Medium/2029-stone-game-ix/solution.java) |
 | stone-game-ix | Stone Game IX | Medium | java | [Problem](https://leetcode.com/problems/stone-game-ix/) | [Solution](./solutions/Medium/2029-stone-game-ix/solution.java) |
 | two-sum | 1. Two Sum | Easy | java | [Problem](https://leetcode.com/problems/two-sum/) | [Solution](./solutions/Easy/0001-two-sum/solution.java) |
 | zigzag-conversion | 6. Zigzag Conversion | Easy | java | [Problem](https://leetcode.com/problems/zigzag-conversion/) | [Solution](./solutions/Easy/0006-zigzag-conversion/solution.java) |
