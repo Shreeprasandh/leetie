@@ -75,12 +75,20 @@ export class LeetCodeExtractor {
   static async fetchProblemMeta(slug: string): Promise<{ id: string; title: string; difficulty: Difficulty; topicTags: string[] } | null> {
     if (!slug) return null;
     try {
-      const res = await fetch('https://leetcode.com/graphql/', {
+      const origin = typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'https://leetcode.com';
+      const csrfMatch = typeof document !== 'undefined' ? document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/) : null;
+      const csrfToken = csrfMatch ? csrfMatch[1].trim() : '';
+
+      const res = await fetch(`${origin}/graphql/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Referer': 'https://leetcode.com/',
+          'Referer': `${origin}/`,
+          'Origin': origin,
+          'x-requested-with': 'XMLHttpRequest',
+          ...(csrfToken ? { 'x-csrftoken': csrfToken } : {}),
         },
+        credentials: 'include',
         body: JSON.stringify({
           query: `query questionTitle($titleSlug: String!) {
             question(titleSlug: $titleSlug) {

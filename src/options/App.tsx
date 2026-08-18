@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { storage } from '../shared/storage';
 import { ExtensionConfig } from '../shared/types';
-import { Save, Check, Key, GitBranch, FolderTree, Lock, Unlock, Edit3, X, Github, ChevronDown, ChevronUp, Info, RefreshCw } from 'lucide-react';
+import { Save, Check, Key, GitBranch, FolderTree, Lock, Unlock, Edit3, X, Github, ChevronDown, ChevronUp, Info } from 'lucide-react';
 
 export default function OptionsApp() {
   const [config, setConfig] = useState<ExtensionConfig | null>(null);
@@ -39,6 +39,7 @@ export default function OptionsApp() {
           type: 'TEST_CONNECTION',
           payload: { token: config.githubToken, username: config.githubUsername, repoName: config.repoName },
         }, (res) => {
+          if (chrome.runtime.lastError) return;
           if (res?.success) {
             storage.getConfig().then((c) => { setConfig(c); setInitialConfig(c); });
           }
@@ -50,8 +51,14 @@ export default function OptionsApp() {
   const handleCancel = () => {
     if (initialConfig) {
       setConfig({ ...initialConfig });
+      if (!initialConfig.githubToken) {
+        setIsEditing(true);
+      } else {
+        setIsEditing(false);
+      }
+    } else {
+      setIsEditing(true);
     }
-    setIsEditing(false);
     setTestResult(null);
   };
 
@@ -73,6 +80,10 @@ export default function OptionsApp() {
     if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
       chrome.runtime.sendMessage({ type: 'START_OAUTH' }, (res) => {
         setTesting(false);
+        if (chrome.runtime.lastError) {
+          setTestResult({ success: false, message: chrome.runtime.lastError.message || 'OAuth authorization failed.' });
+          return;
+        }
         if (res?.success) {
           storage.getConfig().then((c) => {
             setConfig(c);
@@ -87,18 +98,6 @@ export default function OptionsApp() {
     } else {
       setTesting(false);
       setTestResult({ success: false, message: 'OAuth requires extension runtime environment.' });
-    }
-  };
-
-  const handleStartRecovery = () => {
-    if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
-      chrome.runtime.sendMessage({ type: 'RECOVERY_START' }, (res) => {
-        if (chrome.runtime.lastError) {
-          alert('Could not start recovery: ' + chrome.runtime.lastError.message);
-        } else if (res?.success) {
-          alert('History recovery started in the background! Check your extension popup for live progress.');
-        }
-      });
     }
   };
 
@@ -119,6 +118,10 @@ export default function OptionsApp() {
           },
           (res) => {
             setTesting(false);
+            if (chrome.runtime.lastError) {
+              setTestResult({ success: false, message: chrome.runtime.lastError.message || 'Connection failed.' });
+              return;
+            }
             if (res?.success) {
               // Reload config so the verified githubUsername reflects immediately in the UI
               storage.getConfig().then((c) => { setConfig(c); setInitialConfig(c); });
@@ -453,30 +456,6 @@ export default function OptionsApp() {
             />
             Auto-generate and update <code>README.md</code> progress index in repository root
           </label>
-        </div>
-
-        {/* History Recovery & Maintenance */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <h2 style={{ fontSize: 15, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <RefreshCw size={16} color="var(--primary)" /> History Recovery & Maintenance
-          </h2>
-          <p style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
-            Recover past accepted LeetCode submissions and auto-sync them to your GitHub repository.
-            Make sure a LeetCode problem page is open in Chrome before starting recovery.
-          </p>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginTop: 4 }}>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              style={{ padding: '8px 16px', fontSize: 12 }}
-              onClick={handleStartRecovery}
-            >
-              <RefreshCw size={14} /> Recover History
-            </button>
-            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-              1s polite delay applied between commits.
-            </span>
-          </div>
         </div>
 
         {/* Legal & Terms Checkbox */}

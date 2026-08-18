@@ -60,6 +60,13 @@ export class GitHubService {
     }));
   }
 
+  private static toBase64(str: string): string {
+    const bytes = new TextEncoder().encode(str || '');
+    let binary = '';
+    for (const byte of bytes) binary += String.fromCharCode(byte);
+    return btoa(binary);
+  }
+
   static async ensureRepo(token: string, username: string, repoName: string): Promise<boolean> {
     const checkUrl = `${this.BASE_URL}/repos/${username}/${repoName}`;
     let checkRes = await fetch(checkUrl, { headers: this.getHeaders(token) });
@@ -131,7 +138,7 @@ export class GitHubService {
         },
         body: JSON.stringify({
           message: 'leetie: Initialize repository',
-          content: btoa('# My LeetCode Solutions\n\n> Automatically synced by [leetie](https://github.com/leetie/leetie).\n'),
+          content: this.toBase64('# My LeetCode Solutions\n\n> Automatically synced by [leetie](https://github.com/leetie/leetie).\n'),
           branch: defaultBranch,
         }),
       });

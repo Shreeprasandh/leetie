@@ -295,13 +295,16 @@
   let _lastDomAcceptedTime = 0;
   const domObserver = new MutationObserver(() => {
     try {
+      // Do not trigger DOM fallback when browsing submission history lists or discussion tabs
+      if (window.location.pathname.includes('/submissions/')) return;
+
       const now = Date.now();
-      if (now - _lastDomAcceptedTime < 4000) return; // Debounce
+      if (now - _lastDomAcceptedTime < 5000) return; // Debounce
 
       const resultBadge = document.querySelector(
-        '[data-e2e-locator="submission-result"], [class*="status-accepted"], [class*="result-accepted"], span[class*="text-green"], div[class*="accepted"]'
+        '[data-e2e-locator="submission-result"], div[class*="result-container"] [class*="status-accepted"], div[class*="result-state"]'
       );
-      if (resultBadge && resultBadge.textContent?.trim().toLowerCase().includes('accepted')) {
+      if (resultBadge && resultBadge.textContent?.trim().toLowerCase() === 'accepted') {
         const code = extractMonacoCode();
         if (code) {
           _lastDomAcceptedTime = now;

@@ -68,11 +68,13 @@ export class SyncService {
     return { start: '//', end: '' };
   }
 
-  static formatSolutionHeader(submission: Submission): string {
+  static formatSolutionHeader(submission: Submission, githubUsername?: string): string {
     const { problem, lang, runtime, memory, runtimePercentile, memoryPercentile } = submission;
     const link = `https://leetcode.com/problems/${problem.slug}/`;
     const tags = problem.topicTags.length > 0 ? problem.topicTags.join(', ') : 'N/A';
     const { start: cs, end: ce } = this.getCommentStyle(lang);
+    const authorName = (githubUsername || '').trim() || 'LeetCode User';
+    const currentYear = new Date().getFullYear();
 
     return `${cs} ──────────────────────────────────────────────────${ce ? ' ' + ce : ''}
 ${cs} Problem  : ${problem.id}. ${problem.title}${ce ? ' ' + ce : ''}
@@ -82,7 +84,7 @@ ${cs} Link     : ${link}${ce ? ' ' + ce : ''}
 ${cs} Runtime  : ${runtime} (beats ${runtimePercentile}%)${ce ? ' ' + ce : ''}
 ${cs} Memory   : ${memory} (beats ${memoryPercentile}%)${ce ? ' ' + ce : ''}
 ${cs} Language : ${lang}${ce ? ' ' + ce : ''}
-${cs} Copyright: (c) 2026 Shreeprasandh K. All rights reserved.${ce ? ' ' + ce : ''}
+${cs} Copyright: (c) ${currentYear} ${authorName}. All rights reserved.${ce ? ' ' + ce : ''}
 ${cs} Synced by: leetie${ce ? ' ' + ce : ''}
 ${cs} ──────────────────────────────────────────────────${ce ? ' ' + ce : ''}
 
@@ -251,9 +253,9 @@ ${rows}
       }
       console.log('[leetie] File missing on GitHub (deleted by user). Re-committing solution:', filePath);
     }
-    const fileContent = config.addHeaderComment ? this.formatSolutionHeader(submission) : submission.code;
+    const fileContent = config.addHeaderComment ? this.formatSolutionHeader(submission, config.githubUsername) : submission.code;
     const commitMessage = `leetie: Add ${submission.problem.id}. ${submission.problem.title} [${submission.problem.difficulty}] (${submission.lang})`;
-    
+
     let commitDate: string | undefined;
     if (submission.timestamp) {
       const ts = Number(submission.timestamp);
@@ -346,10 +348,20 @@ ${rows}
       rb: 'ruby',
       kt: 'kotlin',
       swift: 'swift',
+      scala: 'scala',
+      php: 'php',
       sql: 'mysql',
+      dart: 'dart',
+      ex: 'elixir',
+      erl: 'erlang',
+      rkt: 'racket',
+      sh: 'bash',
     };
 
     const commitMap = new Map<string, CommitRecord>();
+    const existingCommits = await storage.getCommits();
+    const existingMap = new Map<string, CommitRecord>();
+    for (const c of existingCommits) existingMap.set(c.problemSlug, c);
 
     for (const item of tree) {
       if (item.path.toLowerCase().endsWith('readme.md') || !item.path.includes('/')) continue;
@@ -361,11 +373,6 @@ ${rows}
       const ext = extMatch[1].toLowerCase();
       if (!extToLang[ext]) continue;
 
-      let difficulty: Difficulty = 'Easy';
-      if (item.path.includes('/Easy/')) difficulty = 'Easy';
-      else if (item.path.includes('/Medium/')) difficulty = 'Medium';
-      else if (item.path.includes('/Hard/')) difficulty = 'Hard';
-
       // Strictly require a directory starting with digits (e.g., '0001-two-sum' or '0009-palindrome-number')
       const problemDir = parts.find((p) => /^\d+[-_]/.test(p));
       if (!problemDir) continue;
@@ -376,6 +383,11 @@ ${rows}
       const problemNum = parseInt(slugMatch[1], 10);
       const slug = slugMatch[2];
       const title = `${problemNum}. ${slug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}`;
+
+      let difficulty: Difficulty = existingMap.get(slug)?.difficulty || 'Easy';
+      if (item.path.includes('/Easy/')) difficulty = 'Easy';
+      else if (item.path.includes('/Medium/')) difficulty = 'Medium';
+      else if (item.path.includes('/Hard/')) difficulty = 'Hard';
 
       const record: CommitRecord = {
         submissionId: `git_${slug}_${extToLang[ext]}`,

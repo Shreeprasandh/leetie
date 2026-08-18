@@ -41,12 +41,33 @@ async function processPendingQueue() {
     console.log(`[leetie] Processing ${pending.length} pending submission(s)...`);
     for (const sub of pending) {
       try {
-        await SyncService.commitSubmission(sub);
+        await SyncService.commitSubmission(sub, true);
         await storage.removePendingSubmission(sub.submissionId);
         console.log('[leetie] Pending submission successfully committed:', sub.problem.title);
       } catch (err: any) {
         console.warn('[leetie] Pending submission retry skipped:', sub.problem.title, err.message);
       }
+    }
+    // Auto-update README once at the end of queue processing
+    try {
+      const config = await storage.getConfig();
+      const commits = await storage.getCommits();
+      if (config.autoReadme && config.githubToken && config.githubUsername && commits.length > 0) {
+        const readmeContent = SyncService.generateReadmeContent(commits, config);
+        await SyncService.putFile(
+          config.githubToken,
+          config.githubUsername,
+          config.repoName,
+          'README.md',
+          readmeContent,
+          'leetie: Update solutions index README',
+          config.branch,
+          undefined,
+          config.githubUsername
+        );
+      }
+    } catch (rErr) {
+      console.warn('[leetie] Queue README update skipped:', rErr);
     }
   } catch (err) {
     console.warn('[leetie] Error processing pending queue:', err);

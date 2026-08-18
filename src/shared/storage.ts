@@ -1,6 +1,15 @@
 import { DEFAULT_CONFIG, INITIAL_STATE, STORAGE_KEYS } from './constants';
 import { CommitRecord, Difficulty, ExtensionConfig, ExtensionState, Submission, SyncedStats } from './types';
 
+function toLocalDateStr(dInput: number | Date): string {
+  const d = typeof dInput === 'number' ? new Date(dInput) : dInput;
+  if (isNaN(d.getTime())) return '';
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export function computeSyncedStats(commits: CommitRecord[]): SyncedStats {
   const uniqueProblems = new Map<string, Difficulty>();
   for (const c of commits) {
@@ -25,28 +34,28 @@ export function computeSyncedStats(commits: CommitRecord[]): SyncedStats {
   const totalSubmissions = commits.length;
   const acceptanceRate = totalSubmissions > 0 ? Math.round((totalSolved / totalSubmissions) * 1000) / 10 : 0;
 
-  // Streak calculation based on distinct commit dates
+  // Streak calculation based on distinct local calendar commit dates
   const commitDays = Array.from(
     new Set(
       commits
-        .map((c) => (c.committedAt ? new Date(c.committedAt).toISOString().split('T')[0] : ''))
+        .map((c) => (c.committedAt ? toLocalDateStr(c.committedAt) : ''))
         .filter(Boolean)
     )
   ).sort().reverse();
 
   let streak = 0;
   if (commitDays.length > 0) {
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = toLocalDateStr(new Date());
     const yesterdayDate = new Date();
     yesterdayDate.setDate(yesterdayDate.getDate() - 1);
-    const yesterdayStr = yesterdayDate.toISOString().split('T')[0];
+    const yesterdayStr = toLocalDateStr(yesterdayDate);
 
     let currentCheckDate =
-      commitDays[0] === todayStr || commitDays[0] === yesterdayStr ? new Date(commitDays[0]) : null;
+      commitDays[0] === todayStr || commitDays[0] === yesterdayStr ? new Date(commitDays[0] + 'T00:00:00') : null;
 
     if (currentCheckDate) {
       for (const dayStr of commitDays) {
-        const expectedStr = currentCheckDate.toISOString().split('T')[0];
+        const expectedStr = toLocalDateStr(currentCheckDate);
         if (dayStr === expectedStr) {
           streak++;
           currentCheckDate.setDate(currentCheckDate.getDate() - 1);

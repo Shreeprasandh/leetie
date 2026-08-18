@@ -96,13 +96,15 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
     const csrfMatch = document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/);
     const csrfToken = csrfMatch ? csrfMatch[1].trim() : '';
 
+    const origin = window.location.origin;
+
     const fetchGql = (url: string) =>
       nativeFetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Referer': 'https://leetcode.com/',
-          'Origin': 'https://leetcode.com',
+          'Referer': `${origin}/`,
+          'Origin': origin,
           'x-requested-with': 'XMLHttpRequest',
           ...(csrfToken ? { 'x-csrftoken': csrfToken } : {}),
         },
@@ -110,7 +112,7 @@ chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) =
         body,
       });
 
-    fetchGql('https://leetcode.com/graphql/')
+    fetchGql(`${origin}/graphql/`)
       .then(async (res) => {
         if (!res.ok) {
           // Retry without trailing slash if 400/404
