@@ -75,6 +75,9 @@
   // -------------------------------------------------------------------------
   // Response shape detection helpers
   // -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
+  // Response shape detection helpers
+  // -------------------------------------------------------------------------
   function isAcceptedResponse(data: any, url: string): boolean {
     if (!data) return false;
 
@@ -94,13 +97,50 @@
       if (gql.interpret_id || gql.interpret_key || (typeof gql.task_id === 'string' && gql.task_id.includes('interpret'))) {
         return false;
       }
-      const status = gql.statusDisplay || gql.status_display || gql.status_msg;
-      if (status === 'Accepted') return true;
+      const status = gql.statusDisplay || gql.status_display || gql.status_msg || gql.status;
+      if (status && String(status).toLowerCase().includes('accepted')) return true;
     }
 
     // Shape 2 — REST polling check endpoint or flat response
-    const status = data?.status_msg || data?.statusDisplay || data?.status_display;
-    return status === 'Accepted';
+    const status = data?.status_msg || data?.statusDisplay || data?.status_display || data?.status;
+    return Boolean(status && String(status).toLowerCase().includes('accepted'));
+  }
+
+  function dispatchSubmission(data: any, url: string) {
+    try {
+      const gql =
+        data?.data?.submissionCheck ||
+        data?.data?.submissionDetails ||
+        data?.data?.submissionResult ||
+        data?.data?.submitCode ||
+        (data?.data && typeof data.data === 'object' ? (Object.values(data.data)[0] as any) : null);
+      const details = gql || data;
+
+      // Extract numeric submission ID from URL or payload if available
+      const urlMatch = url.match(/submissions\/(?:detail\/)?(\d+)/);
+      const extractedId = urlMatch?.[1] || details?.submission_id || details?.id || details?.submissionId || details?.question_id;
+      if (extractedId) {
+        data._submission_id = String(extractedId);
+      }
+
+      const code = details?.code || extractMonacoCode();
+
+      if (!code) {
+        console.warn('[leetie] Accepted submission found but could not extract code.');
+        return;
+      }
+
+      // Dispatch to isolated world via shared DOM event
+      window.dispatchEvent(
+        new CustomEvent(LEETIE_EVENT, {
+          detail: { rawData: data, code },
+        })
+      );
+
+      console.log('[leetie] Accepted submission intercepted and dispatched:', data._submission_id || 'detected');
+    } catch (err) {
+      console.warn('[leetie] Error processing accepted submission event:', err);
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -120,7 +160,6 @@
           ? rawUrl.href
           : (rawUrl as Request)?.url || '';
 
-      // Ignore explicit interpret_solution endpoints
       if (!url.includes('/interpret_solution/')) {
         const clone = response.clone();
 
@@ -128,38 +167,7 @@
           .json()
           .then((data: any) => {
             if (!isAcceptedResponse(data, url)) return;
-
-            // Extract code from Monaco editor or DOM
-            const gql =
-              data?.data?.submissionCheck ||
-              data?.data?.submissionDetails ||
-              data?.data?.submissionResult ||
-              data?.data?.submitCode ||
-              (data?.data && typeof data.data === 'object' ? (Object.values(data.data)[0] as any) : null);
-            const details = gql || data;
-
-            // Extract numeric submission ID from URL or payload if available
-            const urlMatch = url.match(/submissions\/(?:detail\/)?(\d+)/);
-            const extractedId = urlMatch?.[1] || details?.submission_id || details?.id || details?.submissionId || details?.question_id;
-            if (extractedId) {
-              data._submission_id = String(extractedId);
-            }
-
-            const code = details?.code || extractMonacoCode();
-
-            if (!code) {
-              console.warn('[leetie] Accepted submission found but could not extract code.');
-              return;
-            }
-
-            // Dispatch to isolated world via shared DOM event
-            window.dispatchEvent(
-              new CustomEvent(LEETIE_EVENT, {
-                detail: { rawData: data, code },
-              })
-            );
-
-            console.log('[leetie] Accepted submission intercepted and dispatched:', data._submission_id || 'detected');
+            dispatchSubmission(data, url);
           })
           .catch(() => {
             // Non-JSON response — ignore silently
@@ -172,5 +180,70 @@
     return response;
   };
 
-  console.log('[leetie] Main-world fetch interceptor active.');
+  // -------------------------------------------------------------------------
+  // XHR interceptor
+  // -------------------------------------------------------------------------
+  const originalXHROpen = XMLHttpRequest.prototype.open;
+  const originalXHRSend = XMLHttpRequest.prototype.send;
+
+  XMLHttpRequest.prototype.open = function (method: string, url: string | URL, ...rest: any[]) {
+    (this as any)._leetie_url = typeof url === 'string' ? url : (url as URL)?.href || '';
+    return originalXHROpen.apply(this, [method, url, ...rest] as any);
+  };
+
+  XMLHttpRequest.prototype.send = function (...args: any[]) {
+    this.addEventListener('load', function () {
+      try {
+        const url = (this as any)._leetie_url || '';
+        if (!url.includes('/interpret_solution/')) {
+          const text = this.responseText;
+          if (text && text.startsWith('{')) {
+            const data = JSON.parse(text);
+            if (isAcceptedResponse(data, url)) {
+              dispatchSubmission(data, url);
+            }
+          }
+        }
+      } catch (_) { /* ignore */ }
+    });
+    return originalXHRSend.apply(this, args as any);
+  };
+
+  // -------------------------------------------------------------------------
+  // DOM Observer Fallback for "Accepted" Status Card
+  // -------------------------------------------------------------------------
+  let _lastDomAcceptedTime = 0;
+  const domObserver = new MutationObserver(() => {
+    try {
+      const now = Date.now();
+      if (now - _lastDomAcceptedTime < 4000) return; // Debounce
+
+      const resultBadge = document.querySelector(
+        '[data-e2e-locator="submission-result"], [class*="status-accepted"], .text-green-s, .text-easy'
+      );
+      if (resultBadge && resultBadge.textContent?.trim().toLowerCase() === 'accepted') {
+        const code = extractMonacoCode();
+        if (code) {
+          _lastDomAcceptedTime = now;
+          const syntheticPayload = {
+            status_msg: 'Accepted',
+            statusDisplay: 'Accepted',
+            code,
+            _submission_id: `dom_${now}`,
+          };
+          dispatchSubmission(syntheticPayload, window.location.href);
+        }
+      }
+    } catch (_) { /* ignore */ }
+  });
+
+  if (document.body) {
+    domObserver.observe(document.body, { childList: true, subtree: true });
+  } else {
+    document.addEventListener('DOMContentLoaded', () => {
+      if (document.body) domObserver.observe(document.body, { childList: true, subtree: true });
+    });
+  }
+
+  console.log('[leetie] Main-world fetch, XHR, and DOM interceptors active.');
 })();
