@@ -1,5 +1,15 @@
 import { Difficulty, Problem, Submission } from '../shared/types';
 
+function parseLangString(rawLang: any): string {
+  if (!rawLang) return 'python3';
+  if (typeof rawLang === 'object') {
+    const name = rawLang.name || rawLang.verboseName || rawLang.lang || '';
+    if (typeof name === 'string' && name.trim()) return name.trim().toLowerCase();
+  }
+  if (typeof rawLang === 'string' && rawLang.trim()) return rawLang.trim().toLowerCase();
+  return 'python3';
+}
+
 export class LeetCodeExtractor {
   static extractProblemSlug(): string {
     const pathParts = window.location.pathname.split('/').filter(Boolean);
@@ -127,6 +137,61 @@ export class LeetCodeExtractor {
     return null;
   }
 
+  static async fetchSubmissionCodeDetails(subId: string): Promise<{ code?: string; lang?: string; runtime?: string; memory?: string; runtimePercentile?: number; memoryPercentile?: number } | null> {
+    const numId = parseInt(subId, 10);
+    if (isNaN(numId) || numId <= 0) return null;
+    try {
+      const origin = typeof window !== 'undefined' && window.location?.origin ? window.location.origin : 'https://leetcode.com';
+      const csrfMatch = typeof document !== 'undefined' ? document.cookie.match(/(?:^|;\s*)csrftoken=([^;]+)/) : null;
+      const csrfToken = csrfMatch ? csrfMatch[1].trim() : '';
+
+      const res = await fetch(`${origin}/graphql/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Referer': `${origin}/`,
+          'Origin': origin,
+          'x-requested-with': 'XMLHttpRequest',
+          ...(csrfToken ? { 'x-csrftoken': csrfToken } : {}),
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          query: `query submissionDetails($submissionId: Int!) {
+            submissionDetails(submissionId: $submissionId) {
+              code
+              runtime
+              memory
+              runtimePercentile
+              memoryPercentile
+              lang {
+                name
+              }
+            }
+          }`,
+          variables: { submissionId: numId },
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const details = data?.data?.submissionDetails;
+        if (details) {
+          return {
+            code: details.code || undefined,
+            lang: details.lang?.name || undefined,
+            runtime: details.runtime || undefined,
+            memory: details.memory || undefined,
+            runtimePercentile: details.runtimePercentile ? Math.round(details.runtimePercentile) : undefined,
+            memoryPercentile: details.memoryPercentile ? Math.round(details.memoryPercentile) : undefined,
+          };
+        }
+      }
+    } catch (err) {
+      console.warn('[leetie] Failed to fetch GraphQL submission code for ID:', subId, err);
+    }
+    return null;
+  }
+
   static extractFromMonaco(): string | null {
     try {
       const win = window as any;
@@ -220,11 +285,7 @@ export class LeetCodeExtractor {
 
       // Code priority: (1) caller-provided override from MAIN world Monaco extraction,
       // (2) API response field, (3) direct Monaco extraction (only works in MAIN world).
-      const code = codeOverride || details.code || this.extractFromMonaco() || '';
-      if (!code) {
-        console.warn('[leetie] Accepted submission detected, but solution code could not be retrieved.');
-        return null;
-      }
+      const code = codeOverride || details.code || details.submissionCode || details.source_code || this.extractFromMonaco() || '';
 
       // Extract submission ID with deterministic fallback to prevent duplicate commits
       const rawSubId =
@@ -234,12 +295,18 @@ export class LeetCodeExtractor {
         details.id ||
         details.submission_id;
 
-      const lang = details.lang || details.language || 'python3';
+      const lang = parseLangString(details.lang || details.language || details.langName);
       const subIdStr = rawSubId
         ? String(rawSubId)
         : `${slug}_${lang}_${Math.floor(Date.now() / 10000)}`;
 
       if (subIdStr.includes('interpret_solution')) {
+        return null;
+      }
+
+      // Allow empty initial code if numeric submission ID exists so parseSubmissionResponseAsync can fetch it via GraphQL
+      if (!code && (!rawSubId || String(rawSubId).startsWith('sub_') || String(rawSubId).startsWith('dom_'))) {
+        console.warn('[leetie] Accepted submission detected, but solution code could not be retrieved.');
         return null;
       }
 
@@ -252,7 +319,7 @@ export class LeetCodeExtractor {
           difficulty,
           topicTags,
         },
-        lang: details.lang || details.language || 'python3',
+        lang,
         code,
         runtime: details.runtime || details.status_runtime || 'N/A',
         memory: details.memory || details.status_memory || 'N/A',
@@ -273,6 +340,24 @@ export class LeetCodeExtractor {
   static async parseSubmissionResponseAsync(rawResponse: any, codeOverride?: string): Promise<Submission | null> {
     const sub = this.parseSubmissionResponse(rawResponse, codeOverride);
     if (!sub) return null;
+
+    // Fallback: If code is missing, query GraphQL submissionDetails directly using submissionId
+    if (!sub.code && sub.submissionId && !sub.submissionId.startsWith('dom_') && !sub.submissionId.startsWith('sub_')) {
+      const codeDetails = await this.fetchSubmissionCodeDetails(sub.submissionId);
+      if (codeDetails?.code) {
+        sub.code = codeDetails.code;
+        if (codeDetails.lang) sub.lang = parseLangString(codeDetails.lang);
+        if (codeDetails.runtime) sub.runtime = codeDetails.runtime;
+        if (codeDetails.memory) sub.memory = codeDetails.memory;
+        if (codeDetails.runtimePercentile !== undefined) sub.runtimePercentile = codeDetails.runtimePercentile;
+        if (codeDetails.memoryPercentile !== undefined) sub.memoryPercentile = codeDetails.memoryPercentile;
+      }
+    }
+
+    if (!sub.code) {
+      console.warn('[leetie] Solution code missing after GraphQL fallback.');
+      return null;
+    }
 
     const hasExplicitDiffInPayload = Boolean(rawResponse?.data?.submissionDetails?.question?.difficulty || rawResponse?.data?.submissionCheck?.question?.difficulty);
     const isMangledTitle = /(?:Med\.|Medium|Easy|Hard|\s*-\s*BFS Solution|\s*-\s*DFS Solution)$/i.test(sub.problem.title);

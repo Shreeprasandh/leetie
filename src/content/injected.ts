@@ -209,8 +209,9 @@
 
       const code = details?.code || details?.submissionCode || details?.source_code || extractMonacoCode();
 
-      if (!code) {
-        console.warn('[leetie] Accepted submission found but could not extract code.');
+      // If code is empty but a numeric submission ID exists, proceed anyway so parseSubmissionResponseAsync can fetch code via GraphQL
+      if (!code && (!extractedId || String(extractedId).startsWith('sub_') || String(extractedId).startsWith('dom_'))) {
+        console.warn('[leetie] Accepted submission found but could not extract code from DOM.');
         _dispatchedSubmissionIds.delete(subId); // Allow retry if code extraction failed
         return;
       }
