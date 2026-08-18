@@ -120,49 +120,61 @@ ${submission.code}`;
     commitMessage: string,
     branch: string,
     commitDate?: string,
-    githubUsername?: string
+    githubUsername?: string,
+    retries = 3
   ): Promise<string> {
-    const sha = await this.getFileSha(token, owner, repo, path, branch);
-    const body: any = {
-      message: commitMessage,
-      content: this.toBase64(content),
-      branch,
-    };
-    if (sha) body.sha = sha;
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const sha = await this.getFileSha(token, owner, repo, path, branch);
+        const body: any = {
+          message: commitMessage,
+          content: this.toBase64(content),
+          branch,
+        };
+        if (sha) body.sha = sha;
 
-    if (commitDate) {
-      const username = githubUsername || owner;
-      const cleanEmail = `${username.toLowerCase().replace(/[^a-z0-9]/g, '')}@users.noreply.github.com`;
-      const committerObj = {
-        name: username,
-        email: cleanEmail,
-        date: commitDate,
-      };
-      body.author = committerObj;
-      body.committer = committerObj;
-    }
+        if (commitDate) {
+          const username = githubUsername || owner;
+          const cleanEmail = `${username.toLowerCase().replace(/[^a-z0-9]/g, '')}@users.noreply.github.com`;
+          const committerObj = {
+            name: username,
+            email: cleanEmail,
+            date: commitDate,
+          };
+          body.author = committerObj;
+          body.committer = committerObj;
+        }
 
-    const safePath = path.split('/').map((s) => encodeURIComponent(s)).join('/');
-    const res = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/contents/${safePath}`, {
-      method: 'PUT',
-      headers: this.getHeaders(token),
-      body: JSON.stringify(body),
-    });
+        const safePath = path.split('/').map((s) => encodeURIComponent(s)).join('/');
+        const res = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/contents/${safePath}`, {
+          method: 'PUT',
+          headers: this.getHeaders(token),
+          body: JSON.stringify(body),
+        });
 
-    if (!res.ok) {
-      // Surface GitHub rate-limit info so the recovery service can backoff
-      if (res.status === 429) {
-        const retryAfter = parseInt(res.headers.get('Retry-After') || '60', 10);
-        throw new Error(`GitHub API rate limited (429). Retry after ${retryAfter}s`);
+        if (!res.ok) {
+          if (res.status === 409 && attempt < retries) {
+            console.warn(`[leetie] GitHub API 409 Conflict on ${path}, retrying (${attempt}/${retries})...`);
+            await new Promise((r) => setTimeout(r, 1200 * attempt));
+            continue;
+          }
+          if (res.status === 429) {
+            const retryAfter = parseInt(res.headers.get('Retry-After') || '60', 10);
+            throw new Error(`GitHub API rate limited (429). Retry after ${retryAfter}s`);
+          }
+          const errorData = await res.json().catch(() => ({}));
+          const errorMsg = errorData.message || errorData.error || `HTTP ${res.status}`;
+          console.error(`[leetie] GitHub API PUT error (${res.status}) on ${path}:`, errorData);
+          throw new Error(`GitHub API Error (${res.status}): ${errorMsg}`);
+        }
+
+        const resData = await res.json();
+        return resData.content?.sha || resData.commit?.sha || 'success';
+      } catch (err: any) {
+        if (attempt === retries) throw err;
       }
-      const errorData = await res.json().catch(() => ({}));
-      const errorMsg = errorData.message || errorData.error || `HTTP ${res.status}`;
-      console.error(`[leetie] GitHub API PUT error (${res.status}) on ${path}:`, errorData);
-      throw new Error(`GitHub API Error (${res.status}): ${errorMsg}`);
     }
-
-    const resData = await res.json();
-    return resData.content?.sha || resData.commit?.sha || 'success';
+    throw new Error(`Failed to commit file ${path} after ${retries} attempts.`);
   }
 
   static generateReadmeContent(commits: CommitRecord[], _config: ExtensionConfig): string {
@@ -282,6 +294,7 @@ ${rows}
     // Auto-update README if enabled and not skipped for bulk ops
     if (config.autoReadme && !skipReadme) {
       try {
+        await new Promise((r) => setTimeout(r, 1000));
         const readmePath = 'README.md'; // Root level so GitHub renders it on the repo homepage
         const readmeContent = this.generateReadmeContent(updatedCommits, config);
         await this.putFile(
