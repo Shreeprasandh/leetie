@@ -171,18 +171,10 @@
     return '';
   }
 
-  let _lastDispatchedSubmissionTime = 0;
+  const _dispatchedSubmissionIds = new Set<string>();
 
   function dispatchSubmission(data: any, url: string, isDomFallback = false) {
     try {
-      const now = Date.now();
-      // Suppress DOM fallback if a network submission event occurred in the last 6 seconds
-      if (isDomFallback && now - _lastDispatchedSubmissionTime < 6000) {
-        console.log('[leetie] Suppressed DOM fallback submission event (network event already dispatched).');
-        return;
-      }
-      _lastDispatchedSubmissionTime = now;
-
       const gql =
         data?.data?.submissionCheck ||
         data?.data?.submissionDetails ||
@@ -194,9 +186,14 @@
       // Extract numeric submission ID from URL or payload if available
       const urlMatch = url.match(/submissions\/(?:detail\/)?(\d+)/);
       const extractedId = urlMatch?.[1] || details?.submission_id || details?.id || details?.submissionId || details?.question_id;
-      if (extractedId) {
-        data._submission_id = String(extractedId);
+      const subId = extractedId ? String(extractedId) : (details._submission_id || `sub_${Date.now()}`);
+
+      // Skip if this exact submission ID was already dispatched in this page session
+      if (_dispatchedSubmissionIds.has(subId)) {
+        return;
       }
+      _dispatchedSubmissionIds.add(subId);
+      data._submission_id = subId;
 
       // Ensure lang is properly populated from payload or DOM extraction
       const domLang = extractLanguageFromDOM();
@@ -209,6 +206,7 @@
 
       if (!code) {
         console.warn('[leetie] Accepted submission found but could not extract code.');
+        _dispatchedSubmissionIds.delete(subId); // Allow retry if code extraction failed
         return;
       }
 
@@ -219,7 +217,7 @@
         })
       );
 
-      console.log('[leetie] Accepted submission intercepted and dispatched:', data._submission_id || 'detected');
+      console.log(`[leetie] Accepted submission intercepted via ${isDomFallback ? 'DOM Observer' : 'Network Interceptor'}:`, subId);
     } catch (err) {
       console.warn('[leetie] Error processing accepted submission event:', err);
     }
@@ -301,9 +299,9 @@
       if (now - _lastDomAcceptedTime < 4000) return; // Debounce
 
       const resultBadge = document.querySelector(
-        '[data-e2e-locator="submission-result"], [class*="status-accepted"], .text-green-s, .text-easy'
+        '[data-e2e-locator="submission-result"], [class*="status-accepted"], [class*="result-accepted"], span[class*="text-green"], div[class*="accepted"]'
       );
-      if (resultBadge && resultBadge.textContent?.trim().toLowerCase() === 'accepted') {
+      if (resultBadge && resultBadge.textContent?.trim().toLowerCase().includes('accepted')) {
         const code = extractMonacoCode();
         if (code) {
           _lastDomAcceptedTime = now;
