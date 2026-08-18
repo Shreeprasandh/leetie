@@ -100,8 +100,9 @@ ${submission.code}`;
   ): Promise<string | null> {
     try {
       const safePath = path.split('/').map((s) => encodeURIComponent(s)).join('/');
-      const res = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/contents/${safePath}?ref=${encodeURIComponent(branch)}`, {
+      const res = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/contents/${safePath}?ref=${encodeURIComponent(branch)}&_cb=${Date.now()}`, {
         headers: this.getHeaders(token),
+        cache: 'no-store',
       });
       if (res.ok) {
         const data = await res.json();
@@ -266,13 +267,33 @@ ${rows}
       }
     }
 
-    // Commit solution file
-    const sha = await this.putFile(
+    const draftRecord: CommitRecord = {
+      submissionId: submission.submissionId,
+      problemSlug: submission.problem.slug,
+      problemTitle: submission.problem.title,
+      difficulty: submission.problem.difficulty,
+      commitSha: 'pending',
+      githubPath: filePath,
+      committedAt: Date.now(),
+      lang: submission.lang,
+    };
+
+    const filesToCommit: { path: string; content: string }[] = [
+      { path: filePath, content: fileContent },
+    ];
+
+    if (config.autoReadme && !skipReadme) {
+      const potentialCommits = [draftRecord, ...existingCommits.filter((c) => c.submissionId !== submission.submissionId)];
+      const readmeContent = this.generateReadmeContent(potentialCommits, config);
+      filesToCommit.push({ path: 'README.md', content: readmeContent });
+    }
+
+    // Atomic Single-Commit via GitHub Git Data API
+    const sha = await GitHubService.commitFilesAtomic(
       config.githubToken,
       config.githubUsername,
       config.repoName,
-      filePath,
-      fileContent,
+      filesToCommit,
       commitMessage,
       config.branch,
       commitDate,
@@ -280,41 +301,12 @@ ${rows}
     );
 
     const record: CommitRecord = {
-      submissionId: submission.submissionId,
-      problemSlug: submission.problem.slug,
-      problemTitle: submission.problem.title,
-      difficulty: submission.problem.difficulty,
+      ...draftRecord,
       commitSha: sha,
-      githubPath: filePath,
-      committedAt: Date.now(),
-      lang: submission.lang,
     };
 
     // Save record to local storage
-    const updatedCommits = await storage.addCommit(record);
-
-    // Auto-update README if enabled and not skipped for bulk ops
-    if (config.autoReadme && !skipReadme) {
-      try {
-        await new Promise((r) => setTimeout(r, 1000));
-        const readmePath = 'README.md'; // Root level so GitHub renders it on the repo homepage
-        const readmeContent = this.generateReadmeContent(updatedCommits, config);
-        await this.putFile(
-          config.githubToken,
-          config.githubUsername,
-          config.repoName,
-          readmePath,
-          readmeContent,
-          `leetie: Update solutions index README`,
-          config.branch,
-          undefined,
-          config.githubUsername
-        );
-      } catch (err) {
-        console.warn('[leetie] Auto README update failed:', err);
-      }
-    }
-
+    await storage.addCommit(record);
     return record;
   }
 

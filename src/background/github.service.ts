@@ -168,4 +168,139 @@ export class GitHubService {
       .filter((item: any) => item.type === 'blob')
       .map((item: any) => ({ path: item.path, size: item.size, sha: item.sha }));
   }
+
+  static async commitFilesAtomic(
+    token: string,
+    owner: string,
+    repo: string,
+    files: { path: string; content: string }[],
+    commitMessage: string,
+    branch: string = 'main',
+    commitDate?: string,
+    githubUsername?: string,
+    retries = 3
+  ): Promise<string> {
+    if (!files.length) throw new Error('No files to commit.');
+
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        // 1. Fetch current branch HEAD commit SHA
+        const refRes = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/git/ref/heads/${encodeURIComponent(branch)}?_cb=${Date.now()}`, {
+          headers: this.getHeaders(token),
+          cache: 'no-store',
+        });
+
+        if (!refRes.ok) {
+          throw new Error(`Failed to fetch branch ref (${refRes.status}): ${refRes.statusText}`);
+        }
+
+        const refData = await refRes.json();
+        const baseCommitSha = refData.object.sha;
+
+        // 2. Fetch base commit object to extract root tree SHA
+        const commitRes = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/git/commits/${baseCommitSha}?_cb=${Date.now()}`, {
+          headers: this.getHeaders(token),
+          cache: 'no-store',
+        });
+
+        if (!commitRes.ok) {
+          throw new Error(`Failed to fetch base commit (${commitRes.status}): ${commitRes.statusText}`);
+        }
+
+        const commitData = await commitRes.json();
+        const baseTreeSha = commitData.tree.sha;
+
+        // 3. Create a single tree containing all file updates atomically
+        const treeItems = files.map((f) => ({
+          path: f.path,
+          mode: '100644',
+          type: 'blob',
+          content: f.content,
+        }));
+
+        const createTreeRes = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/git/trees`, {
+          method: 'POST',
+          headers: {
+            ...this.getHeaders(token),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            base_tree: baseTreeSha,
+            tree: treeItems,
+          }),
+        });
+
+        if (!createTreeRes.ok) {
+          const errData = await createTreeRes.json().catch(() => ({}));
+          throw new Error(`Failed to create git tree (${createTreeRes.status}): ${errData.message || createTreeRes.statusText}`);
+        }
+
+        const newTreeData = await createTreeRes.json();
+        const newTreeSha = newTreeData.sha;
+
+        // 4. Create single atomic commit
+        const authorUsername = githubUsername || owner;
+        const cleanEmail = `${authorUsername.toLowerCase().replace(/[^a-z0-9]/g, '')}@users.noreply.github.com`;
+        const committerObj = commitDate
+          ? { name: authorUsername, email: cleanEmail, date: commitDate }
+          : undefined;
+
+        const createCommitBody: any = {
+          message: commitMessage,
+          tree: newTreeSha,
+          parents: [baseCommitSha],
+        };
+        if (committerObj) {
+          createCommitBody.author = committerObj;
+          createCommitBody.committer = committerObj;
+        }
+
+        const createCommitRes = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/git/commits`, {
+          method: 'POST',
+          headers: {
+            ...this.getHeaders(token),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(createCommitBody),
+        });
+
+        if (!createCommitRes.ok) {
+          const errData = await createCommitRes.json().catch(() => ({}));
+          throw new Error(`Failed to create commit (${createCommitRes.status}): ${errData.message || createCommitRes.statusText}`);
+        }
+
+        const newCommitData = await createCommitRes.json();
+        const newCommitSha = newCommitData.sha;
+
+        // 5. Atomic HEAD update to new commit
+        const updateRefRes = await fetch(`${this.BASE_URL}/repos/${owner}/${repo}/git/refs/heads/${encodeURIComponent(branch)}`, {
+          method: 'PATCH',
+          headers: {
+            ...this.getHeaders(token),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sha: newCommitSha,
+            force: false,
+          }),
+        });
+
+        if (!updateRefRes.ok) {
+          if ((updateRefRes.status === 409 || updateRefRes.status === 422) && attempt < retries) {
+            console.warn(`[leetie] Atomic commit branch ref race condition (HTTP ${updateRefRes.status}), retrying (${attempt}/${retries})...`);
+            await new Promise((r) => setTimeout(r, 1000 * attempt));
+            continue;
+          }
+          const errData = await updateRefRes.json().catch(() => ({}));
+          throw new Error(`Failed to update branch ref (${updateRefRes.status}): ${errData.message || updateRefRes.statusText}`);
+        }
+
+        return newCommitSha;
+      } catch (err: any) {
+        if (attempt === retries) throw err;
+        await new Promise((r) => setTimeout(r, 1000 * attempt));
+      }
+    }
+    throw new Error(`Failed atomic commit after ${retries} attempts.`);
+  }
 }

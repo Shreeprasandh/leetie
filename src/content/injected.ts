@@ -46,11 +46,16 @@
         }
       }
 
-      // Priority 3: CodeMirror 6 editor (used in LeetCode dynamic layout updates)
-      const cmLines = document.querySelectorAll('.cm-content .cm-line');
+      // Priority 3: CodeMirror 6 editor & Shadow DOM lines (LeetCode dynamic layout)
+      const cmLines = document.querySelectorAll('.cm-content .cm-line, div[class*="cm-editor"] .cm-line, .cm-scroller .cm-line, .cm-line');
       if (cmLines.length > 0) {
         const codeText = Array.from(cmLines).map((l) => l.textContent || '').join('\n');
         if (codeText.trim()) return codeText;
+      }
+
+      const cmContent = document.querySelector('.cm-content, [role="textbox"].cm-content');
+      if (cmContent && cmContent.textContent && cmContent.textContent.trim().length > 5) {
+        return cmContent.textContent;
       }
 
       // Priority 4: Monaco DOM view lines
@@ -202,7 +207,7 @@
         data.lang = domLang;
       }
 
-      const code = details?.code || extractMonacoCode();
+      const code = details?.code || details?.submissionCode || details?.source_code || extractMonacoCode();
 
       if (!code) {
         console.warn('[leetie] Accepted submission found but could not extract code.');
