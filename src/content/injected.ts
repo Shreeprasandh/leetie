@@ -106,8 +106,83 @@
     return Boolean(status && String(status).toLowerCase().includes('accepted'));
   }
 
-  function dispatchSubmission(data: any, url: string) {
+  function extractLanguageFromDOM(): string {
     try {
+      const win = window as any;
+      const monaco = win.monaco || win._monaco;
+      if (monaco?.editor) {
+        const models = monaco.editor.getModels?.();
+        if (models && models.length > 0) {
+          for (const model of models) {
+            const langId = model.getLanguageId?.();
+            if (langId && !['plaintext', 'json', 'css', 'html'].includes(langId)) {
+              const norm = normalizeLang(langId);
+              if (norm) return norm;
+            }
+          }
+        }
+      }
+
+      const langSelectors = document.querySelectorAll(
+        'button[id*="lang"], [data-cy="lang-select"], [class*="language-select"], [class*="lang-select"], [class*="ant-select-selection-selected-value"]'
+      );
+      for (const el of Array.from(langSelectors)) {
+        const txt = el.textContent?.trim() || '';
+        if (txt) {
+          const norm = normalizeLang(txt);
+          if (norm) return norm;
+        }
+      }
+
+      const buttons = document.querySelectorAll('button, div[class*="select"]');
+      for (const btn of Array.from(buttons)) {
+        const txt = btn.textContent?.trim() || '';
+        if (txt && txt.length < 30) {
+          const norm = normalizeLang(txt);
+          if (norm) return norm;
+        }
+      }
+    } catch (_) { /* ignore */ }
+    return '';
+  }
+
+  function normalizeLang(raw: string): string {
+    const s = raw.toLowerCase().replace(/[\s\-_]/g, '');
+    if (s.includes('mysql') || s.includes('sql')) return 'mysql';
+    if (s.includes('python3') || s.includes('python')) return 'python3';
+    if (s.includes('javascript') || s === 'js') return 'javascript';
+    if (s.includes('typescript') || s === 'ts') return 'typescript';
+    if (s.includes('cpp') || s.includes('c++')) return 'cpp';
+    if (s === 'c') return 'c';
+    if (s.includes('java') && !s.includes('javascript')) return 'java';
+    if (s.includes('csharp') || s.includes('c#')) return 'csharp';
+    if (s.includes('golang') || s === 'go') return 'golang';
+    if (s.includes('rust') || s === 'rs') return 'rust';
+    if (s.includes('kotlin') || s === 'kt') return 'kotlin';
+    if (s.includes('swift')) return 'swift';
+    if (s.includes('ruby') || s === 'rb') return 'ruby';
+    if (s.includes('postgresql')) return 'postgresql';
+    if (s.includes('oraclesql')) return 'oraclesql';
+    if (s.includes('mssql')) return 'mssql';
+    if (s.includes('scala')) return 'scala';
+    if (s.includes('php')) return 'php';
+    if (s.includes('dart')) return 'dart';
+    if (s.includes('elixir')) return 'elixir';
+    return '';
+  }
+
+  let _lastDispatchedSubmissionTime = 0;
+
+  function dispatchSubmission(data: any, url: string, isDomFallback = false) {
+    try {
+      const now = Date.now();
+      // Suppress DOM fallback if a network submission event occurred in the last 6 seconds
+      if (isDomFallback && now - _lastDispatchedSubmissionTime < 6000) {
+        console.log('[leetie] Suppressed DOM fallback submission event (network event already dispatched).');
+        return;
+      }
+      _lastDispatchedSubmissionTime = now;
+
       const gql =
         data?.data?.submissionCheck ||
         data?.data?.submissionDetails ||
@@ -121,6 +196,13 @@
       const extractedId = urlMatch?.[1] || details?.submission_id || details?.id || details?.submissionId || details?.question_id;
       if (extractedId) {
         data._submission_id = String(extractedId);
+      }
+
+      // Ensure lang is properly populated from payload or DOM extraction
+      const domLang = extractLanguageFromDOM();
+      if (!details.lang && !details.language && domLang) {
+        details.lang = domLang;
+        data.lang = domLang;
       }
 
       const code = details?.code || extractMonacoCode();
@@ -167,7 +249,7 @@
           .json()
           .then((data: any) => {
             if (!isAcceptedResponse(data, url)) return;
-            dispatchSubmission(data, url);
+            dispatchSubmission(data, url, false);
           })
           .catch(() => {
             // Non-JSON response — ignore silently
@@ -200,7 +282,7 @@
           if (text && text.startsWith('{')) {
             const data = JSON.parse(text);
             if (isAcceptedResponse(data, url)) {
-              dispatchSubmission(data, url);
+              dispatchSubmission(data, url, false);
             }
           }
         }
@@ -225,13 +307,16 @@
         const code = extractMonacoCode();
         if (code) {
           _lastDomAcceptedTime = now;
+          const detectedLang = extractLanguageFromDOM() || 'python3';
           const syntheticPayload = {
             status_msg: 'Accepted',
             statusDisplay: 'Accepted',
+            lang: detectedLang,
+            language: detectedLang,
             code,
             _submission_id: `dom_${now}`,
           };
-          dispatchSubmission(syntheticPayload, window.location.href);
+          dispatchSubmission(syntheticPayload, window.location.href, true);
         }
       }
     } catch (_) { /* ignore */ }
