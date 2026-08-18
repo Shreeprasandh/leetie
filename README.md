@@ -2,10 +2,11 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 26 Solved
+## Progress Summary: 27 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
+| delete-duplicate-emails | Delete Duplicate Emails | Easy | mysql | [Problem](https://leetcode.com/problems/delete-duplicate-emails/) | [Solution](./solutions/Easy/0196-delete-duplicate-emails/solution.sql) |
 | two-sum | 1. Two Sum | Easy | java | [Problem](https://leetcode.com/problems/two-sum/) | [Solution](./solutions/Easy/0001-two-sum/solution.java) |
 | add-two-numbers | 2. Add Two Numbers | Medium | java | [Problem](https://leetcode.com/problems/add-two-numbers/) | [Solution](./solutions/Medium/0002-add-two-numbers/solution.java) |
 | longest-substring-without-repeating-characters | 3. Longest Substring Without Repeating Characters | Medium | java | [Problem](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | [Solution](./solutions/Medium/0003-longest-substring-without-repeating-characters/solution.java) |
