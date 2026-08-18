@@ -3,8 +3,8 @@
 // Difficulty: Medium
 // Tags     : Array, Dynamic Programming
 // Link     : https://leetcode.com/problems/house-robber/
-// Runtime  : 0 ms (beats 0%)
-// Memory   : 42336000 (beats 0%)
+// Runtime  : 0 ms (beats 100%)
+// Memory   : 42736000 (beats 58%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh. All rights reserved.
 // Synced by: leetie
