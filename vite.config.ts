@@ -1,9 +1,9 @@
-import { defineConfig, Plugin } from 'vite';
+import { defineConfig, Plugin, build as viteBuild } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve, dirname } from 'path';
 import { copyFileSync, mkdirSync, existsSync, readFileSync, writeFileSync, rmSync } from 'fs';
 
-function copyManifestPlugin() {
+function copyManifestPlugin(): Plugin {
   return {
     name: 'copy-manifest',
     closeBundle() {
@@ -49,10 +49,44 @@ function flattenHtmlPlugin(): Plugin {
   };
 }
 
+// Extension background service worker and content scripts MUST be self-contained
+// single-file bundles without relative imports into shared /assets/ chunks.
+function standaloneScriptsPlugin(): Plugin {
+  return {
+    name: 'standalone-scripts',
+    async closeBundle() {
+      const scripts = [
+        { entryName: 'background', file: 'background/index.js', path: resolve(__dirname, 'src/background/index.ts') },
+        { entryName: 'content', file: 'content/index.js', path: resolve(__dirname, 'src/content/index.ts') },
+        { entryName: 'injected', file: 'content/injected.js', path: resolve(__dirname, 'src/content/injected.ts') },
+      ];
+
+      for (const script of scripts) {
+        await viteBuild({
+          configFile: false,
+          plugins: [react()],
+          resolve: { alias: { '@': resolve(__dirname, 'src') } },
+          build: {
+            outDir: 'dist',
+            emptyOutDir: false,
+            rollupOptions: {
+              input: { [script.entryName]: script.path },
+              output: {
+                entryFileNames: script.file,
+                inlineDynamicImports: true,
+              },
+            },
+          },
+        });
+      }
+    },
+  };
+}
+
 export default defineConfig({
   base: '', // CRITICAL: forces relative asset paths in built HTML.
   // Chrome extensions cannot resolve absolute /assets/ paths.
-  plugins: [react(), flattenHtmlPlugin(), copyManifestPlugin()],
+  plugins: [react(), flattenHtmlPlugin(), standaloneScriptsPlugin(), copyManifestPlugin()],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
@@ -65,19 +99,9 @@ export default defineConfig({
       input: {
         popup: resolve(__dirname, 'src/popup/index.html'),
         options: resolve(__dirname, 'src/options/index.html'),
-        background: resolve(__dirname, 'src/background/index.ts'),
-        content: resolve(__dirname, 'src/content/index.ts'),
-        // injected runs in MAIN world — separate entry so Chrome can load it
-        // via content_scripts[world=MAIN] before the page's own scripts run
-        injected: resolve(__dirname, 'src/content/injected.ts'),
       },
       output: {
-        entryFileNames: (chunkInfo) => {
-          if (chunkInfo.name === 'background') return 'background/index.js';
-          if (chunkInfo.name === 'content') return 'content/index.js';
-          if (chunkInfo.name === 'injected') return 'content/injected.js';
-          return 'assets/[name]-[hash].js';
-        },
+        entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]',
       },
