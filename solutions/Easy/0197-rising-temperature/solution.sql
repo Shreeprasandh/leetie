@@ -3,7 +3,7 @@
 -- Difficulty: Easy
 -- Tags     : Database
 -- Link     : https://leetcode.com/problems/rising-temperature/
--- Runtime  : 66 ms (beats 0%)
+-- Runtime  : 71 ms (beats 0%)
 -- Memory   : 0B (beats 0%)
 -- Language : mysql
 -- Copyright: (c) 2026 Shreeprasandh K. All rights reserved.
