@@ -1,12 +1,12 @@
 // ──────────────────────────────────────────────────
 // Problem  : 6. Zigzag Conversion
 // Difficulty: Medium
-// Tags     : N/A
+// Tags     : String
 // Link     : https://leetcode.com/problems/zigzag-conversion/
-// Runtime  : 5 ms (beats 52%)
-// Memory   : 46540000 (beats 62%)
+// Runtime  : 4 ms (beats 88%)
+// Memory   : 45988000 (beats 99%)
 // Language : java
-// Copyright: (c) 2026 Shreeprasandh K. All rights reserved.
+// Copyright: (c) 2026 Shreeprasandh. All rights reserved.
 // Synced by: leetie
 // ──────────────────────────────────────────────────
 
