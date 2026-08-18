@@ -46,13 +46,24 @@
         }
       }
 
-      // Priority 3: Fallback DOM textareas & view lines
-      const textarea = document.querySelector('textarea.inputarea, textarea[aria-label*="code"]') as HTMLTextAreaElement;
-      if (textarea && textarea.value) return textarea.value;
+      // Priority 3: CodeMirror 6 editor (used in LeetCode dynamic layout updates)
+      const cmLines = document.querySelectorAll('.cm-content .cm-line');
+      if (cmLines.length > 0) {
+        const codeText = Array.from(cmLines).map((l) => l.textContent || '').join('\n');
+        if (codeText.trim()) return codeText;
+      }
 
-      const viewLines = document.querySelectorAll('.view-line');
+      // Priority 4: Monaco DOM view lines
+      const viewLines = document.querySelectorAll('.view-lines .view-line, .view-line');
       if (viewLines.length > 0) {
-        return Array.from(viewLines).map((l) => l.textContent || '').join('\n');
+        const codeText = Array.from(viewLines).map((l) => l.textContent || '').join('\n');
+        if (codeText.trim()) return codeText;
+      }
+
+      // Priority 5: Fallback DOM textareas
+      const textarea = document.querySelector('textarea.inputarea, textarea[aria-label*="code"]') as HTMLTextAreaElement;
+      if (textarea && textarea.value && textarea.value.trim().length > 10) {
+        return textarea.value;
       }
     } catch (_) { /* ignore */ }
     return '';

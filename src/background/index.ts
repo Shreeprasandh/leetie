@@ -34,6 +34,28 @@ function releaseKeepAlive() {
 // for the same accepted submission in quick succession.
 const inFlightSubmissions = new Set<string>();
 
+async function processPendingQueue() {
+  try {
+    const pending = await storage.getPendingSubmissions();
+    if (!pending.length) return;
+    console.log(`[leetie] Processing ${pending.length} pending submission(s)...`);
+    for (const sub of pending) {
+      try {
+        await SyncService.commitSubmission(sub);
+        await storage.removePendingSubmission(sub.submissionId);
+        console.log('[leetie] Pending submission successfully committed:', sub.problem.title);
+      } catch (err: any) {
+        console.warn('[leetie] Pending submission retry skipped:', sub.problem.title, err.message);
+      }
+    }
+  } catch (err) {
+    console.warn('[leetie] Error processing pending queue:', err);
+  }
+}
+
+// Process any queued offline submissions on service worker startup
+processPendingQueue();
+
 if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
   chrome.runtime.onMessage.addListener((message: Message, _sender, sendResponse) => {
     if (message.type === 'GET_STATE') {
@@ -60,14 +82,12 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
       const { token, username, repoName } = message.payload as { token: string; username: string; repoName: string };
       (async () => {
         try {
-          // Verify token first, then check repo — only save config if BOTH succeed.
-          // Saving before ensureRepo can leave an inconsistent state where a valid
-          // token is stored but isAuthenticated:false if the repo check fails.
           const user = await GitHubService.verifyUser(token);
           const targetUsername = username || user.login;
           const repoOk = await GitHubService.ensureRepo(token, targetUsername, repoName);
           await storage.setConfig({ githubToken: token, githubUsername: targetUsername });
           await storage.setState({ isAuthenticated: true, lastError: null });
+          processPendingQueue();
           sendResponse({ success: true, user, repoOk });
         } catch (err: any) {
           await storage.setState({ isAuthenticated: false, lastError: err.message });
@@ -87,10 +107,10 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
             config.proxyUrl
           );
           const user = await GitHubService.verifyUser(token);
-          // Save config only after BOTH verifyUser AND ensureRepo succeed
           await GitHubService.ensureRepo(token, user.login, config.repoName);
           await storage.setConfig({ githubToken: token, githubUsername: user.login });
           await storage.setState({ isAuthenticated: true, lastError: null });
+          processPendingQueue();
           sendResponse({ success: true, user });
         } catch (err: any) {
           await storage.setState({ isAuthenticated: false, lastError: err.message });
@@ -127,6 +147,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
         try {
           await storage.setState({ syncStatus: 'syncing' });
           const record = await SyncService.commitSubmission(submission);
+          await storage.removePendingSubmission(submission.submissionId);
           await storage.setState({ syncStatus: 'idle', lastError: null });
 
           if (typeof chrome !== 'undefined' && chrome.notifications) {
@@ -145,6 +166,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime?.onMessage) {
 
           sendResponse({ success: true, record });
         } catch (err: any) {
+          await storage.addPendingSubmission(submission);
           await storage.setState({ syncStatus: 'error', lastError: err.message });
           sendResponse({ success: false, error: err.message });
         } finally {

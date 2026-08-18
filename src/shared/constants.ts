@@ -27,6 +27,7 @@ export const STORAGE_KEYS = {
   STATE: 'leetie_state',
   COMMITS: 'leetie_commits',
   SYNCED_SLUGS: 'leetie_synced_slugs',
+  PENDING_SUBMISSIONS: 'leetie_pending_submissions',
 } as const;
 
 export const LANGUAGE_EXTENSION_MAP: Record<string, string> = {

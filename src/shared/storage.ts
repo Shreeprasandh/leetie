@@ -1,5 +1,5 @@
 import { DEFAULT_CONFIG, INITIAL_STATE, STORAGE_KEYS } from './constants';
-import { CommitRecord, Difficulty, ExtensionConfig, ExtensionState, SyncedStats } from './types';
+import { CommitRecord, Difficulty, ExtensionConfig, ExtensionState, Submission, SyncedStats } from './types';
 
 export function computeSyncedStats(commits: CommitRecord[]): SyncedStats {
   const uniqueProblems = new Map<string, Difficulty>();
@@ -187,6 +187,38 @@ export const storage = {
       syncedStats: stats,
       lastError: null,
     });
+    return updated;
+  },
+
+  async getPendingSubmissions(): Promise<Submission[]> {
+    if (typeof chrome !== 'undefined' && chrome.storage?.local) {
+      const res = await chrome.storage.local.get(STORAGE_KEYS.PENDING_SUBMISSIONS);
+      return res[STORAGE_KEYS.PENDING_SUBMISSIONS] || [];
+    }
+    const local = localStorage.getItem(STORAGE_KEYS.PENDING_SUBMISSIONS);
+    return local ? JSON.parse(local) : [];
+  },
+
+  async addPendingSubmission(submission: Submission): Promise<Submission[]> {
+    const current = await this.getPendingSubmissions();
+    if (current.some((s) => s.submissionId === submission.submissionId)) return current;
+    const updated = [...current, submission];
+    if (typeof chrome !== 'undefined' && chrome.storage?.local) {
+      await chrome.storage.local.set({ [STORAGE_KEYS.PENDING_SUBMISSIONS]: updated });
+    } else {
+      localStorage.setItem(STORAGE_KEYS.PENDING_SUBMISSIONS, JSON.stringify(updated));
+    }
+    return updated;
+  },
+
+  async removePendingSubmission(submissionId: string): Promise<Submission[]> {
+    const current = await this.getPendingSubmissions();
+    const updated = current.filter((s) => s.submissionId !== submissionId);
+    if (typeof chrome !== 'undefined' && chrome.storage?.local) {
+      await chrome.storage.local.set({ [STORAGE_KEYS.PENDING_SUBMISSIONS]: updated });
+    } else {
+      localStorage.setItem(STORAGE_KEYS.PENDING_SUBMISSIONS, JSON.stringify(updated));
+    }
     return updated;
   },
 };

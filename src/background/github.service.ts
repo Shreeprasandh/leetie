@@ -61,14 +61,8 @@ export class GitHubService {
   }
 
   static async ensureRepo(token: string, username: string, repoName: string): Promise<boolean> {
-    // Check if repo exists
-    const checkRes = await fetch(`${this.BASE_URL}/repos/${username}/${repoName}`, {
-      headers: this.getHeaders(token),
-    });
-
-    if (checkRes.ok) {
-      return true; // Repo exists
-    }
+    const checkUrl = `${this.BASE_URL}/repos/${username}/${repoName}`;
+    let checkRes = await fetch(checkUrl, { headers: this.getHeaders(token) });
 
     if (checkRes.status === 404) {
       // Determine if personal or org to use correct creation endpoint
@@ -80,7 +74,7 @@ export class GitHubService {
       const isPersonal = user.login?.toLowerCase() === username.toLowerCase();
       const createUrl = isPersonal ? `${this.BASE_URL}/user/repos` : `${this.BASE_URL}/orgs/${username}/repos`;
 
-      // Create repo
+      // Create repo with auto_init: true
       const createRes = await fetch(createUrl, {
         method: 'POST',
         headers: {
@@ -99,12 +93,56 @@ export class GitHubService {
       if (!createRes.ok) {
         throw new Error(`Failed to create repository '${repoName}': ${createRes.statusText}`);
       }
-      // Brief delay to allow GitHub's async auto_init to populate default main branch
-      await new Promise((r) => setTimeout(r, 1500));
-      return true;
+
+      // Poll until repo is initialized by GitHub (max 5 retries with 1s backoff)
+      let initialized = false;
+      for (let attempt = 0; attempt < 5; attempt++) {
+        await new Promise((r) => setTimeout(r, 1000));
+        checkRes = await fetch(checkUrl, { headers: this.getHeaders(token) });
+        if (checkRes.ok) {
+          initialized = true;
+          break;
+        }
+      }
+      if (!initialized) {
+        console.warn('[leetie] Repository created but initialization polling timed out.');
+      }
     }
 
-    throw new Error(`Error verifying repository '${repoName}': ${checkRes.statusText}`);
+    if (!checkRes.ok) {
+      throw new Error(`Error verifying repository '${repoName}': ${checkRes.statusText}`);
+    }
+
+    const repoData = await checkRes.json();
+    const defaultBranch = repoData.default_branch || 'main';
+
+    // Verify if default branch tree exists, seed README if repository is still empty
+    const treeRes = await fetch(`${this.BASE_URL}/repos/${username}/${repoName}/git/trees/${defaultBranch}`, {
+      headers: this.getHeaders(token),
+    });
+
+    if (treeRes.status === 404 || treeRes.status === 409) {
+      console.log('[leetie] Empty repository detected, seeding initial README.md...');
+      const seedRes = await fetch(`${this.BASE_URL}/repos/${username}/${repoName}/contents/README.md`, {
+        method: 'PUT',
+        headers: {
+          ...this.getHeaders(token),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: 'leetie: Initialize repository',
+          content: btoa('# My LeetCode Solutions\n\n> Automatically synced by [leetie](https://github.com/leetie/leetie).\n'),
+          branch: defaultBranch,
+        }),
+      });
+      if (!seedRes.ok) {
+        console.warn('[leetie] Failed to seed initial README.md:', seedRes.statusText);
+      } else {
+        await new Promise((r) => setTimeout(r, 1000));
+      }
+    }
+
+    return true;
   }
 
   static async fetchRepoTree(token: string, username: string, repoName: string, branch = 'main'): Promise<{ path: string; size?: number; sha?: string }[]> {

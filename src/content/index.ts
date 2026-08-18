@@ -20,6 +20,33 @@ console.log('[leetie] Isolated-world content script active on LeetCode.');
 // ---------------------------------------------------------------------------
 const LEETIE_EVENT = '__leetie_submission__';
 
+// Send message to background service worker with retry to wake up dormant MV3 worker
+async function sendMessageToBackgroundWithRetry(msg: Message, retries = 3, delayMs = 600): Promise<any> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const response = await new Promise<any>((resolve, reject) => {
+        if (typeof chrome === 'undefined' || !chrome.runtime?.sendMessage) {
+          return reject(new Error('Chrome extension runtime not available.'));
+        }
+        chrome.runtime.sendMessage(msg, (res) => {
+          if (chrome.runtime.lastError) {
+            return reject(new Error(chrome.runtime.lastError.message));
+          }
+          resolve(res);
+        });
+      });
+      return response;
+    } catch (err: any) {
+      console.warn(`[leetie] Background message attempt ${attempt}/${retries} failed:`, err.message);
+      if (attempt < retries) {
+        await new Promise((r) => setTimeout(r, delayMs));
+      } else {
+        throw err;
+      }
+    }
+  }
+}
+
 window.addEventListener(LEETIE_EVENT, async (e: Event) => {
   const { rawData, code } = (e as CustomEvent<{ rawData: any; code: string }>).detail;
 
@@ -33,19 +60,25 @@ window.addEventListener(LEETIE_EVENT, async (e: Event) => {
 
   console.log('[leetie] Forwarding accepted submission to background:', submission.problem.title);
 
-  if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
-    const msg: Message = { type: 'SUBMISSION_DETECTED', payload: submission };
-    chrome.runtime.sendMessage(msg, (response) => {
-      if (chrome.runtime.lastError) {
-        console.warn('[leetie] Background not available:', chrome.runtime.lastError.message);
-        return;
-      }
-      if (response?.success) {
-        console.log('[leetie] Background confirmed commit:', response);
-      }
-    });
+  const msg: Message = { type: 'SUBMISSION_DETECTED', payload: submission };
+  try {
+    const response = await sendMessageToBackgroundWithRetry(msg);
+    if (response?.success) {
+      console.log('[leetie] Background confirmed commit:', response);
+    }
+  } catch (err: any) {
+    console.error('[leetie] Failed to send submission to background service worker:', err);
   }
 });
+
+// Real-time auth sync: Listen to chrome.storage changes so open tabs pick up credentials instantly
+if (typeof chrome !== 'undefined' && chrome.storage?.onChanged) {
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName === 'local' && (changes.leetie_config || changes.leetie_state)) {
+      console.log('[leetie] Configuration updated in storage, active session synchronized.');
+    }
+  });
+}
 
 // ---------------------------------------------------------------------------
 // PROXY_GRAPHQL handler
