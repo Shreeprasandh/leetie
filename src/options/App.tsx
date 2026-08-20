@@ -462,7 +462,7 @@ export default function OptionsApp() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, color: 'var(--text-muted)', opacity: 0.75 }}>
           <input type="checkbox" id="terms" defaultChecked readOnly />
           <label htmlFor="terms">
-            I accept the <a href="#privacy" onClick={() => alert('Privacy Policy: leetie operates 100% locally inside your browser. No data, tokens, or code are collected, transmitted, or sold to third parties.')} style={{ color: 'var(--text-secondary)' }}>Privacy Policy</a> and <a href="#terms" onClick={() => alert('Terms of Service: leetie is provided as-is under the MIT license. You retain full ownership of your code.')} style={{ color: 'var(--text-secondary)' }}>Terms of Service</a>.
+            I accept the <a href="#privacy" onClick={() => alert('Privacy Policy: leetie operates 100% locally inside your browser. No data, tokens, or code are collected, transmitted, or sold to third parties.')} style={{ color: 'var(--text-secondary)' }}>Privacy Policy</a> and <a href="#terms" onClick={() => alert('Terms of Service: leetie is provided as-is under the GNU General Public License v3 (GPL-3.0). You retain full ownership of your code.')} style={{ color: 'var(--text-secondary)' }}>Terms of Service (GPLv3)</a>.
           </label>
         </div>
 
@@ -506,6 +506,33 @@ export default function OptionsApp() {
           )}
         </div>
       </form>
+
+      {/* Author & Project Signature */}
+      <div
+        style={{
+          marginTop: 32,
+          paddingTop: 16,
+          borderTop: '1px solid var(--border)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontSize: 11,
+          color: 'var(--text-muted)',
+        }}
+      >
+        <span>leetie v1.0.0 · Licensed under GPL-3.0</span>
+        <span>
+          Built with care by{' '}
+          <a
+            href="https://github.com/Shreeprasandh"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: 'var(--sage-main)', textDecoration: 'none', fontWeight: 500 }}
+          >
+            Shreeprasandh K
+          </a>
+        </span>
+      </div>
     </div>
   );
 }

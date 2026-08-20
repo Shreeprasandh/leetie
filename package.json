@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Automatically sync your accepted LeetCode solutions to GitHub.",
   "author": "Shreeprasandh K",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
