@@ -176,10 +176,52 @@
     return '';
   }
 
+  // -------------------------------------------------------------------------
+  // User Submit Action Trackers (Submit Button click & Ctrl+Enter / Cmd+Enter)
+  // -------------------------------------------------------------------------
+  let _lastUserSubmitTime = 0;
+
+  function trackSubmitAction() {
+    _lastUserSubmitTime = Date.now();
+    console.log('[leetie] User submit action detected at:', new Date(_lastUserSubmitTime).toLocaleTimeString());
+  }
+
+  document.addEventListener('click', (e: Event) => {
+    try {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const btn = target.closest('button, [data-e2e-locator="console-submit-button"], [class*="submit"]');
+      if (btn) {
+        const text = (btn.textContent || '').trim().toLowerCase();
+        const locator = btn.getAttribute('data-e2e-locator') || '';
+        const cls = (btn.className || '').toLowerCase();
+        if (text.includes('submit') || locator.includes('submit') || cls.includes('submit')) {
+          trackSubmitAction();
+        }
+      }
+    } catch (_) { /* ignore */ }
+  }, true);
+
+  window.addEventListener('keydown', (e: KeyboardEvent) => {
+    try {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'Enter' || e.code === 'Enter')) {
+        trackSubmitAction();
+      }
+    } catch (_) { /* ignore */ }
+  }, true);
+
   const _dispatchedSubmissionIds = new Set<string>();
 
   function dispatchSubmission(data: any, url: string, isDomFallback = false) {
     try {
+      // Enforce Submit Action Guard: Only proceed if the user pressed Submit or Ctrl+Enter within the last 2 minutes
+      const now = Date.now();
+      const isWithinSubmitWindow = (now - _lastUserSubmitTime) < 120000;
+      if (!isWithinSubmitWindow && !isDomFallback) {
+        console.log('[leetie] Ignored non-submit payload or past history view (no recent user submit click/hotkey).');
+        return;
+      }
+
       const gql =
         data?.data?.submissionCheck ||
         data?.data?.submissionDetails ||
@@ -191,7 +233,7 @@
       // Extract numeric submission ID from URL or payload if available
       const urlMatch = url.match(/submissions\/(?:detail\/)?(\d+)/);
       const extractedId = urlMatch?.[1] || details?.submission_id || details?.id || details?.submissionId || details?.question_id;
-      const subId = extractedId ? String(extractedId) : (details._submission_id || `sub_${Date.now()}`);
+      const subId = extractedId ? String(extractedId) : (details._submission_id || `sub_${now}`);
 
       // Skip if this exact submission ID was already dispatched in this page session
       if (_dispatchedSubmissionIds.has(subId)) {
@@ -295,47 +337,5 @@
     return originalXHRSend.apply(this, args as any);
   };
 
-  // -------------------------------------------------------------------------
-  // DOM Observer Fallback for "Accepted" Status Card
-  // -------------------------------------------------------------------------
-  let _lastDomAcceptedTime = 0;
-  const domObserver = new MutationObserver(() => {
-    try {
-      // Do not trigger DOM fallback when browsing submission history lists or discussion tabs
-      if (window.location.pathname.includes('/submissions/')) return;
-
-      const now = Date.now();
-      if (now - _lastDomAcceptedTime < 5000) return; // Debounce
-
-      const resultBadge = document.querySelector(
-        '[data-e2e-locator="submission-result"], div[class*="result-container"] [class*="status-accepted"], div[class*="result-state"]'
-      );
-      if (resultBadge && resultBadge.textContent?.trim().toLowerCase() === 'accepted') {
-        const code = extractMonacoCode();
-        if (code) {
-          _lastDomAcceptedTime = now;
-          const detectedLang = extractLanguageFromDOM() || 'python3';
-          const syntheticPayload = {
-            status_msg: 'Accepted',
-            statusDisplay: 'Accepted',
-            lang: detectedLang,
-            language: detectedLang,
-            code,
-            _submission_id: `dom_${now}`,
-          };
-          dispatchSubmission(syntheticPayload, window.location.href, true);
-        }
-      }
-    } catch (_) { /* ignore */ }
-  });
-
-  if (document.body) {
-    domObserver.observe(document.body, { childList: true, subtree: true });
-  } else {
-    document.addEventListener('DOMContentLoaded', () => {
-      if (document.body) domObserver.observe(document.body, { childList: true, subtree: true });
-    });
-  }
-
-  console.log('[leetie] Main-world fetch, XHR, and DOM interceptors active.');
+  console.log('[leetie] Main-world submit listeners, fetch, and XHR interceptors active.');
 })();

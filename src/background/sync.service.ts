@@ -237,22 +237,34 @@ ${rows}
       SyncService.ensuredRepos.add(repoKey);
     }
 
-    // Check if already committed recently to avoid double-processing
-    const existing = existingCommits.find(c => c.submissionId === submission.submissionId);
-    if (existing) {
-      // Verify whether the file still exists on GitHub (in case user deleted it on GitHub)
-      const remoteSha = await this.getFileSha(
-        config.githubToken,
-        config.githubUsername,
-        config.repoName,
-        filePath,
-        config.branch
-      );
-      if (remoteSha) {
-        console.log('[leetie] Submission already committed and verified on GitHub, skipping:', submission.submissionId);
-        return existing;
+    // Strict 3-Condition Deduplication Guard: Skip ONLY IF all 3 criteria are met simultaneously
+    const now = Date.now();
+    const hasSameSubmissionId = existingCommits.some((c) => c.submissionId === submission.submissionId);
+    const hasSameProblemAndLang = existingCommits.some((c) => c.problemSlug === submission.problem.slug && c.lang === submission.lang);
+    const hasRecentCommit = existingCommits.some(
+      (c) => c.problemSlug === submission.problem.slug && c.lang === submission.lang && (now - c.committedAt) < 120000
+    );
+
+    if (hasSameSubmissionId && hasSameProblemAndLang && hasRecentCommit) {
+      const existingRecord =
+        existingCommits.find((c) => c.submissionId === submission.submissionId) ||
+        existingCommits.find((c) => c.problemSlug === submission.problem.slug && c.lang === submission.lang);
+
+      if (existingRecord) {
+        // Verify whether the file still exists on GitHub (in case user deleted it on GitHub)
+        const remoteSha = await this.getFileSha(
+          config.githubToken,
+          config.githubUsername,
+          config.repoName,
+          filePath,
+          config.branch
+        );
+        if (remoteSha) {
+          console.log('[leetie] All 3 duplicate criteria met simultaneously. Skipping commit:', submission.submissionId);
+          return existingRecord;
+        }
+        console.log('[leetie] File missing on GitHub (deleted by user). Re-committing solution:', filePath);
       }
-      console.log('[leetie] File missing on GitHub (deleted by user). Re-committing solution:', filePath);
     }
     const fileContent = config.addHeaderComment ? this.formatSolutionHeader(submission, config.githubUsername) : submission.code;
     const commitMessage = `leetie: Add ${submission.problem.id}. ${submission.problem.title} [${submission.problem.difficulty}] (${submission.lang})`;
