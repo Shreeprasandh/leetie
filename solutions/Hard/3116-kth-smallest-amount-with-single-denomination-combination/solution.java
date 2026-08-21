@@ -3,8 +3,8 @@
 // Difficulty: Hard
 // Tags     : Array, Math, Binary Search, Bit Manipulation, Combinatorics, Number Theory
 // Link     : https://leetcode.com/problems/kth-smallest-amount-with-single-denomination-combination/
-// Runtime  : 219 ms (beats 6%)
-// Memory   : 43256000 (beats 96%)
+// Runtime  : 218 ms (beats 6%)
+// Memory   : 43428000 (beats 82%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh. All rights reserved.
 // Synced by: leetie
