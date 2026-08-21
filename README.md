@@ -2,10 +2,15 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 73 Solved
+## Progress Summary: 74 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
+| binary-tree-maximum-path-sum | 124. Binary Tree Maximum Path Sum | Hard | java | [Problem](https://leetcode.com/problems/binary-tree-maximum-path-sum/) | [Solution](./solutions/Hard/0124-binary-tree-maximum-path-sum/solution.java) |
+| candy | 135. Candy | Hard | java | [Problem](https://leetcode.com/problems/candy/) | [Solution](./solutions/Hard/0135-candy/solution.java) |
+| delete-duplicate-emails | 196. Delete Duplicate Emails | Easy | mysql | [Problem](https://leetcode.com/problems/delete-duplicate-emails/) | [Solution](./solutions/Easy/0196-delete-duplicate-emails/solution.sql) |
+| contains-duplicate-ii | 219. Contains Duplicate Ii | Easy | java | [Problem](https://leetcode.com/problems/contains-duplicate-ii/) | [Solution](./solutions/Easy/0219-contains-duplicate-ii/solution.java) |
+| distribute-elements-into-two-arrays-i | 3069. Distribute Elements Into Two Arrays I | Easy | java | [Problem](https://leetcode.com/problems/distribute-elements-into-two-arrays-i/) | [Solution](./solutions/Easy/3069-distribute-elements-into-two-arrays-i/solution.java) |
 | increasing-triplet-subsequence | Increasing Triplet Subsequence | Medium | java | [Problem](https://leetcode.com/problems/increasing-triplet-subsequence/) | [Solution](./solutions/Medium/0334-increasing-triplet-subsequence/solution.java) |
 | intersection-of-two-arrays | Intersection of Two Arrays | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays/) | [Solution](./solutions/Easy/0349-intersection-of-two-arrays/solution.java) |
 | intersection-of-two-arrays-ii | Intersection of Two Arrays II | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays-ii/) | [Solution](./solutions/Easy/0350-intersection-of-two-arrays-ii/solution.java) |
@@ -15,31 +20,27 @@
 | longest-common-prefix | 14. Longest Common Prefix | Easy | java | [Problem](https://leetcode.com/problems/longest-common-prefix/) | [Solution](./solutions/Easy/0014-longest-common-prefix/solution.java) |
 | substring-with-concatenation-of-all-words | 30. Substring With Concatenation Of All Words | Hard | java | [Problem](https://leetcode.com/problems/substring-with-concatenation-of-all-words/) | [Solution](./solutions/Hard/0030-substring-with-concatenation-of-all-words/solution.java) |
 | longest-valid-parentheses | 32. Longest Valid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/longest-valid-parentheses/) | [Solution](./solutions/Hard/0032-longest-valid-parentheses/solution.java) |
-| binary-tree-maximum-path-sum | 124. Binary Tree Maximum Path Sum | Hard | java | [Problem](https://leetcode.com/problems/binary-tree-maximum-path-sum/) | [Solution](./solutions/Hard/0124-binary-tree-maximum-path-sum/solution.java) |
-| candy | 135. Candy | Hard | java | [Problem](https://leetcode.com/problems/candy/) | [Solution](./solutions/Hard/0135-candy/solution.java) |
 | max-points-on-a-line | 149. Max Points On A Line | Hard | java | [Problem](https://leetcode.com/problems/max-points-on-a-line/) | [Solution](./solutions/Hard/0149-max-points-on-a-line/solution.java) |
 | majority-element | 169. Majority Element | Easy | java | [Problem](https://leetcode.com/problems/majority-element/) | [Solution](./solutions/Easy/0169-majority-element/solution.java) |
-| dungeon-game | 174. Dungeon Game | Hard | java | [Problem](https://leetcode.com/problems/dungeon-game/) | [Solution](./solutions/Hard/0174-dungeon-game/solution.java) |
-| best-time-to-buy-and-sell-stock-iv | 188. Best Time To Buy And Sell Stock Iv | Hard | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | [Solution](./solutions/Hard/0188-best-time-to-buy-and-sell-stock-iv/solution.java) |
-| delete-duplicate-emails | 196. Delete Duplicate Emails | Easy | mysql | [Problem](https://leetcode.com/problems/delete-duplicate-emails/) | [Solution](./solutions/Easy/0196-delete-duplicate-emails/solution.sql) |
-| contains-duplicate-iii | 220. Contains Duplicate Iii | Hard | java | [Problem](https://leetcode.com/problems/contains-duplicate-iii/) | [Solution](./solutions/Hard/0220-contains-duplicate-iii/solution.java) |
+| the-skyline-problem | 218. The Skyline Problem | Hard | java | [Problem](https://leetcode.com/problems/the-skyline-problem/) | [Solution](./solutions/Hard/0218-the-skyline-problem/solution.java) |
+| sliding-window-maximum | 239. Sliding Window Maximum | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-maximum/) | [Solution](./solutions/Hard/0239-sliding-window-maximum/solution.java) |
 | missing-number | 268. Missing Number | Easy | java | [Problem](https://leetcode.com/problems/missing-number/) | [Solution](./solutions/Easy/0268-missing-number/solution.java) |
-| move-zeroes | 283. Move Zeroes | Easy | java | [Problem](https://leetcode.com/problems/move-zeroes/) | [Solution](./solutions/Easy/0283-move-zeroes/solution.java) |
 | maximum-length-substring-with-two-occurrences | 3090. Maximum Length Substring With Two Occurrences | Easy | java | [Problem](https://leetcode.com/problems/maximum-length-substring-with-two-occurrences/) | [Solution](./solutions/Easy/3090-maximum-length-substring-with-two-occurrences/solution.java) |
+| find-the-largest-almost-missing-integer | 3471. Find The Largest Almost Missing Integer | Easy | java | [Problem](https://leetcode.com/problems/find-the-largest-almost-missing-integer/) | [Solution](./solutions/Easy/3471-find-the-largest-almost-missing-integer/solution.java) |
 | palindrome-pairs | Palindrome Pairs | Hard | java | [Problem](https://leetcode.com/problems/palindrome-pairs/) | [Solution](./solutions/Hard/0336-palindrome-pairs/solution.java) |
+| patching-array | Patching Array | Hard | java | [Problem](https://leetcode.com/problems/patching-array/) | [Solution](./solutions/Hard/0330-patching-array/solution.java) |
 | reconstruct-itinerary | Reconstruct Itinerary | Hard | java | [Problem](https://leetcode.com/problems/reconstruct-itinerary/) | [Solution](./solutions/Hard/0332-reconstruct-itinerary/solution.java) |
 | roman-to-integer | 13. Roman To Integer | Easy | java | [Problem](https://leetcode.com/problems/roman-to-integer/) | [Solution](./solutions/Easy/0013-roman-to-integer/solution.java) |
+| dungeon-game | 174. Dungeon Game | Hard | java | [Problem](https://leetcode.com/problems/dungeon-game/) | [Solution](./solutions/Hard/0174-dungeon-game/solution.java) |
+| best-time-to-buy-and-sell-stock-iv | 188. Best Time To Buy And Sell Stock Iv | Hard | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | [Solution](./solutions/Hard/0188-best-time-to-buy-and-sell-stock-iv/solution.java) |
 | rising-temperature | 197. Rising Temperature | Easy | mysql | [Problem](https://leetcode.com/problems/rising-temperature/) | [Solution](./solutions/Easy/0197-rising-temperature/solution.sql) |
-| word-search-ii | 212. Word Search Ii | Hard | java | [Problem](https://leetcode.com/problems/word-search-ii/) | [Solution](./solutions/Hard/0212-word-search-ii/solution.java) |
-| the-skyline-problem | 218. The Skyline Problem | Hard | java | [Problem](https://leetcode.com/problems/the-skyline-problem/) | [Solution](./solutions/Hard/0218-the-skyline-problem/solution.java) |
-| contains-duplicate-ii | 219. Contains Duplicate Ii | Easy | java | [Problem](https://leetcode.com/problems/contains-duplicate-ii/) | [Solution](./solutions/Easy/0219-contains-duplicate-ii/solution.java) |
-| find-the-largest-almost-missing-integer | 3471. Find The Largest Almost Missing Integer | Easy | java | [Problem](https://leetcode.com/problems/find-the-largest-almost-missing-integer/) | [Solution](./solutions/Easy/3471-find-the-largest-almost-missing-integer/solution.java) |
+| contains-duplicate-iii | 220. Contains Duplicate Iii | Hard | java | [Problem](https://leetcode.com/problems/contains-duplicate-iii/) | [Solution](./solutions/Hard/0220-contains-duplicate-iii/solution.java) |
 | self-crossing | Self Crossing | Hard | java | [Problem](https://leetcode.com/problems/self-crossing/) | [Solution](./solutions/Hard/0335-self-crossing/solution.java) |
+| word-search-ii | 212. Word Search Ii | Hard | java | [Problem](https://leetcode.com/problems/word-search-ii/) | [Solution](./solutions/Hard/0212-word-search-ii/solution.java) |
 | summary-ranges | 228. Summary Ranges | Easy | java | [Problem](https://leetcode.com/problems/summary-ranges/) | [Solution](./solutions/Easy/0228-summary-ranges/solution.java) |
-| sliding-window-maximum | 239. Sliding Window Maximum | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-maximum/) | [Solution](./solutions/Hard/0239-sliding-window-maximum/solution.java) |
+| move-zeroes | 283. Move Zeroes | Easy | java | [Problem](https://leetcode.com/problems/move-zeroes/) | [Solution](./solutions/Easy/0283-move-zeroes/solution.java) |
 | longest-increasing-path-in-a-matrix | 329. Longest Increasing Path In A Matrix | Hard | java | [Problem](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) | [Solution](./solutions/Hard/0329-longest-increasing-path-in-a-matrix/solution.java) |
 | stone-game-v | 1563. Stone Game V | Hard | java | [Problem](https://leetcode.com/problems/stone-game-v/) | [Solution](./solutions/Hard/1563-stone-game-v/solution.java) |
-| distribute-elements-into-two-arrays-i | 3069. Distribute Elements Into Two Arrays I | Easy | java | [Problem](https://leetcode.com/problems/distribute-elements-into-two-arrays-i/) | [Solution](./solutions/Easy/3069-distribute-elements-into-two-arrays-i/solution.java) |
 | top-k-frequent-elements | Top K Frequent Elements | Medium | java | [Problem](https://leetcode.com/problems/top-k-frequent-elements/) | [Solution](./solutions/Medium/0347-top-k-frequent-elements/solution.java) |
 | two-sum | 1. Two Sum | Easy | java | [Problem](https://leetcode.com/problems/two-sum/) | [Solution](./solutions/Easy/0001-two-sum/solution.java) |
 | add-two-numbers | 2. Add Two Numbers | Medium | java | [Problem](https://leetcode.com/problems/add-two-numbers/) | [Solution](./solutions/Medium/0002-add-two-numbers/solution.java) |
