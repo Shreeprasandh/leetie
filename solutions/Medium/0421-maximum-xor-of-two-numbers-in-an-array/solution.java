@@ -3,30 +3,59 @@
 // Difficulty: Medium
 // Tags     : Array, Hash Table, Bit Manipulation, Trie
 // Link     : https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/
-// Runtime  : 630 ms (beats 72%)
-// Memory   : 241868000 (beats 18%)
+// Runtime  : 925 ms (beats 36%)
+// Memory   : 208796000 (beats 55%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh. All rights reserved.
 // Synced by: leetie
 // ──────────────────────────────────────────────────
 
 class Solution {
-    public int findMaximumXOR(int[] nums) {
-        int max = 0, mask = 0;
+    class TrieNode {
+        TrieNode[] children = new TrieNode[2];
+    }
+    
+    private TrieNode root = new TrieNode();
+    
+    public void insert(int num) {
+        TrieNode curr = root;
         for (int i = 31; i >= 0; i--) {
-            mask |= (1 << i);
-            java.util.HashSet<Integer> set = new java.util.HashSet<>();
-            for (int num : nums) {
-                set.add(num & mask);
+            int bit = (num >> i) & 1;
+            if (curr.children[bit] == null) {
+                curr.children[bit] = new TrieNode();
             }
-            int tentative = max | (1 << i);
-            for (int prefix : set) {
-                if (set.contains(prefix ^ tentative)) {
-                    max = tentative;
-                    break;
-                }
+            curr = curr.children[bit];
+        }
+    }
+    
+    public int getMax(int num) {
+        TrieNode curr = root;
+        int maxNum = 0;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            int oppositeBit = 1 - bit;
+            if (curr.children[oppositeBit] != null) {
+                maxNum |= (1 << i);
+                curr = curr.children[oppositeBit];
+            } else {
+                curr = curr.children[bit];
             }
         }
-        return max;
+        return maxNum;
+    }
+
+    public int findMaximumXOR(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        
+        for (int num : nums) {
+            insert(num);
+        }
+        
+        int maxResult = 0;
+        for (int num : nums) {
+            maxResult = Math.max(maxResult, getMax(num));
+        }
+        
+        return maxResult;
     }
 }
