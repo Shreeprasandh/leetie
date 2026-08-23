@@ -41,9 +41,6 @@
 | reverse-integer | 7. Reverse Integer | Medium | java | [Problem](https://leetcode.com/problems/reverse-integer/) | [Solution](./solutions/Medium/0007-reverse-integer/solution.java) |
 | string-to-integer-atoi | 8. String To Integer Atoi | Medium | java | [Problem](https://leetcode.com/problems/string-to-integer-atoi/) | [Solution](./solutions/Medium/0008-string-to-integer-atoi/solution.java) |
 | palindrome-number | 9. Palindrome Number | Easy | java | [Problem](https://leetcode.com/problems/palindrome-number/) | [Solution](./solutions/Easy/0009-palindrome-number/solution.java) |
-| longest-common-prefix | 14. Longest Common Prefix | Easy | java | [Problem](https://leetcode.com/problems/longest-common-prefix/) | [Solution](./solutions/Easy/0014-longest-common-prefix/solution.java) |
-| 3sum | 15. 3sum | Medium | java | [Problem](https://leetcode.com/problems/3sum/) | [Solution](./solutions/Medium/0015-3sum/solution.java) |
-| 4sum | 18. 4sum | Medium | java | [Problem](https://leetcode.com/problems/4sum/) | [Solution](./solutions/Medium/0018-4sum/solution.java) |
 | palindrome-pairs | Palindrome Pairs | Hard | java | [Problem](https://leetcode.com/problems/palindrome-pairs/) | [Solution](./solutions/Hard/0336-palindrome-pairs/solution.java) |
 | patching-array | Patching Array | Hard | java | [Problem](https://leetcode.com/problems/patching-array/) | [Solution](./solutions/Hard/0330-patching-array/solution.java) |
 | perfect-rectangle | Perfect Rectangle | Hard | java | [Problem](https://leetcode.com/problems/perfect-rectangle/) | [Solution](./solutions/Hard/0391-perfect-rectangle/solution.java) |
@@ -53,6 +50,9 @@
 | range-sum-query-mutable | Range Sum Query - Mutable | Medium | java | [Problem](https://leetcode.com/problems/range-sum-query-mutable/) | [Solution](./solutions/Medium/0307-range-sum-query-mutable/solution.java) |
 | reconstruct-itinerary | Reconstruct Itinerary | Hard | java | [Problem](https://leetcode.com/problems/reconstruct-itinerary/) | [Solution](./solutions/Hard/0332-reconstruct-itinerary/solution.java) |
 | roman-to-integer | 13. Roman To Integer | Easy | java | [Problem](https://leetcode.com/problems/roman-to-integer/) | [Solution](./solutions/Easy/0013-roman-to-integer/solution.java) |
+| longest-common-prefix | 14. Longest Common Prefix | Easy | java | [Problem](https://leetcode.com/problems/longest-common-prefix/) | [Solution](./solutions/Easy/0014-longest-common-prefix/solution.java) |
+| 3sum | 15. 3sum | Medium | java | [Problem](https://leetcode.com/problems/3sum/) | [Solution](./solutions/Medium/0015-3sum/solution.java) |
+| 4sum | 18. 4sum | Medium | java | [Problem](https://leetcode.com/problems/4sum/) | [Solution](./solutions/Medium/0018-4sum/solution.java) |
 | rotate-function | Rotate Function | Medium | java | [Problem](https://leetcode.com/problems/rotate-function/) | [Solution](./solutions/Medium/0396-rotate-function/solution.java) |
 | russian-doll-envelopes | Russian Doll Envelopes | Hard | java | [Problem](https://leetcode.com/problems/russian-doll-envelopes/) | [Solution](./solutions/Hard/0354-russian-doll-envelopes/solution.java) |
 | self-crossing | Self Crossing | Hard | java | [Problem](https://leetcode.com/problems/self-crossing/) | [Solution](./solutions/Hard/0335-self-crossing/solution.java) |
@@ -89,7 +89,6 @@
 | the-skyline-problem | 218. The Skyline Problem | Hard | java | [Problem](https://leetcode.com/problems/the-skyline-problem/) | [Solution](./solutions/Hard/0218-the-skyline-problem/solution.java) |
 | contains-duplicate-ii | 219. Contains Duplicate Ii | Easy | java | [Problem](https://leetcode.com/problems/contains-duplicate-ii/) | [Solution](./solutions/Easy/0219-contains-duplicate-ii/solution.java) |
 | contains-duplicate-iii | 220. Contains Duplicate Iii | Hard | java | [Problem](https://leetcode.com/problems/contains-duplicate-iii/) | [Solution](./solutions/Hard/0220-contains-duplicate-iii/solution.java) |
-| maximal-square | 221. Maximal Square | Medium | java | [Problem](https://leetcode.com/problems/maximal-square/) | [Solution](./solutions/Medium/0221-maximal-square/solution.java) |
 | summary-ranges | 228. Summary Ranges | Easy | java | [Problem](https://leetcode.com/problems/summary-ranges/) | [Solution](./solutions/Easy/0228-summary-ranges/solution.java) |
 | sliding-window-maximum | 239. Sliding Window Maximum | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-maximum/) | [Solution](./solutions/Hard/0239-sliding-window-maximum/solution.java) |
 | missing-number | 268. Missing Number | Easy | java | [Problem](https://leetcode.com/problems/missing-number/) | [Solution](./solutions/Easy/0268-missing-number/solution.java) |
@@ -100,6 +99,7 @@
 | distribute-elements-into-two-arrays-i | 3069. Distribute Elements Into Two Arrays I | Easy | java | [Problem](https://leetcode.com/problems/distribute-elements-into-two-arrays-i/) | [Solution](./solutions/Easy/3069-distribute-elements-into-two-arrays-i/solution.java) |
 | maximum-length-substring-with-two-occurrences | 3090. Maximum Length Substring With Two Occurrences | Easy | java | [Problem](https://leetcode.com/problems/maximum-length-substring-with-two-occurrences/) | [Solution](./solutions/Easy/3090-maximum-length-substring-with-two-occurrences/solution.java) |
 | find-the-largest-almost-missing-integer | 3471. Find The Largest Almost Missing Integer | Easy | java | [Problem](https://leetcode.com/problems/find-the-largest-almost-missing-integer/) | [Solution](./solutions/Easy/3471-find-the-largest-almost-missing-integer/solution.java) |
+| third-maximum-number | Third Maximum Number | Easy | java | [Problem](https://leetcode.com/problems/third-maximum-number/) | [Solution](./solutions/Easy/0414-third-maximum-number/solution.java) |
 | top-k-frequent-elements | Top K Frequent Elements | Medium | java | [Problem](https://leetcode.com/problems/top-k-frequent-elements/) | [Solution](./solutions/Medium/0347-top-k-frequent-elements/solution.java) |
 | trapping-rain-water-ii | Trapping Rain Water II | Hard | java | [Problem](https://leetcode.com/problems/trapping-rain-water-ii/) | [Solution](./solutions/Hard/0407-trapping-rain-water-ii/solution.java) |
 | two-sum | 1. Two Sum | Easy | java | [Problem](https://leetcode.com/problems/two-sum/) | [Solution](./solutions/Easy/0001-two-sum/solution.java) |
