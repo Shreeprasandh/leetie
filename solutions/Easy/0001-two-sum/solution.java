@@ -1,12 +1,12 @@
 // ──────────────────────────────────────────────────
 // Problem  : 1. Two Sum
 // Difficulty: Easy
-// Tags     : N/A
+// Tags     : Array, Hash Table
 // Link     : https://leetcode.com/problems/two-sum/
-// Runtime  : 38 ms (beats 42%)
-// Memory   : 46456000 (beats 98%)
+// Runtime  : 39 ms (beats 38%)
+// Memory   : 46508000 (beats 96%)
 // Language : java
-// Copyright: (c) 2026 Shreeprasandh K. All rights reserved.
+// Copyright: (c) 2026 Shreeprasandh. All rights reserved.
 // Synced by: leetie
 // ──────────────────────────────────────────────────
 
