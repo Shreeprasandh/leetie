@@ -1,0 +1,28 @@
+// ──────────────────────────────────────────────────
+// Problem  : 194. Transpose File
+// Difficulty: Medium
+// Tags     : Shell
+// Link     : https://leetcode.com/problems/transpose-file/
+// Runtime  : 61 ms (beats 86%)
+// Memory   : 4064000 (beats 60%)
+// Language : bash
+// Copyright: (c) 2026 Shreeprasandh. All rights reserved.
+// Synced by: leetie
+// ──────────────────────────────────────────────────
+
+# Read from the file file.txt and print its transposed content to stdout.
+awk '
+{
+    for (i = 1; i <= NF; i++) {
+        if (NR == 1) {
+            s[i] = $i;
+        } else {
+            s[i] = s[i] " " $i;
+        }
+    }
+}
+END {
+    for (i = 1; i <= NF; i++) {
+        print s[i];
+    }
+}' file.txt
