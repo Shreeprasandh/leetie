@@ -2,23 +2,19 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 135 Solved
+## Progress Summary: 136 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
 | add-two-numbers | 2. Add Two Numbers | Medium | java | [Problem](https://leetcode.com/problems/add-two-numbers/) | [Solution](./solutions/Medium/0002-add-two-numbers/solution.java) |
 | additive-number | Additive Number | Medium | java | [Problem](https://leetcode.com/problems/additive-number/) | [Solution](./solutions/Medium/0306-additive-number/solution.java) |
 | longest-substring-without-repeating-characters | 3. Longest Substring Without Repeating Characters | Medium | java | [Problem](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | [Solution](./solutions/Medium/0003-longest-substring-without-repeating-characters/solution.java) |
-| longest-palindromic-substring | 5. Longest Palindromic Substring | Medium | java | [Problem](https://leetcode.com/problems/longest-palindromic-substring/) | [Solution](./solutions/Medium/0005-longest-palindromic-substring/solution.java) |
-| remove-invalid-parentheses | Remove Invalid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/remove-invalid-parentheses/) | [Solution](./solutions/Hard/0301-remove-invalid-parentheses/solution.java) |
-| smallest-missing-multiple-of-k | Smallest Missing Multiple of K | Easy | java | [Problem](https://leetcode.com/problems/smallest-missing-multiple-of-k/) | [Solution](./solutions/Easy/3718-smallest-missing-multiple-of-k/solution.java) |
-| two-sum | 1. Two Sum | Easy | java | [Problem](https://leetcode.com/problems/two-sum/) | [Solution](./solutions/Easy/0001-two-sum/solution.java) |
 | median-of-two-sorted-arrays | 4. Median Of Two Sorted Arrays | Hard | java | [Problem](https://leetcode.com/problems/median-of-two-sorted-arrays/) | [Solution](./solutions/Hard/0004-median-of-two-sorted-arrays/solution.java) |
+| longest-palindromic-substring | 5. Longest Palindromic Substring | Medium | java | [Problem](https://leetcode.com/problems/longest-palindromic-substring/) | [Solution](./solutions/Medium/0005-longest-palindromic-substring/solution.java) |
 | zigzag-conversion | 6. Zigzag Conversion | Medium | java | [Problem](https://leetcode.com/problems/zigzag-conversion/) | [Solution](./solutions/Medium/0006-zigzag-conversion/solution.java) |
 | reverse-integer | 7. Reverse Integer | Medium | java | [Problem](https://leetcode.com/problems/reverse-integer/) | [Solution](./solutions/Medium/0007-reverse-integer/solution.java) |
 | string-to-integer-atoi | 8. String To Integer Atoi | Medium | java | [Problem](https://leetcode.com/problems/string-to-integer-atoi/) | [Solution](./solutions/Medium/0008-string-to-integer-atoi/solution.java) |
 | palindrome-number | 9. Palindrome Number | Easy | java | [Problem](https://leetcode.com/problems/palindrome-number/) | [Solution](./solutions/Easy/0009-palindrome-number/solution.java) |
-| roman-to-integer | 13. Roman To Integer | Easy | java | [Problem](https://leetcode.com/problems/roman-to-integer/) | [Solution](./solutions/Easy/0013-roman-to-integer/solution.java) |
 | longest-common-prefix | 14. Longest Common Prefix | Easy | java | [Problem](https://leetcode.com/problems/longest-common-prefix/) | [Solution](./solutions/Easy/0014-longest-common-prefix/solution.java) |
 | 3sum | 15. 3sum | Medium | java | [Problem](https://leetcode.com/problems/3sum/) | [Solution](./solutions/Medium/0015-3sum/solution.java) |
 | 4sum | 18. 4sum | Medium | java | [Problem](https://leetcode.com/problems/4sum/) | [Solution](./solutions/Medium/0018-4sum/solution.java) |
@@ -43,7 +39,6 @@
 | best-time-to-buy-and-sell-stock-iv | 188. Best Time To Buy And Sell Stock Iv | Hard | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | [Solution](./solutions/Hard/0188-best-time-to-buy-and-sell-stock-iv/solution.java) |
 | rotate-array | 189. Rotate Array | Medium | java | [Problem](https://leetcode.com/problems/rotate-array/) | [Solution](./solutions/Medium/0189-rotate-array/solution.java) |
 | delete-duplicate-emails | 196. Delete Duplicate Emails | Easy | mysql | [Problem](https://leetcode.com/problems/delete-duplicate-emails/) | [Solution](./solutions/Easy/0196-delete-duplicate-emails/solution.sql) |
-| rising-temperature | 197. Rising Temperature | Easy | mysql | [Problem](https://leetcode.com/problems/rising-temperature/) | [Solution](./solutions/Easy/0197-rising-temperature/solution.sql) |
 | house-robber | 198. House Robber | Medium | java | [Problem](https://leetcode.com/problems/house-robber/) | [Solution](./solutions/Medium/0198-house-robber/solution.java) |
 | number-of-islands | 200. Number Of Islands | Medium | java | [Problem](https://leetcode.com/problems/number-of-islands/) | [Solution](./solutions/Medium/0200-number-of-islands/solution.java) |
 | count-primes | 204. Count Primes | Medium | java | [Problem](https://leetcode.com/problems/count-primes/) | [Solution](./solutions/Medium/0204-count-primes/solution.java) |
@@ -59,12 +54,10 @@
 | maximal-square | 221. Maximal Square | Medium | java | [Problem](https://leetcode.com/problems/maximal-square/) | [Solution](./solutions/Medium/0221-maximal-square/solution.java) |
 | basic-calculator | 224. Basic Calculator | Hard | java | [Problem](https://leetcode.com/problems/basic-calculator/) | [Solution](./solutions/Hard/0224-basic-calculator/solution.java) |
 | basic-calculator-ii | 227. Basic Calculator Ii | Medium | java | [Problem](https://leetcode.com/problems/basic-calculator-ii/) | [Solution](./solutions/Medium/0227-basic-calculator-ii/solution.java) |
-| summary-ranges | 228. Summary Ranges | Easy | java | [Problem](https://leetcode.com/problems/summary-ranges/) | [Solution](./solutions/Easy/0228-summary-ranges/solution.java) |
 | majority-element-ii | 229. Majority Element Ii | Medium | java | [Problem](https://leetcode.com/problems/majority-element-ii/) | [Solution](./solutions/Medium/0229-majority-element-ii/solution.java) |
 | sliding-window-maximum | 239. Sliding Window Maximum | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-maximum/) | [Solution](./solutions/Hard/0239-sliding-window-maximum/solution.java) |
 | search-a-2d-matrix-ii | 240. Search A 2d Matrix Ii | Medium | java | [Problem](https://leetcode.com/problems/search-a-2d-matrix-ii/) | [Solution](./solutions/Medium/0240-search-a-2d-matrix-ii/solution.java) |
 | different-ways-to-add-parentheses | 241. Different Ways To Add Parentheses | Medium | java | [Problem](https://leetcode.com/problems/different-ways-to-add-parentheses/) | [Solution](./solutions/Medium/0241-different-ways-to-add-parentheses/solution.java) |
-| valid-anagram | 242. Valid Anagram | Easy | java | [Problem](https://leetcode.com/problems/valid-anagram/) | [Solution](./solutions/Easy/0242-valid-anagram/solution.java) |
 | binary-tree-paths | 257. Binary Tree Paths | Easy | java | [Problem](https://leetcode.com/problems/binary-tree-paths/) | [Solution](./solutions/Easy/0257-binary-tree-paths/solution.java) |
 | single-number-iii | 260. Single Number Iii | Medium | java | [Problem](https://leetcode.com/problems/single-number-iii/) | [Solution](./solutions/Medium/0260-single-number-iii/solution.java) |
 | missing-number | 268. Missing Number | Easy | java | [Problem](https://leetcode.com/problems/missing-number/) | [Solution](./solutions/Easy/0268-missing-number/solution.java) |
@@ -76,7 +69,6 @@
 | peeking-iterator | 284. Peeking Iterator | Medium | java | [Problem](https://leetcode.com/problems/peeking-iterator/) | [Solution](./solutions/Medium/0284-peeking-iterator/solution.java) |
 | find-the-duplicate-number | 287. Find The Duplicate Number | Medium | java | [Problem](https://leetcode.com/problems/find-the-duplicate-number/) | [Solution](./solutions/Medium/0287-find-the-duplicate-number/solution.java) |
 | game-of-life | 289. Game Of Life | Medium | java | [Problem](https://leetcode.com/problems/game-of-life/) | [Solution](./solutions/Medium/0289-game-of-life/solution.java) |
-| word-pattern | 290. Word Pattern | Easy | java | [Problem](https://leetcode.com/problems/word-pattern/) | [Solution](./solutions/Easy/0290-word-pattern/solution.java) |
 | serialize-and-deserialize-binary-tree | 297. Serialize And Deserialize Binary Tree | Hard | java | [Problem](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | [Solution](./solutions/Hard/0297-serialize-and-deserialize-binary-tree/solution.java) |
 | bulls-and-cows | 299. Bulls And Cows | Medium | java | [Problem](https://leetcode.com/problems/bulls-and-cows/) | [Solution](./solutions/Medium/0299-bulls-and-cows/solution.java) |
 | longest-increasing-subsequence | 300. Longest Increasing Subsequence | Medium | java | [Problem](https://leetcode.com/problems/longest-increasing-subsequence/) | [Solution](./solutions/Medium/0300-longest-increasing-subsequence/solution.java) |
@@ -99,7 +91,6 @@
 | self-crossing | 335. Self Crossing | Hard | java | [Problem](https://leetcode.com/problems/self-crossing/) | [Solution](./solutions/Hard/0335-self-crossing/solution.java) |
 | palindrome-pairs | 336. Palindrome Pairs | Hard | java | [Problem](https://leetcode.com/problems/palindrome-pairs/) | [Solution](./solutions/Hard/0336-palindrome-pairs/solution.java) |
 | top-k-frequent-elements | 347. Top K Frequent Elements | Medium | java | [Problem](https://leetcode.com/problems/top-k-frequent-elements/) | [Solution](./solutions/Medium/0347-top-k-frequent-elements/solution.java) |
-| intersection-of-two-arrays | 349. Intersection Of Two Arrays | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays/) | [Solution](./solutions/Easy/0349-intersection-of-two-arrays/solution.java) |
 | intersection-of-two-arrays-ii | 350. Intersection Of Two Arrays Ii | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays-ii/) | [Solution](./solutions/Easy/0350-intersection-of-two-arrays-ii/solution.java) |
 | russian-doll-envelopes | 354. Russian Doll Envelopes | Hard | java | [Problem](https://leetcode.com/problems/russian-doll-envelopes/) | [Solution](./solutions/Hard/0354-russian-doll-envelopes/solution.java) |
 | max-sum-of-rectangle-no-larger-than-k | 363. Max Sum Of Rectangle No Larger Than K | Hard | java | [Problem](https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/) | [Solution](./solutions/Hard/0363-max-sum-of-rectangle-no-larger-than-k/solution.java) |
@@ -118,7 +109,6 @@
 | queue-reconstruction-by-height | 406. Queue Reconstruction By Height | Medium | java | [Problem](https://leetcode.com/problems/queue-reconstruction-by-height/) | [Solution](./solutions/Medium/0406-queue-reconstruction-by-height/solution.java) |
 | trapping-rain-water-ii | 407. Trapping Rain Water Ii | Hard | java | [Problem](https://leetcode.com/problems/trapping-rain-water-ii/) | [Solution](./solutions/Hard/0407-trapping-rain-water-ii/solution.java) |
 | split-array-largest-sum | 410. Split Array Largest Sum | Hard | java | [Problem](https://leetcode.com/problems/split-array-largest-sum/) | [Solution](./solutions/Hard/0410-split-array-largest-sum/solution.java) |
-| third-maximum-number | 414. Third Maximum Number | Easy | java | [Problem](https://leetcode.com/problems/third-maximum-number/) | [Solution](./solutions/Easy/0414-third-maximum-number/solution.java) |
 | partition-equal-subset-sum | 416. Partition Equal Subset Sum | Medium | java | [Problem](https://leetcode.com/problems/partition-equal-subset-sum/) | [Solution](./solutions/Medium/0416-partition-equal-subset-sum/solution.java) |
 | pacific-atlantic-water-flow | 417. Pacific Atlantic Water Flow | Medium | java | [Problem](https://leetcode.com/problems/pacific-atlantic-water-flow/) | [Solution](./solutions/Medium/0417-pacific-atlantic-water-flow/solution.java) |
 | battleships-in-a-board | 419. Battleships In A Board | Medium | java | [Problem](https://leetcode.com/problems/battleships-in-a-board/) | [Solution](./solutions/Medium/0419-battleships-in-a-board/solution.java) |
@@ -135,9 +125,20 @@
 | sum-game | 1927. Sum Game | Medium | java | [Problem](https://leetcode.com/problems/sum-game/) | [Solution](./solutions/Medium/1927-sum-game/solution.java) |
 | stone-game-ix | 2029. Stone Game Ix | Medium | java | [Problem](https://leetcode.com/problems/stone-game-ix/) | [Solution](./solutions/Medium/2029-stone-game-ix/solution.java) |
 | longest-substring-of-one-repeating-character | 2213. Longest Substring Of One Repeating Character | Hard | java | [Problem](https://leetcode.com/problems/longest-substring-of-one-repeating-character/) | [Solution](./solutions/Hard/2213-longest-substring-of-one-repeating-character/solution.java) |
-| distribute-elements-into-two-arrays-i | 3069. Distribute Elements Into Two Arrays I | Easy | java | [Problem](https://leetcode.com/problems/distribute-elements-into-two-arrays-i/) | [Solution](./solutions/Easy/3069-distribute-elements-into-two-arrays-i/solution.java) |
 | maximum-length-substring-with-two-occurrences | 3090. Maximum Length Substring With Two Occurrences | Easy | java | [Problem](https://leetcode.com/problems/maximum-length-substring-with-two-occurrences/) | [Solution](./solutions/Easy/3090-maximum-length-substring-with-two-occurrences/solution.java) |
 | kth-smallest-amount-with-single-denomination-combination | 3116. Kth Smallest Amount With Single Denomination Combination | Hard | java | [Problem](https://leetcode.com/problems/kth-smallest-amount-with-single-denomination-combination/) | [Solution](./solutions/Hard/3116-kth-smallest-amount-with-single-denomination-combination/solution.java) |
-| find-the-largest-almost-missing-integer | 3471. Find The Largest Almost Missing Integer | Easy | java | [Problem](https://leetcode.com/problems/find-the-largest-almost-missing-integer/) | [Solution](./solutions/Easy/3471-find-the-largest-almost-missing-integer/solution.java) |
 | check-divisibility-by-digit-sum-and-product | 3622. Check Divisibility By Digit Sum And Product | Easy | java | [Problem](https://leetcode.com/problems/check-divisibility-by-digit-sum-and-product/) | [Solution](./solutions/Easy/3622-check-divisibility-by-digit-sum-and-product/solution.java) |
+| remove-duplicate-letters | Remove Duplicate Letters | Medium | java | [Problem](https://leetcode.com/problems/remove-duplicate-letters/) | [Solution](./solutions/Medium/0316-remove-duplicate-letters/solution.java) |
+| remove-invalid-parentheses | Remove Invalid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/remove-invalid-parentheses/) | [Solution](./solutions/Hard/0301-remove-invalid-parentheses/solution.java) |
+| smallest-missing-multiple-of-k | Smallest Missing Multiple of K | Easy | java | [Problem](https://leetcode.com/problems/smallest-missing-multiple-of-k/) | [Solution](./solutions/Easy/3718-smallest-missing-multiple-of-k/solution.java) |
+| two-sum | 1. Two Sum | Easy | java | [Problem](https://leetcode.com/problems/two-sum/) | [Solution](./solutions/Easy/0001-two-sum/solution.java) |
+| roman-to-integer | 13. Roman To Integer | Easy | java | [Problem](https://leetcode.com/problems/roman-to-integer/) | [Solution](./solutions/Easy/0013-roman-to-integer/solution.java) |
+| rising-temperature | 197. Rising Temperature | Easy | mysql | [Problem](https://leetcode.com/problems/rising-temperature/) | [Solution](./solutions/Easy/0197-rising-temperature/solution.sql) |
+| summary-ranges | 228. Summary Ranges | Easy | java | [Problem](https://leetcode.com/problems/summary-ranges/) | [Solution](./solutions/Easy/0228-summary-ranges/solution.java) |
+| valid-anagram | 242. Valid Anagram | Easy | java | [Problem](https://leetcode.com/problems/valid-anagram/) | [Solution](./solutions/Easy/0242-valid-anagram/solution.java) |
+| word-pattern | 290. Word Pattern | Easy | java | [Problem](https://leetcode.com/problems/word-pattern/) | [Solution](./solutions/Easy/0290-word-pattern/solution.java) |
+| intersection-of-two-arrays | 349. Intersection Of Two Arrays | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays/) | [Solution](./solutions/Easy/0349-intersection-of-two-arrays/solution.java) |
+| third-maximum-number | 414. Third Maximum Number | Easy | java | [Problem](https://leetcode.com/problems/third-maximum-number/) | [Solution](./solutions/Easy/0414-third-maximum-number/solution.java) |
+| distribute-elements-into-two-arrays-i | 3069. Distribute Elements Into Two Arrays I | Easy | java | [Problem](https://leetcode.com/problems/distribute-elements-into-two-arrays-i/) | [Solution](./solutions/Easy/3069-distribute-elements-into-two-arrays-i/solution.java) |
+| find-the-largest-almost-missing-integer | 3471. Find The Largest Almost Missing Integer | Easy | java | [Problem](https://leetcode.com/problems/find-the-largest-almost-missing-integer/) | [Solution](./solutions/Easy/3471-find-the-largest-almost-missing-integer/solution.java) |
 | longest-subsequence-with-non-zero-bitwise-xor | 3702. Longest Subsequence With Non Zero Bitwise Xor | Medium | java | [Problem](https://leetcode.com/problems/longest-subsequence-with-non-zero-bitwise-xor/) | [Solution](./solutions/Medium/3702-longest-subsequence-with-non-zero-bitwise-xor/solution.java) |
