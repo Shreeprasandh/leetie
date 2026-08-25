@@ -2,13 +2,14 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 138 Solved
+## Progress Summary: 139 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
 | add-two-numbers | 2. Add Two Numbers | Medium | java | [Problem](https://leetcode.com/problems/add-two-numbers/) | [Solution](./solutions/Medium/0002-add-two-numbers/solution.java) |
 | additive-number | Additive Number | Medium | java | [Problem](https://leetcode.com/problems/additive-number/) | [Solution](./solutions/Medium/0306-additive-number/solution.java) |
 | median-of-two-sorted-arrays | 4. Median Of Two Sorted Arrays | Hard | java | [Problem](https://leetcode.com/problems/median-of-two-sorted-arrays/) | [Solution](./solutions/Hard/0004-median-of-two-sorted-arrays/solution.java) |
+| longest-palindromic-substring | 5. Longest Palindromic Substring | Medium | java | [Problem](https://leetcode.com/problems/longest-palindromic-substring/) | [Solution](./solutions/Medium/0005-longest-palindromic-substring/solution.java) |
 | zigzag-conversion | 6. Zigzag Conversion | Medium | java | [Problem](https://leetcode.com/problems/zigzag-conversion/) | [Solution](./solutions/Medium/0006-zigzag-conversion/solution.java) |
 | reverse-integer | 7. Reverse Integer | Medium | java | [Problem](https://leetcode.com/problems/reverse-integer/) | [Solution](./solutions/Medium/0007-reverse-integer/solution.java) |
 | string-to-integer-atoi | 8. String To Integer Atoi | Medium | java | [Problem](https://leetcode.com/problems/string-to-integer-atoi/) | [Solution](./solutions/Medium/0008-string-to-integer-atoi/solution.java) |
@@ -26,7 +27,6 @@
 | binary-tree-maximum-path-sum | 124. Binary Tree Maximum Path Sum | Hard | java | [Problem](https://leetcode.com/problems/binary-tree-maximum-path-sum/) | [Solution](./solutions/Hard/0124-binary-tree-maximum-path-sum/solution.java) |
 | surrounded-regions | 130. Surrounded Regions | Medium | java | [Problem](https://leetcode.com/problems/surrounded-regions/) | [Solution](./solutions/Medium/0130-surrounded-regions/solution.java) |
 | gas-station | 134. Gas Station | Medium | java | [Problem](https://leetcode.com/problems/gas-station/) | [Solution](./solutions/Medium/0134-gas-station/solution.java) |
-| candy | 135. Candy | Hard | java | [Problem](https://leetcode.com/problems/candy/) | [Solution](./solutions/Hard/0135-candy/solution.java) |
 | evaluate-reverse-polish-notation | 150. Evaluate Reverse Polish Notation | Medium | java | [Problem](https://leetcode.com/problems/evaluate-reverse-polish-notation/) | [Solution](./solutions/Medium/0150-evaluate-reverse-polish-notation/solution.java) |
 | compare-version-numbers | 165. Compare Version Numbers | Medium | java | [Problem](https://leetcode.com/problems/compare-version-numbers/) | [Solution](./solutions/Medium/0165-compare-version-numbers/solution.java) |
 | fraction-to-recurring-decimal | 166. Fraction To Recurring Decimal | Medium | java | [Problem](https://leetcode.com/problems/fraction-to-recurring-decimal/) | [Solution](./solutions/Medium/0166-fraction-to-recurring-decimal/solution.java) |
@@ -93,16 +93,17 @@
 | cinema-seat-allocation | 1386. Cinema Seat Allocation | Medium | java | [Problem](https://leetcode.com/problems/cinema-seat-allocation/) | [Solution](./solutions/Medium/1386-cinema-seat-allocation/solution.java) |
 | sum-game | 1927. Sum Game | Medium | java | [Problem](https://leetcode.com/problems/sum-game/) | [Solution](./solutions/Medium/1927-sum-game/solution.java) |
 | stone-game-ix | 2029. Stone Game Ix | Medium | java | [Problem](https://leetcode.com/problems/stone-game-ix/) | [Solution](./solutions/Medium/2029-stone-game-ix/solution.java) |
-| maximum-length-substring-with-two-occurrences | 3090. Maximum Length Substring With Two Occurrences | Easy | java | [Problem](https://leetcode.com/problems/maximum-length-substring-with-two-occurrences/) | [Solution](./solutions/Easy/3090-maximum-length-substring-with-two-occurrences/solution.java) |
-| check-divisibility-by-digit-sum-and-product | 3622. Check Divisibility By Digit Sum And Product | Easy | java | [Problem](https://leetcode.com/problems/check-divisibility-by-digit-sum-and-product/) | [Solution](./solutions/Easy/3622-check-divisibility-by-digit-sum-and-product/solution.java) |
+| distribute-elements-into-two-arrays-i | 3069. Distribute Elements Into Two Arrays I | Easy | java | [Problem](https://leetcode.com/problems/distribute-elements-into-two-arrays-i/) | [Solution](./solutions/Easy/3069-distribute-elements-into-two-arrays-i/solution.java) |
+| find-the-largest-almost-missing-integer | 3471. Find The Largest Almost Missing Integer | Easy | java | [Problem](https://leetcode.com/problems/find-the-largest-almost-missing-integer/) | [Solution](./solutions/Easy/3471-find-the-largest-almost-missing-integer/solution.java) |
 | remove-duplicate-letters | Remove Duplicate Letters | Medium | java | [Problem](https://leetcode.com/problems/remove-duplicate-letters/) | [Solution](./solutions/Medium/0316-remove-duplicate-letters/solution.java) |
 | remove-invalid-parentheses | Remove Invalid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/remove-invalid-parentheses/) | [Solution](./solutions/Hard/0301-remove-invalid-parentheses/solution.java) |
 | reverse-string | Reverse String | Easy | java | [Problem](https://leetcode.com/problems/reverse-string/) | [Solution](./solutions/Easy/0344-reverse-string/solution.java) |
+| reverse-vowels-of-a-string | Reverse Vowels of a String | Easy | java | [Problem](https://leetcode.com/problems/reverse-vowels-of-a-string/) | [Solution](./solutions/Easy/0345-reverse-vowels-of-a-string/solution.java) |
 | smallest-missing-multiple-of-k | Smallest Missing Multiple of K | Easy | java | [Problem](https://leetcode.com/problems/smallest-missing-multiple-of-k/) | [Solution](./solutions/Easy/3718-smallest-missing-multiple-of-k/solution.java) |
 | two-sum | 1. Two Sum | Easy | java | [Problem](https://leetcode.com/problems/two-sum/) | [Solution](./solutions/Easy/0001-two-sum/solution.java) |
 | longest-substring-without-repeating-characters | 3. Longest Substring Without Repeating Characters | Medium | java | [Problem](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | [Solution](./solutions/Medium/0003-longest-substring-without-repeating-characters/solution.java) |
-| longest-palindromic-substring | 5. Longest Palindromic Substring | Medium | java | [Problem](https://leetcode.com/problems/longest-palindromic-substring/) | [Solution](./solutions/Medium/0005-longest-palindromic-substring/solution.java) |
 | roman-to-integer | 13. Roman To Integer | Easy | java | [Problem](https://leetcode.com/problems/roman-to-integer/) | [Solution](./solutions/Easy/0013-roman-to-integer/solution.java) |
+| candy | 135. Candy | Hard | java | [Problem](https://leetcode.com/problems/candy/) | [Solution](./solutions/Hard/0135-candy/solution.java) |
 | max-points-on-a-line | 149. Max Points On A Line | Hard | java | [Problem](https://leetcode.com/problems/max-points-on-a-line/) | [Solution](./solutions/Hard/0149-max-points-on-a-line/solution.java) |
 | dungeon-game | 174. Dungeon Game | Hard | java | [Problem](https://leetcode.com/problems/dungeon-game/) | [Solution](./solutions/Hard/0174-dungeon-game/solution.java) |
 | best-time-to-buy-and-sell-stock-iv | 188. Best Time To Buy And Sell Stock Iv | Hard | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | [Solution](./solutions/Hard/0188-best-time-to-buy-and-sell-stock-iv/solution.java) |
@@ -117,8 +118,8 @@
 | valid-anagram | 242. Valid Anagram | Easy | java | [Problem](https://leetcode.com/problems/valid-anagram/) | [Solution](./solutions/Easy/0242-valid-anagram/solution.java) |
 | integer-to-english-words | 273. Integer To English Words | Hard | java | [Problem](https://leetcode.com/problems/integer-to-english-words/) | [Solution](./solutions/Hard/0273-integer-to-english-words/solution.java) |
 | expression-add-operators | 282. Expression Add Operators | Hard | java | [Problem](https://leetcode.com/problems/expression-add-operators/) | [Solution](./solutions/Hard/0282-expression-add-operators/solution.java) |
-| distribute-elements-into-two-arrays-i | 3069. Distribute Elements Into Two Arrays I | Easy | java | [Problem](https://leetcode.com/problems/distribute-elements-into-two-arrays-i/) | [Solution](./solutions/Easy/3069-distribute-elements-into-two-arrays-i/solution.java) |
-| find-the-largest-almost-missing-integer | 3471. Find The Largest Almost Missing Integer | Easy | java | [Problem](https://leetcode.com/problems/find-the-largest-almost-missing-integer/) | [Solution](./solutions/Easy/3471-find-the-largest-almost-missing-integer/solution.java) |
+| maximum-length-substring-with-two-occurrences | 3090. Maximum Length Substring With Two Occurrences | Easy | java | [Problem](https://leetcode.com/problems/maximum-length-substring-with-two-occurrences/) | [Solution](./solutions/Easy/3090-maximum-length-substring-with-two-occurrences/solution.java) |
+| check-divisibility-by-digit-sum-and-product | 3622. Check Divisibility By Digit Sum And Product | Easy | java | [Problem](https://leetcode.com/problems/check-divisibility-by-digit-sum-and-product/) | [Solution](./solutions/Easy/3622-check-divisibility-by-digit-sum-and-product/solution.java) |
 | verify-preorder-serialization-of-a-binary-tree | Verify Preorder Serialization of a Binary Tree | Medium | java | [Problem](https://leetcode.com/problems/verify-preorder-serialization-of-a-binary-tree/) | [Solution](./solutions/Medium/0331-verify-preorder-serialization-of-a-binary-tree/solution.java) |
 | word-pattern | 290. Word Pattern | Easy | java | [Problem](https://leetcode.com/problems/word-pattern/) | [Solution](./solutions/Easy/0290-word-pattern/solution.java) |
 | serialize-and-deserialize-binary-tree | 297. Serialize And Deserialize Binary Tree | Hard | java | [Problem](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | [Solution](./solutions/Hard/0297-serialize-and-deserialize-binary-tree/solution.java) |
