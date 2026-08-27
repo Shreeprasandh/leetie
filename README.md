@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 187 Solved
+## Progress Summary: 188 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -82,11 +82,11 @@
 | number-of-segments-in-a-string | Number of Segments in a String | Easy | java | [Problem](https://leetcode.com/problems/number-of-segments-in-a-string/) | [Solution](./solutions/Easy/0434-number-of-segments-in-a-string/solution.java) |
 | ones-and-zeroes | Ones and Zeroes | Medium | java | [Problem](https://leetcode.com/problems/ones-and-zeroes/) | [Solution](./solutions/Medium/0474-ones-and-zeroes/solution.java) |
 | palindrome-number | 9. Palindrome Number | Easy | java | [Problem](https://leetcode.com/problems/palindrome-number/) | [Solution](./solutions/Easy/0009-palindrome-number/solution.java) |
+| majority-element | 169. Majority Element | Easy | java | [Problem](https://leetcode.com/problems/majority-element/) | [Solution](./solutions/Easy/0169-majority-element/solution.java) |
 | reconstruct-original-digits-from-english | Reconstruct Original Digits from English | Medium | java | [Problem](https://leetcode.com/problems/reconstruct-original-digits-from-english/) | [Solution](./solutions/Medium/0423-reconstruct-original-digits-from-english/solution.java) |
 | repeated-substring-pattern | Repeated Substring Pattern | Easy | java | [Problem](https://leetcode.com/problems/repeated-substring-pattern/) | [Solution](./solutions/Easy/0459-repeated-substring-pattern/solution.java) |
 | reverse-string-ii | Reverse String II | Easy | java | [Problem](https://leetcode.com/problems/reverse-string-ii/) | [Solution](./solutions/Easy/0541-reverse-string-ii/solution.java) |
 | roman-to-integer | 13. Roman To Integer | Easy | java | [Problem](https://leetcode.com/problems/roman-to-integer/) | [Solution](./solutions/Easy/0013-roman-to-integer/solution.java) |
-| majority-element | 169. Majority Element | Easy | java | [Problem](https://leetcode.com/problems/majority-element/) | [Solution](./solutions/Easy/0169-majority-element/solution.java) |
 | rising-temperature | 197. Rising Temperature | Easy | mysql | [Problem](https://leetcode.com/problems/rising-temperature/) | [Solution](./solutions/Easy/0197-rising-temperature/solution.sql) |
 | search-a-2d-matrix-ii | 240. Search A 2d Matrix Ii | Medium | java | [Problem](https://leetcode.com/problems/search-a-2d-matrix-ii/) | [Solution](./solutions/Medium/0240-search-a-2d-matrix-ii/solution.java) |
 | different-ways-to-add-parentheses | 241. Different Ways To Add Parentheses | Medium | java | [Problem](https://leetcode.com/problems/different-ways-to-add-parentheses/) | [Solution](./solutions/Medium/0241-different-ways-to-add-parentheses/solution.java) |
@@ -108,6 +108,7 @@
 | sort-characters-by-frequency | Sort Characters By Frequency | Medium | java | [Problem](https://leetcode.com/problems/sort-characters-by-frequency/) | [Solution](./solutions/Medium/0451-sort-characters-by-frequency/solution.java) |
 | string-compression | String Compression | Medium | java | [Problem](https://leetcode.com/problems/string-compression/) | [Solution](./solutions/Medium/0443-string-compression/solution.java) |
 | strong-password-checker | Strong Password Checker | Hard | java | [Problem](https://leetcode.com/problems/strong-password-checker/) | [Solution](./solutions/Hard/0420-strong-password-checker/solution.java) |
+| student-attendance-record-i | Student Attendance Record I | Easy | java | [Problem](https://leetcode.com/problems/student-attendance-record-i/) | [Solution](./solutions/Easy/0551-student-attendance-record-i/solution.java) |
 | two-sum | 1. Two Sum | Easy | java | [Problem](https://leetcode.com/problems/two-sum/) | [Solution](./solutions/Easy/0001-two-sum/solution.java) |
 | summary-ranges | 228. Summary Ranges | Easy | java | [Problem](https://leetcode.com/problems/summary-ranges/) | [Solution](./solutions/Easy/0228-summary-ranges/solution.java) |
 | unique-substrings-in-wraparound-string | Unique Substrings in Wraparound String | Medium | java | [Problem](https://leetcode.com/problems/unique-substrings-in-wraparound-string/) | [Solution](./solutions/Medium/0467-unique-substrings-in-wraparound-string/solution.java) |
