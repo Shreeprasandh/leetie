@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 207 Solved
+## Progress Summary: 208 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -200,6 +200,7 @@
 | unique-substrings-in-wraparound-string | Unique Substrings in Wraparound String | Medium | java | [Problem](https://leetcode.com/problems/unique-substrings-in-wraparound-string/) | [Solution](./solutions/Medium/0467-unique-substrings-in-wraparound-string/solution.java) |
 | valid-anagram | 242. Valid Anagram | Easy | java | [Problem](https://leetcode.com/problems/valid-anagram/) | [Solution](./solutions/Easy/0242-valid-anagram/solution.java) |
 | missing-number | 268. Missing Number | Easy | java | [Problem](https://leetcode.com/problems/missing-number/) | [Solution](./solutions/Easy/0268-missing-number/solution.java) |
+| valid-palindrome-ii | Valid Palindrome II | Easy | java | [Problem](https://leetcode.com/problems/valid-palindrome-ii/) | [Solution](./solutions/Easy/0680-valid-palindrome-ii/solution.java) |
 | valid-triangle-number | Valid Triangle Number | Medium | java | [Problem](https://leetcode.com/problems/valid-triangle-number/) | [Solution](./solutions/Medium/0611-valid-triangle-number/solution.java) |
 | validate-ip-address | Validate IP Address | Medium | java | [Problem](https://leetcode.com/problems/validate-ip-address/) | [Solution](./solutions/Medium/0468-validate-ip-address/solution.java) |
 | word-pattern | 290. Word Pattern | Easy | java | [Problem](https://leetcode.com/problems/word-pattern/) | [Solution](./solutions/Easy/0290-word-pattern/solution.java) |
