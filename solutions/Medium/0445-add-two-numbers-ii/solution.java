@@ -4,7 +4,7 @@
 // Tags     : Linked List, Math, Stack
 // Link     : https://leetcode.com/problems/add-two-numbers-ii/
 // Runtime  : 1 ms (beats 100%)
-// Memory   : 46336000 (beats 83%)
+// Memory   : 45736000 (beats 100%)
 // Language : java
 // Copyright: (c) 2026 Shreeprasandh. All rights reserved.
 // Synced by: leetie
