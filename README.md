@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 240 Solved
+## Progress Summary: 241 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -106,15 +106,15 @@
 | fizz-buzz | 412. Fizz Buzz | Easy | java | [Problem](https://leetcode.com/problems/fizz-buzz/) | [Solution](./solutions/Easy/0412-fizz-buzz/solution.java) |
 | add-strings | 415. Add Strings | Easy | java | [Problem](https://leetcode.com/problems/add-strings/) | [Solution](./solutions/Easy/0415-add-strings/solution.java) |
 | find-all-numbers-disappeared-in-an-array | 448. Find All Numbers Disappeared In An Array | Easy | java | [Problem](https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/) | [Solution](./solutions/Easy/0448-find-all-numbers-disappeared-in-an-array/solution.java) |
+| assign-cookies | 455. Assign Cookies | Easy | java | [Problem](https://leetcode.com/problems/assign-cookies/) | [Solution](./solutions/Easy/0455-assign-cookies/solution.java) |
 | license-key-formatting | 482. License Key Formatting | Easy | java | [Problem](https://leetcode.com/problems/license-key-formatting/) | [Solution](./solutions/Easy/0482-license-key-formatting/solution.java) |
 | keyboard-row | 500. Keyboard Row | Easy | java | [Problem](https://leetcode.com/problems/keyboard-row/) | [Solution](./solutions/Easy/0500-keyboard-row/solution.java) |
-| base-7 | 504. Base 7 | Easy | java | [Problem](https://leetcode.com/problems/base-7/) | [Solution](./solutions/Easy/0504-base-7/solution.java) |
 | maximize-the-minimum-powered-city | Maximize the Minimum Powered City | Hard | java | [Problem](https://leetcode.com/problems/maximize-the-minimum-powered-city/) | [Solution](./solutions/Hard/2528-maximize-the-minimum-powered-city/solution.java) |
 | maximum-sum-circular-subarray | Maximum Sum Circular Subarray | Medium | java | [Problem](https://leetcode.com/problems/maximum-sum-circular-subarray/) | [Solution](./solutions/Medium/0918-maximum-sum-circular-subarray/solution.java) |
 | minimum-moves-to-equal-array-elements | Minimum Moves to Equal Array Elements | Medium | java | [Problem](https://leetcode.com/problems/minimum-moves-to-equal-array-elements/) | [Solution](./solutions/Medium/0453-minimum-moves-to-equal-array-elements/solution.java) |
+| minimum-moves-to-equal-array-elements-ii | Minimum Moves to Equal Array Elements II | Medium | java | [Problem](https://leetcode.com/problems/minimum-moves-to-equal-array-elements-ii/) | [Solution](./solutions/Medium/0462-minimum-moves-to-equal-array-elements-ii/solution.java) |
 | minimum-number-of-arrows-to-burst-balloons | Minimum Number of Arrows to Burst Balloons | Medium | java | [Problem](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/) | [Solution](./solutions/Medium/0452-minimum-number-of-arrows-to-burst-balloons/solution.java) |
 | missing-number | 268. Missing Number | Easy | java | [Problem](https://leetcode.com/problems/missing-number/) | [Solution](./solutions/Easy/0268-missing-number/solution.java) |
-| move-zeroes | 283. Move Zeroes | Easy | java | [Problem](https://leetcode.com/problems/move-zeroes/) | [Solution](./solutions/Easy/0283-move-zeroes/solution.java) |
 | non-overlapping-intervals | Non-overlapping Intervals | Medium | java | [Problem](https://leetcode.com/problems/non-overlapping-intervals/) | [Solution](./solutions/Medium/0435-non-overlapping-intervals/solution.java) |
 | number-of-recent-calls | Number of Recent Calls | Easy | java | [Problem](https://leetcode.com/problems/number-of-recent-calls/) | [Solution](./solutions/Easy/0933-number-of-recent-calls/solution.java) |
 | odd-even-linked-list | Odd Even Linked List | Medium | java | [Problem](https://leetcode.com/problems/odd-even-linked-list/) | [Solution](./solutions/Medium/0328-odd-even-linked-list/solution.java) |
@@ -146,6 +146,7 @@
 | binary-tree-paths | 257. Binary Tree Paths | Easy | java | [Problem](https://leetcode.com/problems/binary-tree-paths/) | [Solution](./solutions/Easy/0257-binary-tree-paths/solution.java) |
 | integer-to-english-words | 273. Integer To English Words | Hard | java | [Problem](https://leetcode.com/problems/integer-to-english-words/) | [Solution](./solutions/Hard/0273-integer-to-english-words/solution.java) |
 | expression-add-operators | 282. Expression Add Operators | Hard | java | [Problem](https://leetcode.com/problems/expression-add-operators/) | [Solution](./solutions/Hard/0282-expression-add-operators/solution.java) |
+| move-zeroes | 283. Move Zeroes | Easy | java | [Problem](https://leetcode.com/problems/move-zeroes/) | [Solution](./solutions/Easy/0283-move-zeroes/solution.java) |
 | word-pattern | 290. Word Pattern | Easy | java | [Problem](https://leetcode.com/problems/word-pattern/) | [Solution](./solutions/Easy/0290-word-pattern/solution.java) |
 | serialize-and-deserialize-binary-tree | 297. Serialize And Deserialize Binary Tree | Hard | java | [Problem](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | [Solution](./solutions/Hard/0297-serialize-and-deserialize-binary-tree/solution.java) |
 | remove-invalid-parentheses | 301. Remove Invalid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/remove-invalid-parentheses/) | [Solution](./solutions/Hard/0301-remove-invalid-parentheses/solution.java) |
@@ -185,7 +186,6 @@
 | number-of-boomerangs | 447. Number Of Boomerangs | Medium | java | [Problem](https://leetcode.com/problems/number-of-boomerangs/) | [Solution](./solutions/Medium/0447-number-of-boomerangs/solution.java) |
 | serialize-and-deserialize-bst | 449. Serialize And Deserialize Bst | Medium | java | [Problem](https://leetcode.com/problems/serialize-and-deserialize-bst/) | [Solution](./solutions/Medium/0449-serialize-and-deserialize-bst/solution.java) |
 | sort-characters-by-frequency | 451. Sort Characters By Frequency | Medium | java | [Problem](https://leetcode.com/problems/sort-characters-by-frequency/) | [Solution](./solutions/Medium/0451-sort-characters-by-frequency/solution.java) |
-| assign-cookies | 455. Assign Cookies | Easy | java | [Problem](https://leetcode.com/problems/assign-cookies/) | [Solution](./solutions/Easy/0455-assign-cookies/solution.java) |
 | circular-array-loop | 457. Circular Array Loop | Medium | java | [Problem](https://leetcode.com/problems/circular-array-loop/) | [Solution](./solutions/Medium/0457-circular-array-loop/solution.java) |
 | repeated-substring-pattern | 459. Repeated Substring Pattern | Easy | java | [Problem](https://leetcode.com/problems/repeated-substring-pattern/) | [Solution](./solutions/Easy/0459-repeated-substring-pattern/solution.java) |
 | count-the-repetitions | 466. Count The Repetitions | Hard | java | [Problem](https://leetcode.com/problems/count-the-repetitions/) | [Solution](./solutions/Hard/0466-count-the-repetitions/solution.java) |
@@ -195,6 +195,7 @@
 | heaters | 475. Heaters | Medium | java | [Problem](https://leetcode.com/problems/heaters/) | [Solution](./solutions/Medium/0475-heaters/solution.java) |
 | magical-string | 481. Magical String | Medium | java | [Problem](https://leetcode.com/problems/magical-string/) | [Solution](./solutions/Medium/0481-magical-string/solution.java) |
 | zuma-game | 488. Zuma Game | Hard | java | [Problem](https://leetcode.com/problems/zuma-game/) | [Solution](./solutions/Hard/0488-zuma-game/solution.java) |
+| base-7 | 504. Base 7 | Easy | java | [Problem](https://leetcode.com/problems/base-7/) | [Solution](./solutions/Easy/0504-base-7/solution.java) |
 | freedom-trail | 514. Freedom Trail | Hard | java | [Problem](https://leetcode.com/problems/freedom-trail/) | [Solution](./solutions/Hard/0514-freedom-trail/solution.java) |
 | longest-palindromic-subsequence | 516. Longest Palindromic Subsequence | Medium | java | [Problem](https://leetcode.com/problems/longest-palindromic-subsequence/) | [Solution](./solutions/Medium/0516-longest-palindromic-subsequence/solution.java) |
 | detect-capital | 520. Detect Capital | Easy | java | [Problem](https://leetcode.com/problems/detect-capital/) | [Solution](./solutions/Easy/0520-detect-capital/solution.java) |
