@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 260 Solved
+## Progress Summary: 261 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -12,6 +12,7 @@
 | add-two-numbers-ii | Add Two Numbers II | Medium | java | [Problem](https://leetcode.com/problems/add-two-numbers-ii/) | [Solution](./solutions/Medium/0445-add-two-numbers-ii/solution.java) |
 | all-oone-data-structure | All O`one Data Structure | Hard | java | [Problem](https://leetcode.com/problems/all-oone-data-structure/) | [Solution](./solutions/Hard/0432-all-oone-data-structure/solution.java) |
 | arithmetic-slices | Arithmetic Slices | Medium | java | [Problem](https://leetcode.com/problems/arithmetic-slices/) | [Solution](./solutions/Medium/0413-arithmetic-slices/solution.java) |
+| beautiful-arrangement | Beautiful Arrangement | Medium | java | [Problem](https://leetcode.com/problems/beautiful-arrangement/) | [Solution](./solutions/Medium/0526-beautiful-arrangement/solution.java) |
 | coin-change-ii | Coin Change II | Medium | java | [Problem](https://leetcode.com/problems/coin-change-ii/) | [Solution](./solutions/Medium/0518-coin-change-ii/solution.java) |
 | median-of-two-sorted-arrays | 4. Median Of Two Sorted Arrays | Hard | java | [Problem](https://leetcode.com/problems/median-of-two-sorted-arrays/) | [Solution](./solutions/Hard/0004-median-of-two-sorted-arrays/solution.java) |
 | substring-with-concatenation-of-all-words | 30. Substring With Concatenation Of All Words | Hard | java | [Problem](https://leetcode.com/problems/substring-with-concatenation-of-all-words/) | [Solution](./solutions/Hard/0030-substring-with-concatenation-of-all-words/solution.java) |
@@ -55,12 +56,12 @@
 | reconstruct-itinerary | 332. Reconstruct Itinerary | Hard | java | [Problem](https://leetcode.com/problems/reconstruct-itinerary/) | [Solution](./solutions/Hard/0332-reconstruct-itinerary/solution.java) |
 | self-crossing | 335. Self Crossing | Hard | java | [Problem](https://leetcode.com/problems/self-crossing/) | [Solution](./solutions/Hard/0335-self-crossing/solution.java) |
 | palindrome-pairs | 336. Palindrome Pairs | Hard | java | [Problem](https://leetcode.com/problems/palindrome-pairs/) | [Solution](./solutions/Hard/0336-palindrome-pairs/solution.java) |
+| intersection-of-two-arrays | 349. Intersection Of Two Arrays | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays/) | [Solution](./solutions/Easy/0349-intersection-of-two-arrays/solution.java) |
 | intersection-of-two-arrays-ii | 350. Intersection Of Two Arrays Ii | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays-ii/) | [Solution](./solutions/Easy/0350-intersection-of-two-arrays-ii/solution.java) |
 | ipo | IPO | Hard | java | [Problem](https://leetcode.com/problems/ipo/) | [Solution](./solutions/Hard/0502-ipo/solution.java) |
 | island-perimeter | Island Perimeter | Easy | java | [Problem](https://leetcode.com/problems/island-perimeter/) | [Solution](./solutions/Easy/0463-island-perimeter/solution.java) |
 | lfu-cache | LFU Cache | Hard | java | [Problem](https://leetcode.com/problems/lfu-cache/) | [Solution](./solutions/Hard/0460-lfu-cache/solution.java) |
 | linked-list-random-node | Linked List Random Node | Medium | java | [Problem](https://leetcode.com/problems/linked-list-random-node/) | [Solution](./solutions/Medium/0382-linked-list-random-node/solution.java) |
-| longest-common-prefix | 14. Longest Common Prefix | Easy | java | [Problem](https://leetcode.com/problems/longest-common-prefix/) | [Solution](./solutions/Easy/0014-longest-common-prefix/solution.java) |
 | majority-element | 169. Majority Element | Easy | java | [Problem](https://leetcode.com/problems/majority-element/) | [Solution](./solutions/Easy/0169-majority-element/solution.java) |
 | matchsticks-to-square | Matchsticks to Square | Medium | java | [Problem](https://leetcode.com/problems/matchsticks-to-square/) | [Solution](./solutions/Medium/0473-matchsticks-to-square/solution.java) |
 | max-consecutive-ones | Max Consecutive Ones | Easy | java | [Problem](https://leetcode.com/problems/max-consecutive-ones/) | [Solution](./solutions/Easy/0485-max-consecutive-ones/solution.java) |
@@ -75,11 +76,20 @@
 | non-overlapping-intervals | Non-overlapping Intervals | Medium | java | [Problem](https://leetcode.com/problems/non-overlapping-intervals/) | [Solution](./solutions/Medium/0435-non-overlapping-intervals/solution.java) |
 | number-of-recent-calls | Number of Recent Calls | Easy | java | [Problem](https://leetcode.com/problems/number-of-recent-calls/) | [Solution](./solutions/Easy/0933-number-of-recent-calls/solution.java) |
 | odd-even-linked-list | Odd Even Linked List | Medium | java | [Problem](https://leetcode.com/problems/odd-even-linked-list/) | [Solution](./solutions/Medium/0328-odd-even-linked-list/solution.java) |
+| palindrome-number | 9. Palindrome Number | Easy | java | [Problem](https://leetcode.com/problems/palindrome-number/) | [Solution](./solutions/Easy/0009-palindrome-number/solution.java) |
 | random-point-in-non-overlapping-rectangles | Random Point in Non-overlapping Rectangles | Medium | java | [Problem](https://leetcode.com/problems/random-point-in-non-overlapping-rectangles/) | [Solution](./solutions/Medium/0497-random-point-in-non-overlapping-rectangles/solution.java) |
 | relative-ranks | Relative Ranks | Easy | java | [Problem](https://leetcode.com/problems/relative-ranks/) | [Solution](./solutions/Easy/0506-relative-ranks/solution.java) |
 | removing-minimum-and-maximum-from-array | Removing Minimum and Maximum From Array | Medium | java | [Problem](https://leetcode.com/problems/removing-minimum-and-maximum-from-array/) | [Solution](./solutions/Medium/2091-removing-minimum-and-maximum-from-array/solution.java) |
 | reveal-cards-in-increasing-order | Reveal Cards In Increasing Order | Medium | java | [Problem](https://leetcode.com/problems/reveal-cards-in-increasing-order/) | [Solution](./solutions/Medium/0950-reveal-cards-in-increasing-order/solution.java) |
 | reverse-pairs | Reverse Pairs | Hard | java | [Problem](https://leetcode.com/problems/reverse-pairs/) | [Solution](./solutions/Hard/0493-reverse-pairs/solution.java) |
+| russian-doll-envelopes | 354. Russian Doll Envelopes | Hard | java | [Problem](https://leetcode.com/problems/russian-doll-envelopes/) | [Solution](./solutions/Hard/0354-russian-doll-envelopes/solution.java) |
+| max-sum-of-rectangle-no-larger-than-k | 363. Max Sum Of Rectangle No Larger Than K | Hard | java | [Problem](https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/) | [Solution](./solutions/Hard/0363-max-sum-of-rectangle-no-larger-than-k/solution.java) |
+| insert-delete-getrandom-o1-duplicates-allowed | 381. Insert Delete Getrandom O1 Duplicates Allowed | Hard | java | [Problem](https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/) | [Solution](./solutions/Hard/0381-insert-delete-getrandom-o1-duplicates-allowed/solution.java) |
+| ransom-note | 383. Ransom Note | Easy | java | [Problem](https://leetcode.com/problems/ransom-note/) | [Solution](./solutions/Easy/0383-ransom-note/solution.java) |
+| find-the-difference | 389. Find The Difference | Easy | java | [Problem](https://leetcode.com/problems/find-the-difference/) | [Solution](./solutions/Easy/0389-find-the-difference/solution.java) |
+| perfect-rectangle | 391. Perfect Rectangle | Hard | java | [Problem](https://leetcode.com/problems/perfect-rectangle/) | [Solution](./solutions/Hard/0391-perfect-rectangle/solution.java) |
+| is-subsequence | 392. Is Subsequence | Easy | java | [Problem](https://leetcode.com/problems/is-subsequence/) | [Solution](./solutions/Easy/0392-is-subsequence/solution.java) |
+| convert-a-number-to-hexadecimal | 405. Convert A Number To Hexadecimal | Easy | java | [Problem](https://leetcode.com/problems/convert-a-number-to-hexadecimal/) | [Solution](./solutions/Easy/0405-convert-a-number-to-hexadecimal/solution.java) |
 | sliding-window-median | Sliding Window Median | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-median/) | [Solution](./solutions/Hard/0480-sliding-window-median/solution.java) |
 | stamping-the-sequence | Stamping The Sequence | Hard | java | [Problem](https://leetcode.com/problems/stamping-the-sequence/) | [Solution](./solutions/Hard/0936-stamping-the-sequence/solution.java) |
 | super-washing-machines | Super Washing Machines | Hard | java | [Problem](https://leetcode.com/problems/super-washing-machines/) | [Solution](./solutions/Hard/0517-super-washing-machines/solution.java) |
@@ -91,8 +101,8 @@
 | zigzag-conversion | 6. Zigzag Conversion | Medium | java | [Problem](https://leetcode.com/problems/zigzag-conversion/) | [Solution](./solutions/Medium/0006-zigzag-conversion/solution.java) |
 | reverse-integer | 7. Reverse Integer | Medium | java | [Problem](https://leetcode.com/problems/reverse-integer/) | [Solution](./solutions/Medium/0007-reverse-integer/solution.java) |
 | string-to-integer-atoi | 8. String To Integer Atoi | Medium | java | [Problem](https://leetcode.com/problems/string-to-integer-atoi/) | [Solution](./solutions/Medium/0008-string-to-integer-atoi/solution.java) |
-| palindrome-number | 9. Palindrome Number | Easy | java | [Problem](https://leetcode.com/problems/palindrome-number/) | [Solution](./solutions/Easy/0009-palindrome-number/solution.java) |
 | roman-to-integer | 13. Roman To Integer | Easy | java | [Problem](https://leetcode.com/problems/roman-to-integer/) | [Solution](./solutions/Easy/0013-roman-to-integer/solution.java) |
+| longest-common-prefix | 14. Longest Common Prefix | Easy | java | [Problem](https://leetcode.com/problems/longest-common-prefix/) | [Solution](./solutions/Easy/0014-longest-common-prefix/solution.java) |
 | 3sum | 15. 3sum | Medium | java | [Problem](https://leetcode.com/problems/3sum/) | [Solution](./solutions/Medium/0015-3sum/solution.java) |
 | 4sum | 18. 4sum | Medium | java | [Problem](https://leetcode.com/problems/4sum/) | [Solution](./solutions/Medium/0018-4sum/solution.java) |
 | binary-tree-zigzag-level-order-traversal | 103. Binary Tree Zigzag Level Order Traversal | Medium | java | [Problem](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/) | [Solution](./solutions/Medium/0103-binary-tree-zigzag-level-order-traversal/solution.java) |
@@ -152,30 +162,22 @@
 | reverse-string | 344. Reverse String | Easy | java | [Problem](https://leetcode.com/problems/reverse-string/) | [Solution](./solutions/Easy/0344-reverse-string/solution.java) |
 | reverse-vowels-of-a-string | 345. Reverse Vowels Of A String | Easy | java | [Problem](https://leetcode.com/problems/reverse-vowels-of-a-string/) | [Solution](./solutions/Easy/0345-reverse-vowels-of-a-string/solution.java) |
 | top-k-frequent-elements | 347. Top K Frequent Elements | Medium | java | [Problem](https://leetcode.com/problems/top-k-frequent-elements/) | [Solution](./solutions/Medium/0347-top-k-frequent-elements/solution.java) |
-| intersection-of-two-arrays | 349. Intersection Of Two Arrays | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays/) | [Solution](./solutions/Easy/0349-intersection-of-two-arrays/solution.java) |
-| russian-doll-envelopes | 354. Russian Doll Envelopes | Hard | java | [Problem](https://leetcode.com/problems/russian-doll-envelopes/) | [Solution](./solutions/Hard/0354-russian-doll-envelopes/solution.java) |
-| max-sum-of-rectangle-no-larger-than-k | 363. Max Sum Of Rectangle No Larger Than K | Hard | java | [Problem](https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/) | [Solution](./solutions/Hard/0363-max-sum-of-rectangle-no-larger-than-k/solution.java) |
 | largest-divisible-subset | 368. Largest Divisible Subset | Medium | java | [Problem](https://leetcode.com/problems/largest-divisible-subset/) | [Solution](./solutions/Medium/0368-largest-divisible-subset/solution.java) |
 | find-k-pairs-with-smallest-sums | 373. Find K Pairs With Smallest Sums | Medium | java | [Problem](https://leetcode.com/problems/find-k-pairs-with-smallest-sums/) | [Solution](./solutions/Medium/0373-find-k-pairs-with-smallest-sums/solution.java) |
 | wiggle-subsequence | 376. Wiggle Subsequence | Medium | java | [Problem](https://leetcode.com/problems/wiggle-subsequence/) | [Solution](./solutions/Medium/0376-wiggle-subsequence/solution.java) |
 | combination-sum-iv | 377. Combination Sum Iv | Medium | java | [Problem](https://leetcode.com/problems/combination-sum-iv/) | [Solution](./solutions/Medium/0377-combination-sum-iv/solution.java) |
 | kth-smallest-element-in-a-sorted-matrix | 378. Kth Smallest Element In A Sorted Matrix | Medium | java | [Problem](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) | [Solution](./solutions/Medium/0378-kth-smallest-element-in-a-sorted-matrix/solution.java) |
 | insert-delete-getrandom-o1 | 380. Insert Delete Getrandom O1 | Medium | java | [Problem](https://leetcode.com/problems/insert-delete-getrandom-o1/) | [Solution](./solutions/Medium/0380-insert-delete-getrandom-o1/solution.java) |
-| insert-delete-getrandom-o1-duplicates-allowed | 381. Insert Delete Getrandom O1 Duplicates Allowed | Hard | java | [Problem](https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/) | [Solution](./solutions/Hard/0381-insert-delete-getrandom-o1-duplicates-allowed/solution.java) |
-| ransom-note | 383. Ransom Note | Easy | java | [Problem](https://leetcode.com/problems/ransom-note/) | [Solution](./solutions/Easy/0383-ransom-note/solution.java) |
 | shuffle-an-array | 384. Shuffle An Array | Medium | java | [Problem](https://leetcode.com/problems/shuffle-an-array/) | [Solution](./solutions/Medium/0384-shuffle-an-array/solution.java) |
 | mini-parser | 385. Mini Parser | Medium | java | [Problem](https://leetcode.com/problems/mini-parser/) | [Solution](./solutions/Medium/0385-mini-parser/solution.java) |
 | longest-absolute-file-path | 388. Longest Absolute File Path | Medium | java | [Problem](https://leetcode.com/problems/longest-absolute-file-path/) | [Solution](./solutions/Medium/0388-longest-absolute-file-path/solution.java) |
-| find-the-difference | 389. Find The Difference | Easy | java | [Problem](https://leetcode.com/problems/find-the-difference/) | [Solution](./solutions/Easy/0389-find-the-difference/solution.java) |
-| perfect-rectangle | 391. Perfect Rectangle | Hard | java | [Problem](https://leetcode.com/problems/perfect-rectangle/) | [Solution](./solutions/Hard/0391-perfect-rectangle/solution.java) |
-| is-subsequence | 392. Is Subsequence | Easy | java | [Problem](https://leetcode.com/problems/is-subsequence/) | [Solution](./solutions/Easy/0392-is-subsequence/solution.java) |
 | utf-8-validation | 393. Utf 8 Validation | Medium | java | [Problem](https://leetcode.com/problems/utf-8-validation/) | [Solution](./solutions/Medium/0393-utf-8-validation/solution.java) |
 | decode-string | 394. Decode String | Medium | java | [Problem](https://leetcode.com/problems/decode-string/) | [Solution](./solutions/Medium/0394-decode-string/solution.java) |
 | longest-substring-with-at-least-k-repeating-characters | 395. Longest Substring With At Least K Repeating Characters | Medium | java | [Problem](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/) | [Solution](./solutions/Medium/0395-longest-substring-with-at-least-k-repeating-characters/solution.java) |
 | rotate-function | 396. Rotate Function | Medium | java | [Problem](https://leetcode.com/problems/rotate-function/) | [Solution](./solutions/Medium/0396-rotate-function/solution.java) |
 | evaluate-division | 399. Evaluate Division | Medium | java | [Problem](https://leetcode.com/problems/evaluate-division/) | [Solution](./solutions/Medium/0399-evaluate-division/solution.java) |
-| convert-a-number-to-hexadecimal | 405. Convert A Number To Hexadecimal | Easy | java | [Problem](https://leetcode.com/problems/convert-a-number-to-hexadecimal/) | [Solution](./solutions/Easy/0405-convert-a-number-to-hexadecimal/solution.java) |
 | queue-reconstruction-by-height | 406. Queue Reconstruction By Height | Medium | java | [Problem](https://leetcode.com/problems/queue-reconstruction-by-height/) | [Solution](./solutions/Medium/0406-queue-reconstruction-by-height/solution.java) |
+| total-hamming-distance | Total Hamming Distance | Medium | java | [Problem](https://leetcode.com/problems/total-hamming-distance/) | [Solution](./solutions/Medium/0477-total-hamming-distance/solution.java) |
 | trapping-rain-water-ii | 407. Trapping Rain Water Ii | Hard | java | [Problem](https://leetcode.com/problems/trapping-rain-water-ii/) | [Solution](./solutions/Hard/0407-trapping-rain-water-ii/solution.java) |
 | longest-palindrome | 409. Longest Palindrome | Easy | java | [Problem](https://leetcode.com/problems/longest-palindrome/) | [Solution](./solutions/Easy/0409-longest-palindrome/solution.java) |
 | split-array-largest-sum | 410. Split Array Largest Sum | Hard | java | [Problem](https://leetcode.com/problems/split-array-largest-sum/) | [Solution](./solutions/Hard/0410-split-array-largest-sum/solution.java) |
@@ -265,4 +267,3 @@
 | smallest-missing-multiple-of-k | 3718. Smallest Missing Multiple Of K | Easy | java | [Problem](https://leetcode.com/problems/smallest-missing-multiple-of-k/) | [Solution](./solutions/Easy/3718-smallest-missing-multiple-of-k/solution.java) |
 | lexicographically-smallest-permutation-greater-than-target | 3720. Lexicographically Smallest Permutation Greater Than Target | Medium | java | [Problem](https://leetcode.com/problems/lexicographically-smallest-permutation-greater-than-target/) | [Solution](./solutions/Medium/3720-lexicographically-smallest-permutation-greater-than-target/solution.java) |
 | lexicographically-smallest-palindromic-permutation-greater-than-target | 3734. Lexicographically Smallest Palindromic Permutation Greater Than Target | Hard | java | [Problem](https://leetcode.com/problems/lexicographically-smallest-palindromic-permutation-greater-than-target/) | [Solution](./solutions/Hard/3734-lexicographically-smallest-palindromic-permutation-greater-than-target/solution.java) |
-| total-hamming-distance | Total Hamming Distance | Medium | java | [Problem](https://leetcode.com/problems/total-hamming-distance/) | [Solution](./solutions/Medium/0477-total-hamming-distance/solution.java) |
