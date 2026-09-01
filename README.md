@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 263 Solved
+## Progress Summary: 264 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -138,6 +138,7 @@
 | check-divisibility-by-digit-sum-and-product | 3622. Check Divisibility By Digit Sum And Product | Easy | java | [Problem](https://leetcode.com/problems/check-divisibility-by-digit-sum-and-product/) | [Solution](./solutions/Easy/3622-check-divisibility-by-digit-sum-and-product/solution.java) |
 | smallest-missing-multiple-of-k | 3718. Smallest Missing Multiple Of K | Easy | java | [Problem](https://leetcode.com/problems/smallest-missing-multiple-of-k/) | [Solution](./solutions/Easy/3718-smallest-missing-multiple-of-k/solution.java) |
 | lexicographically-smallest-palindromic-permutation-greater-than-target | 3734. Lexicographically Smallest Palindromic Permutation Greater Than Target | Hard | java | [Problem](https://leetcode.com/problems/lexicographically-smallest-palindromic-permutation-greater-than-target/) | [Solution](./solutions/Hard/3734-lexicographically-smallest-palindromic-permutation-greater-than-target/solution.java) |
+| single-element-in-a-sorted-array | Single Element in a Sorted Array | Medium | java | [Problem](https://leetcode.com/problems/single-element-in-a-sorted-array/) | [Solution](./solutions/Medium/0540-single-element-in-a-sorted-array/solution.java) |
 | sliding-window-median | Sliding Window Median | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-median/) | [Solution](./solutions/Hard/0480-sliding-window-median/solution.java) |
 | stamping-the-sequence | Stamping The Sequence | Hard | java | [Problem](https://leetcode.com/problems/stamping-the-sequence/) | [Solution](./solutions/Hard/0936-stamping-the-sequence/solution.java) |
 | super-washing-machines | Super Washing Machines | Hard | java | [Problem](https://leetcode.com/problems/super-washing-machines/) | [Solution](./solutions/Hard/0517-super-washing-machines/solution.java) |
