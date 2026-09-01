@@ -2,32 +2,20 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 257 Solved
+## Progress Summary: 258 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
 | 132-pattern | 132 Pattern | Medium | java | [Problem](https://leetcode.com/problems/132-pattern/) | [Solution](./solutions/Medium/0456-132-pattern/solution.java) |
 | 4sum-ii | 4Sum II | Medium | java | [Problem](https://leetcode.com/problems/4sum-ii/) | [Solution](./solutions/Medium/0454-4sum-ii/solution.java) |
+| add-two-numbers | 2. Add Two Numbers | Medium | java | [Problem](https://leetcode.com/problems/add-two-numbers/) | [Solution](./solutions/Medium/0002-add-two-numbers/solution.java) |
 | add-two-numbers-ii | Add Two Numbers II | Medium | java | [Problem](https://leetcode.com/problems/add-two-numbers-ii/) | [Solution](./solutions/Medium/0445-add-two-numbers-ii/solution.java) |
 | all-oone-data-structure | All O`one Data Structure | Hard | java | [Problem](https://leetcode.com/problems/all-oone-data-structure/) | [Solution](./solutions/Hard/0432-all-oone-data-structure/solution.java) |
 | arithmetic-slices | Arithmetic Slices | Medium | java | [Problem](https://leetcode.com/problems/arithmetic-slices/) | [Solution](./solutions/Medium/0413-arithmetic-slices/solution.java) |
-| median-of-two-sorted-arrays | 4. Median Of Two Sorted Arrays | Hard | java | [Problem](https://leetcode.com/problems/median-of-two-sorted-arrays/) | [Solution](./solutions/Hard/0004-median-of-two-sorted-arrays/solution.java) |
-| substring-with-concatenation-of-all-words | 30. Substring With Concatenation Of All Words | Hard | java | [Problem](https://leetcode.com/problems/substring-with-concatenation-of-all-words/) | [Solution](./solutions/Hard/0030-substring-with-concatenation-of-all-words/solution.java) |
-| longest-valid-parentheses | 32. Longest Valid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/longest-valid-parentheses/) | [Solution](./solutions/Hard/0032-longest-valid-parentheses/solution.java) |
-| binary-tree-maximum-path-sum | 124. Binary Tree Maximum Path Sum | Hard | java | [Problem](https://leetcode.com/problems/binary-tree-maximum-path-sum/) | [Solution](./solutions/Hard/0124-binary-tree-maximum-path-sum/solution.java) |
-| candy | 135. Candy | Hard | java | [Problem](https://leetcode.com/problems/candy/) | [Solution](./solutions/Hard/0135-candy/solution.java) |
-| max-points-on-a-line | 149. Max Points On A Line | Hard | java | [Problem](https://leetcode.com/problems/max-points-on-a-line/) | [Solution](./solutions/Hard/0149-max-points-on-a-line/solution.java) |
-| dungeon-game | 174. Dungeon Game | Hard | java | [Problem](https://leetcode.com/problems/dungeon-game/) | [Solution](./solutions/Hard/0174-dungeon-game/solution.java) |
-| best-time-to-buy-and-sell-stock-iv | 188. Best Time To Buy And Sell Stock Iv | Hard | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | [Solution](./solutions/Hard/0188-best-time-to-buy-and-sell-stock-iv/solution.java) |
-| word-search-ii | 212. Word Search Ii | Hard | java | [Problem](https://leetcode.com/problems/word-search-ii/) | [Solution](./solutions/Hard/0212-word-search-ii/solution.java) |
-| shortest-palindrome | 214. Shortest Palindrome | Hard | java | [Problem](https://leetcode.com/problems/shortest-palindrome/) | [Solution](./solutions/Hard/0214-shortest-palindrome/solution.java) |
-| the-skyline-problem | 218. The Skyline Problem | Hard | java | [Problem](https://leetcode.com/problems/the-skyline-problem/) | [Solution](./solutions/Hard/0218-the-skyline-problem/solution.java) |
+| coin-change-ii | Coin Change II | Medium | java | [Problem](https://leetcode.com/problems/coin-change-ii/) | [Solution](./solutions/Medium/0518-coin-change-ii/solution.java) |
 | contains-duplicate-ii | 219. Contains Duplicate Ii | Easy | java | [Problem](https://leetcode.com/problems/contains-duplicate-ii/) | [Solution](./solutions/Easy/0219-contains-duplicate-ii/solution.java) |
-| contains-duplicate-iii | 220. Contains Duplicate Iii | Hard | java | [Problem](https://leetcode.com/problems/contains-duplicate-iii/) | [Solution](./solutions/Hard/0220-contains-duplicate-iii/solution.java) |
-| basic-calculator | 224. Basic Calculator | Hard | java | [Problem](https://leetcode.com/problems/basic-calculator/) | [Solution](./solutions/Hard/0224-basic-calculator/solution.java) |
 | copy-list-with-random-pointer | Copy List with Random Pointer | Medium | java | [Problem](https://leetcode.com/problems/copy-list-with-random-pointer/) | [Solution](./solutions/Medium/0138-copy-list-with-random-pointer/solution.java) |
 | delete-duplicate-emails | 196. Delete Duplicate Emails | Easy | mysql | [Problem](https://leetcode.com/problems/delete-duplicate-emails/) | [Solution](./solutions/Easy/0196-delete-duplicate-emails/solution.sql) |
-| sliding-window-maximum | 239. Sliding Window Maximum | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-maximum/) | [Solution](./solutions/Hard/0239-sliding-window-maximum/solution.java) |
 | binary-tree-paths | 257. Binary Tree Paths | Easy | java | [Problem](https://leetcode.com/problems/binary-tree-paths/) | [Solution](./solutions/Easy/0257-binary-tree-paths/solution.java) |
 | design-circular-deque | Design Circular Deque | Medium | java | [Problem](https://leetcode.com/problems/design-circular-deque/) | [Solution](./solutions/Medium/0641-design-circular-deque/solution.java) |
 | design-circular-queue | Design Circular Queue | Medium | java | [Problem](https://leetcode.com/problems/design-circular-queue/) | [Solution](./solutions/Medium/0622-design-circular-queue/solution.java) |
@@ -38,8 +26,8 @@
 | find-the-minimum-and-maximum-number-of-nodes-between-critical-points | Find the Minimum and Maximum Number of Nodes Between Critical Points | Medium | java | [Problem](https://leetcode.com/problems/find-the-minimum-and-maximum-number-of-nodes-between-critical-points/) | [Solution](./solutions/Medium/2058-find-the-minimum-and-maximum-number-of-nodes-between-critical-points/solution.java) |
 | flatten-a-multilevel-doubly-linked-list | Flatten a Multilevel Doubly Linked List | Medium | java | [Problem](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/) | [Solution](./solutions/Medium/0430-flatten-a-multilevel-doubly-linked-list/solution.java) |
 | implement-stack-using-queues | Implement Stack using Queues | Easy | java | [Problem](https://leetcode.com/problems/implement-stack-using-queues/) | [Solution](./solutions/Easy/0225-implement-stack-using-queues/solution.java) |
-| integer-to-english-words | 273. Integer To English Words | Hard | java | [Problem](https://leetcode.com/problems/integer-to-english-words/) | [Solution](./solutions/Hard/0273-integer-to-english-words/solution.java) |
-| expression-add-operators | 282. Expression Add Operators | Hard | java | [Problem](https://leetcode.com/problems/expression-add-operators/) | [Solution](./solutions/Hard/0282-expression-add-operators/solution.java) |
+| intersection-of-two-arrays | 349. Intersection Of Two Arrays | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays/) | [Solution](./solutions/Easy/0349-intersection-of-two-arrays/solution.java) |
+| intersection-of-two-arrays-ii | 350. Intersection Of Two Arrays Ii | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays-ii/) | [Solution](./solutions/Easy/0350-intersection-of-two-arrays-ii/solution.java) |
 | ipo | IPO | Hard | java | [Problem](https://leetcode.com/problems/ipo/) | [Solution](./solutions/Hard/0502-ipo/solution.java) |
 | island-perimeter | Island Perimeter | Easy | java | [Problem](https://leetcode.com/problems/island-perimeter/) | [Solution](./solutions/Easy/0463-island-perimeter/solution.java) |
 | lfu-cache | LFU Cache | Hard | java | [Problem](https://leetcode.com/problems/lfu-cache/) | [Solution](./solutions/Hard/0460-lfu-cache/solution.java) |
@@ -48,6 +36,7 @@
 | max-consecutive-ones | Max Consecutive Ones | Easy | java | [Problem](https://leetcode.com/problems/max-consecutive-ones/) | [Solution](./solutions/Easy/0485-max-consecutive-ones/solution.java) |
 | maximize-the-minimum-powered-city | Maximize the Minimum Powered City | Hard | java | [Problem](https://leetcode.com/problems/maximize-the-minimum-powered-city/) | [Solution](./solutions/Hard/2528-maximize-the-minimum-powered-city/solution.java) |
 | maximum-sum-circular-subarray | Maximum Sum Circular Subarray | Medium | java | [Problem](https://leetcode.com/problems/maximum-sum-circular-subarray/) | [Solution](./solutions/Medium/0918-maximum-sum-circular-subarray/solution.java) |
+| median-of-two-sorted-arrays | 4. Median Of Two Sorted Arrays | Hard | java | [Problem](https://leetcode.com/problems/median-of-two-sorted-arrays/) | [Solution](./solutions/Hard/0004-median-of-two-sorted-arrays/solution.java) |
 | minimum-moves-to-clean-the-classroom | Minimum Moves to Clean the Classroom | Medium | java | [Problem](https://leetcode.com/problems/minimum-moves-to-clean-the-classroom/) | [Solution](./solutions/Medium/3568-minimum-moves-to-clean-the-classroom/solution.java) |
 | minimum-moves-to-equal-array-elements | Minimum Moves to Equal Array Elements | Medium | java | [Problem](https://leetcode.com/problems/minimum-moves-to-equal-array-elements/) | [Solution](./solutions/Medium/0453-minimum-moves-to-equal-array-elements/solution.java) |
 | minimum-moves-to-equal-array-elements-ii | Minimum Moves to Equal Array Elements II | Medium | java | [Problem](https://leetcode.com/problems/minimum-moves-to-equal-array-elements-ii/) | [Solution](./solutions/Medium/0462-minimum-moves-to-equal-array-elements-ii/solution.java) |
@@ -62,6 +51,23 @@
 | removing-minimum-and-maximum-from-array | Removing Minimum and Maximum From Array | Medium | java | [Problem](https://leetcode.com/problems/removing-minimum-and-maximum-from-array/) | [Solution](./solutions/Medium/2091-removing-minimum-and-maximum-from-array/solution.java) |
 | reveal-cards-in-increasing-order | Reveal Cards In Increasing Order | Medium | java | [Problem](https://leetcode.com/problems/reveal-cards-in-increasing-order/) | [Solution](./solutions/Medium/0950-reveal-cards-in-increasing-order/solution.java) |
 | reverse-pairs | Reverse Pairs | Hard | java | [Problem](https://leetcode.com/problems/reverse-pairs/) | [Solution](./solutions/Hard/0493-reverse-pairs/solution.java) |
+| sliding-window-median | Sliding Window Median | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-median/) | [Solution](./solutions/Hard/0480-sliding-window-median/solution.java) |
+| stamping-the-sequence | Stamping The Sequence | Hard | java | [Problem](https://leetcode.com/problems/stamping-the-sequence/) | [Solution](./solutions/Hard/0936-stamping-the-sequence/solution.java) |
+| substring-with-concatenation-of-all-words | 30. Substring With Concatenation Of All Words | Hard | java | [Problem](https://leetcode.com/problems/substring-with-concatenation-of-all-words/) | [Solution](./solutions/Hard/0030-substring-with-concatenation-of-all-words/solution.java) |
+| longest-valid-parentheses | 32. Longest Valid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/longest-valid-parentheses/) | [Solution](./solutions/Hard/0032-longest-valid-parentheses/solution.java) |
+| binary-tree-maximum-path-sum | 124. Binary Tree Maximum Path Sum | Hard | java | [Problem](https://leetcode.com/problems/binary-tree-maximum-path-sum/) | [Solution](./solutions/Hard/0124-binary-tree-maximum-path-sum/solution.java) |
+| candy | 135. Candy | Hard | java | [Problem](https://leetcode.com/problems/candy/) | [Solution](./solutions/Hard/0135-candy/solution.java) |
+| max-points-on-a-line | 149. Max Points On A Line | Hard | java | [Problem](https://leetcode.com/problems/max-points-on-a-line/) | [Solution](./solutions/Hard/0149-max-points-on-a-line/solution.java) |
+| dungeon-game | 174. Dungeon Game | Hard | java | [Problem](https://leetcode.com/problems/dungeon-game/) | [Solution](./solutions/Hard/0174-dungeon-game/solution.java) |
+| best-time-to-buy-and-sell-stock-iv | 188. Best Time To Buy And Sell Stock Iv | Hard | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | [Solution](./solutions/Hard/0188-best-time-to-buy-and-sell-stock-iv/solution.java) |
+| word-search-ii | 212. Word Search Ii | Hard | java | [Problem](https://leetcode.com/problems/word-search-ii/) | [Solution](./solutions/Hard/0212-word-search-ii/solution.java) |
+| shortest-palindrome | 214. Shortest Palindrome | Hard | java | [Problem](https://leetcode.com/problems/shortest-palindrome/) | [Solution](./solutions/Hard/0214-shortest-palindrome/solution.java) |
+| the-skyline-problem | 218. The Skyline Problem | Hard | java | [Problem](https://leetcode.com/problems/the-skyline-problem/) | [Solution](./solutions/Hard/0218-the-skyline-problem/solution.java) |
+| contains-duplicate-iii | 220. Contains Duplicate Iii | Hard | java | [Problem](https://leetcode.com/problems/contains-duplicate-iii/) | [Solution](./solutions/Hard/0220-contains-duplicate-iii/solution.java) |
+| basic-calculator | 224. Basic Calculator | Hard | java | [Problem](https://leetcode.com/problems/basic-calculator/) | [Solution](./solutions/Hard/0224-basic-calculator/solution.java) |
+| sliding-window-maximum | 239. Sliding Window Maximum | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-maximum/) | [Solution](./solutions/Hard/0239-sliding-window-maximum/solution.java) |
+| integer-to-english-words | 273. Integer To English Words | Hard | java | [Problem](https://leetcode.com/problems/integer-to-english-words/) | [Solution](./solutions/Hard/0273-integer-to-english-words/solution.java) |
+| expression-add-operators | 282. Expression Add Operators | Hard | java | [Problem](https://leetcode.com/problems/expression-add-operators/) | [Solution](./solutions/Hard/0282-expression-add-operators/solution.java) |
 | serialize-and-deserialize-binary-tree | 297. Serialize And Deserialize Binary Tree | Hard | java | [Problem](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | [Solution](./solutions/Hard/0297-serialize-and-deserialize-binary-tree/solution.java) |
 | remove-invalid-parentheses | 301. Remove Invalid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/remove-invalid-parentheses/) | [Solution](./solutions/Hard/0301-remove-invalid-parentheses/solution.java) |
 | burst-balloons | 312. Burst Balloons | Hard | java | [Problem](https://leetcode.com/problems/burst-balloons/) | [Solution](./solutions/Hard/0312-burst-balloons/solution.java) |
@@ -76,6 +82,7 @@
 | russian-doll-envelopes | 354. Russian Doll Envelopes | Hard | java | [Problem](https://leetcode.com/problems/russian-doll-envelopes/) | [Solution](./solutions/Hard/0354-russian-doll-envelopes/solution.java) |
 | max-sum-of-rectangle-no-larger-than-k | 363. Max Sum Of Rectangle No Larger Than K | Hard | java | [Problem](https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/) | [Solution](./solutions/Hard/0363-max-sum-of-rectangle-no-larger-than-k/solution.java) |
 | insert-delete-getrandom-o1-duplicates-allowed | 381. Insert Delete Getrandom O1 Duplicates Allowed | Hard | java | [Problem](https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/) | [Solution](./solutions/Hard/0381-insert-delete-getrandom-o1-duplicates-allowed/solution.java) |
+| find-the-difference | 389. Find The Difference | Easy | java | [Problem](https://leetcode.com/problems/find-the-difference/) | [Solution](./solutions/Easy/0389-find-the-difference/solution.java) |
 | perfect-rectangle | 391. Perfect Rectangle | Hard | java | [Problem](https://leetcode.com/problems/perfect-rectangle/) | [Solution](./solutions/Hard/0391-perfect-rectangle/solution.java) |
 | is-subsequence | 392. Is Subsequence | Easy | java | [Problem](https://leetcode.com/problems/is-subsequence/) | [Solution](./solutions/Easy/0392-is-subsequence/solution.java) |
 | convert-a-number-to-hexadecimal | 405. Convert A Number To Hexadecimal | Easy | java | [Problem](https://leetcode.com/problems/convert-a-number-to-hexadecimal/) | [Solution](./solutions/Easy/0405-convert-a-number-to-hexadecimal/solution.java) |
@@ -120,13 +127,10 @@
 | check-divisibility-by-digit-sum-and-product | 3622. Check Divisibility By Digit Sum And Product | Easy | java | [Problem](https://leetcode.com/problems/check-divisibility-by-digit-sum-and-product/) | [Solution](./solutions/Easy/3622-check-divisibility-by-digit-sum-and-product/solution.java) |
 | smallest-missing-multiple-of-k | 3718. Smallest Missing Multiple Of K | Easy | java | [Problem](https://leetcode.com/problems/smallest-missing-multiple-of-k/) | [Solution](./solutions/Easy/3718-smallest-missing-multiple-of-k/solution.java) |
 | lexicographically-smallest-palindromic-permutation-greater-than-target | 3734. Lexicographically Smallest Palindromic Permutation Greater Than Target | Hard | java | [Problem](https://leetcode.com/problems/lexicographically-smallest-palindromic-permutation-greater-than-target/) | [Solution](./solutions/Hard/3734-lexicographically-smallest-palindromic-permutation-greater-than-target/solution.java) |
-| sliding-window-median | Sliding Window Median | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-median/) | [Solution](./solutions/Hard/0480-sliding-window-median/solution.java) |
-| stamping-the-sequence | Stamping The Sequence | Hard | java | [Problem](https://leetcode.com/problems/stamping-the-sequence/) | [Solution](./solutions/Hard/0936-stamping-the-sequence/solution.java) |
 | super-washing-machines | Super Washing Machines | Hard | java | [Problem](https://leetcode.com/problems/super-washing-machines/) | [Solution](./solutions/Hard/0517-super-washing-machines/solution.java) |
 | target-sum | Target Sum | Medium | java | [Problem](https://leetcode.com/problems/target-sum/) | [Solution](./solutions/Medium/0494-target-sum/solution.java) |
 | teemo-attacking | Teemo Attacking | Easy | java | [Problem](https://leetcode.com/problems/teemo-attacking/) | [Solution](./solutions/Easy/0495-teemo-attacking/solution.java) |
 | two-sum | 1. Two Sum | Easy | java | [Problem](https://leetcode.com/problems/two-sum/) | [Solution](./solutions/Easy/0001-two-sum/solution.java) |
-| add-two-numbers | 2. Add Two Numbers | Medium | java | [Problem](https://leetcode.com/problems/add-two-numbers/) | [Solution](./solutions/Medium/0002-add-two-numbers/solution.java) |
 | longest-substring-without-repeating-characters | 3. Longest Substring Without Repeating Characters | Medium | java | [Problem](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | [Solution](./solutions/Medium/0003-longest-substring-without-repeating-characters/solution.java) |
 | longest-palindromic-substring | 5. Longest Palindromic Substring | Medium | java | [Problem](https://leetcode.com/problems/longest-palindromic-substring/) | [Solution](./solutions/Medium/0005-longest-palindromic-substring/solution.java) |
 | zigzag-conversion | 6. Zigzag Conversion | Medium | java | [Problem](https://leetcode.com/problems/zigzag-conversion/) | [Solution](./solutions/Medium/0006-zigzag-conversion/solution.java) |
@@ -195,8 +199,6 @@
 | reverse-string | 344. Reverse String | Easy | java | [Problem](https://leetcode.com/problems/reverse-string/) | [Solution](./solutions/Easy/0344-reverse-string/solution.java) |
 | reverse-vowels-of-a-string | 345. Reverse Vowels Of A String | Easy | java | [Problem](https://leetcode.com/problems/reverse-vowels-of-a-string/) | [Solution](./solutions/Easy/0345-reverse-vowels-of-a-string/solution.java) |
 | top-k-frequent-elements | 347. Top K Frequent Elements | Medium | java | [Problem](https://leetcode.com/problems/top-k-frequent-elements/) | [Solution](./solutions/Medium/0347-top-k-frequent-elements/solution.java) |
-| intersection-of-two-arrays | 349. Intersection Of Two Arrays | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays/) | [Solution](./solutions/Easy/0349-intersection-of-two-arrays/solution.java) |
-| intersection-of-two-arrays-ii | 350. Intersection Of Two Arrays Ii | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays-ii/) | [Solution](./solutions/Easy/0350-intersection-of-two-arrays-ii/solution.java) |
 | largest-divisible-subset | 368. Largest Divisible Subset | Medium | java | [Problem](https://leetcode.com/problems/largest-divisible-subset/) | [Solution](./solutions/Medium/0368-largest-divisible-subset/solution.java) |
 | find-k-pairs-with-smallest-sums | 373. Find K Pairs With Smallest Sums | Medium | java | [Problem](https://leetcode.com/problems/find-k-pairs-with-smallest-sums/) | [Solution](./solutions/Medium/0373-find-k-pairs-with-smallest-sums/solution.java) |
 | wiggle-subsequence | 376. Wiggle Subsequence | Medium | java | [Problem](https://leetcode.com/problems/wiggle-subsequence/) | [Solution](./solutions/Medium/0376-wiggle-subsequence/solution.java) |
@@ -207,7 +209,6 @@
 | shuffle-an-array | 384. Shuffle An Array | Medium | java | [Problem](https://leetcode.com/problems/shuffle-an-array/) | [Solution](./solutions/Medium/0384-shuffle-an-array/solution.java) |
 | mini-parser | 385. Mini Parser | Medium | java | [Problem](https://leetcode.com/problems/mini-parser/) | [Solution](./solutions/Medium/0385-mini-parser/solution.java) |
 | longest-absolute-file-path | 388. Longest Absolute File Path | Medium | java | [Problem](https://leetcode.com/problems/longest-absolute-file-path/) | [Solution](./solutions/Medium/0388-longest-absolute-file-path/solution.java) |
-| find-the-difference | 389. Find The Difference | Easy | java | [Problem](https://leetcode.com/problems/find-the-difference/) | [Solution](./solutions/Easy/0389-find-the-difference/solution.java) |
 | utf-8-validation | 393. Utf 8 Validation | Medium | java | [Problem](https://leetcode.com/problems/utf-8-validation/) | [Solution](./solutions/Medium/0393-utf-8-validation/solution.java) |
 | decode-string | 394. Decode String | Medium | java | [Problem](https://leetcode.com/problems/decode-string/) | [Solution](./solutions/Medium/0394-decode-string/solution.java) |
 | longest-substring-with-at-least-k-repeating-characters | 395. Longest Substring With At Least K Repeating Characters | Medium | java | [Problem](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/) | [Solution](./solutions/Medium/0395-longest-substring-with-at-least-k-repeating-characters/solution.java) |
