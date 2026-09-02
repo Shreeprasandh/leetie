@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 278 Solved
+## Progress Summary: 279 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -17,6 +17,7 @@
 | array-partition | Array Partition | Easy | java | [Problem](https://leetcode.com/problems/array-partition/) | [Solution](./solutions/Easy/0561-array-partition/solution.java) |
 | beautiful-arrangement | Beautiful Arrangement | Medium | java | [Problem](https://leetcode.com/problems/beautiful-arrangement/) | [Solution](./solutions/Medium/0526-beautiful-arrangement/solution.java) |
 | brick-wall | Brick Wall | Medium | java | [Problem](https://leetcode.com/problems/brick-wall/) | [Solution](./solutions/Medium/0554-brick-wall/solution.java) |
+| can-place-flowers | Can Place Flowers | Easy | java | [Problem](https://leetcode.com/problems/can-place-flowers/) | [Solution](./solutions/Easy/0605-can-place-flowers/solution.java) |
 | coin-change-ii | Coin Change II | Medium | java | [Problem](https://leetcode.com/problems/coin-change-ii/) | [Solution](./solutions/Medium/0518-coin-change-ii/solution.java) |
 | construct-uniform-parity-array-i | Construct Uniform Parity Array I | Easy | java | [Problem](https://leetcode.com/problems/construct-uniform-parity-array-i/) | [Solution](./solutions/Easy/3875-construct-uniform-parity-array-i/solution.java) |
 | contiguous-array | Contiguous Array | Medium | java | [Problem](https://leetcode.com/problems/contiguous-array/) | [Solution](./solutions/Medium/0525-contiguous-array/solution.java) |
@@ -40,7 +41,6 @@
 | longest-common-prefix | 14. Longest Common Prefix | Easy | java | [Problem](https://leetcode.com/problems/longest-common-prefix/) | [Solution](./solutions/Easy/0014-longest-common-prefix/solution.java) |
 | longest-harmonious-subsequence | Longest Harmonious Subsequence | Easy | java | [Problem](https://leetcode.com/problems/longest-harmonious-subsequence/) | [Solution](./solutions/Easy/0594-longest-harmonious-subsequence/solution.java) |
 | majority-element | 169. Majority Element | Easy | java | [Problem](https://leetcode.com/problems/majority-element/) | [Solution](./solutions/Easy/0169-majority-element/solution.java) |
-| employees-earning-more-than-their-managers | 181. Employees Earning More Than Their Managers | Easy | mysql | [Problem](https://leetcode.com/problems/employees-earning-more-than-their-managers/) | [Solution](./solutions/Easy/0181-employees-earning-more-than-their-managers/solution.sql) |
 | matchsticks-to-square | Matchsticks to Square | Medium | java | [Problem](https://leetcode.com/problems/matchsticks-to-square/) | [Solution](./solutions/Medium/0473-matchsticks-to-square/solution.java) |
 | max-consecutive-ones | Max Consecutive Ones | Easy | java | [Problem](https://leetcode.com/problems/max-consecutive-ones/) | [Solution](./solutions/Easy/0485-max-consecutive-ones/solution.java) |
 | maximize-the-minimum-powered-city | Maximize the Minimum Powered City | Hard | java | [Problem](https://leetcode.com/problems/maximize-the-minimum-powered-city/) | [Solution](./solutions/Hard/2528-maximize-the-minimum-powered-city/solution.java) |
@@ -100,6 +100,7 @@
 | compare-version-numbers | 165. Compare Version Numbers | Medium | java | [Problem](https://leetcode.com/problems/compare-version-numbers/) | [Solution](./solutions/Medium/0165-compare-version-numbers/solution.java) |
 | fraction-to-recurring-decimal | 166. Fraction To Recurring Decimal | Medium | java | [Problem](https://leetcode.com/problems/fraction-to-recurring-decimal/) | [Solution](./solutions/Medium/0166-fraction-to-recurring-decimal/solution.java) |
 | dungeon-game | 174. Dungeon Game | Hard | java | [Problem](https://leetcode.com/problems/dungeon-game/) | [Solution](./solutions/Hard/0174-dungeon-game/solution.java) |
+| employees-earning-more-than-their-managers | 181. Employees Earning More Than Their Managers | Easy | mysql | [Problem](https://leetcode.com/problems/employees-earning-more-than-their-managers/) | [Solution](./solutions/Easy/0181-employees-earning-more-than-their-managers/solution.sql) |
 | repeated-dna-sequences | 187. Repeated Dna Sequences | Medium | java | [Problem](https://leetcode.com/problems/repeated-dna-sequences/) | [Solution](./solutions/Medium/0187-repeated-dna-sequences/solution.java) |
 | best-time-to-buy-and-sell-stock-iv | 188. Best Time To Buy And Sell Stock Iv | Hard | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | [Solution](./solutions/Hard/0188-best-time-to-buy-and-sell-stock-iv/solution.java) |
 | rotate-array | 189. Rotate Array | Medium | java | [Problem](https://leetcode.com/problems/rotate-array/) | [Solution](./solutions/Medium/0189-rotate-array/solution.java) |
