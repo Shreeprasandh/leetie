@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 274 Solved
+## Progress Summary: 275 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -27,6 +27,7 @@
 | design-circular-queue | Design Circular Queue | Medium | java | [Problem](https://leetcode.com/problems/design-circular-queue/) | [Solution](./solutions/Medium/0622-design-circular-queue/solution.java) |
 | design-twitter | Design Twitter | Medium | java | [Problem](https://leetcode.com/problems/design-twitter/) | [Solution](./solutions/Medium/0355-design-twitter/solution.java) |
 | diagonal-traverse | Diagonal Traverse | Medium | java | [Problem](https://leetcode.com/problems/diagonal-traverse/) | [Solution](./solutions/Medium/0498-diagonal-traverse/solution.java) |
+| distribute-candies | Distribute Candies | Easy | java | [Problem](https://leetcode.com/problems/distribute-candies/) | [Solution](./solutions/Easy/0575-distribute-candies/solution.java) |
 | find-maximum-non-decreasing-array-length | Find Maximum Non-decreasing Array Length | Hard | java | [Problem](https://leetcode.com/problems/find-maximum-non-decreasing-array-length/) | [Solution](./solutions/Hard/2945-find-maximum-non-decreasing-array-length/solution.java) |
 | find-the-minimum-and-maximum-number-of-nodes-between-critical-points | Find the Minimum and Maximum Number of Nodes Between Critical Points | Medium | java | [Problem](https://leetcode.com/problems/find-the-minimum-and-maximum-number-of-nodes-between-critical-points/) | [Solution](./solutions/Medium/2058-find-the-minimum-and-maximum-number-of-nodes-between-critical-points/solution.java) |
 | flatten-a-multilevel-doubly-linked-list | Flatten a Multilevel Doubly Linked List | Medium | java | [Problem](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/) | [Solution](./solutions/Medium/0430-flatten-a-multilevel-doubly-linked-list/solution.java) |
@@ -47,12 +48,6 @@
 | employees-earning-more-than-their-managers | 181. Employees Earning More Than Their Managers | Easy | mysql | [Problem](https://leetcode.com/problems/employees-earning-more-than-their-managers/) | [Solution](./solutions/Easy/0181-employees-earning-more-than-their-managers/solution.sql) |
 | best-time-to-buy-and-sell-stock-iv | 188. Best Time To Buy And Sell Stock Iv | Hard | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | [Solution](./solutions/Hard/0188-best-time-to-buy-and-sell-stock-iv/solution.java) |
 | delete-duplicate-emails | 196. Delete Duplicate Emails | Easy | mysql | [Problem](https://leetcode.com/problems/delete-duplicate-emails/) | [Solution](./solutions/Easy/0196-delete-duplicate-emails/solution.sql) |
-| word-search-ii | 212. Word Search Ii | Hard | java | [Problem](https://leetcode.com/problems/word-search-ii/) | [Solution](./solutions/Hard/0212-word-search-ii/solution.java) |
-| shortest-palindrome | 214. Shortest Palindrome | Hard | java | [Problem](https://leetcode.com/problems/shortest-palindrome/) | [Solution](./solutions/Hard/0214-shortest-palindrome/solution.java) |
-| the-skyline-problem | 218. The Skyline Problem | Hard | java | [Problem](https://leetcode.com/problems/the-skyline-problem/) | [Solution](./solutions/Hard/0218-the-skyline-problem/solution.java) |
-| contains-duplicate-ii | 219. Contains Duplicate Ii | Easy | java | [Problem](https://leetcode.com/problems/contains-duplicate-ii/) | [Solution](./solutions/Easy/0219-contains-duplicate-ii/solution.java) |
-| contains-duplicate-iii | 220. Contains Duplicate Iii | Hard | java | [Problem](https://leetcode.com/problems/contains-duplicate-iii/) | [Solution](./solutions/Hard/0220-contains-duplicate-iii/solution.java) |
-| basic-calculator | 224. Basic Calculator | Hard | java | [Problem](https://leetcode.com/problems/basic-calculator/) | [Solution](./solutions/Hard/0224-basic-calculator/solution.java) |
 | matchsticks-to-square | Matchsticks to Square | Medium | java | [Problem](https://leetcode.com/problems/matchsticks-to-square/) | [Solution](./solutions/Medium/0473-matchsticks-to-square/solution.java) |
 | max-consecutive-ones | Max Consecutive Ones | Easy | java | [Problem](https://leetcode.com/problems/max-consecutive-ones/) | [Solution](./solutions/Easy/0485-max-consecutive-ones/solution.java) |
 | maximize-the-minimum-powered-city | Maximize the Minimum Powered City | Hard | java | [Problem](https://leetcode.com/problems/maximize-the-minimum-powered-city/) | [Solution](./solutions/Hard/2528-maximize-the-minimum-powered-city/solution.java) |
@@ -81,8 +76,6 @@
 | sliding-window-median | Sliding Window Median | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-median/) | [Solution](./solutions/Hard/0480-sliding-window-median/solution.java) |
 | stamping-the-sequence | Stamping The Sequence | Hard | java | [Problem](https://leetcode.com/problems/stamping-the-sequence/) | [Solution](./solutions/Hard/0936-stamping-the-sequence/solution.java) |
 | subarray-sum-equals-k | Subarray Sum Equals K | Medium | java | [Problem](https://leetcode.com/problems/subarray-sum-equals-k/) | [Solution](./solutions/Medium/0560-subarray-sum-equals-k/solution.java) |
-| summary-ranges | 228. Summary Ranges | Easy | java | [Problem](https://leetcode.com/problems/summary-ranges/) | [Solution](./solutions/Easy/0228-summary-ranges/solution.java) |
-| sliding-window-maximum | 239. Sliding Window Maximum | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-maximum/) | [Solution](./solutions/Hard/0239-sliding-window-maximum/solution.java) |
 | super-washing-machines | Super Washing Machines | Hard | java | [Problem](https://leetcode.com/problems/super-washing-machines/) | [Solution](./solutions/Hard/0517-super-washing-machines/solution.java) |
 | target-sum | Target Sum | Medium | java | [Problem](https://leetcode.com/problems/target-sum/) | [Solution](./solutions/Medium/0494-target-sum/solution.java) |
 | teemo-attacking | Teemo Attacking | Easy | java | [Problem](https://leetcode.com/problems/teemo-attacking/) | [Solution](./solutions/Easy/0495-teemo-attacking/solution.java) |
@@ -115,15 +108,23 @@
 | count-primes | 204. Count Primes | Medium | java | [Problem](https://leetcode.com/problems/count-primes/) | [Solution](./solutions/Medium/0204-count-primes/solution.java) |
 | course-schedule | 207. Course Schedule | Medium | java | [Problem](https://leetcode.com/problems/course-schedule/) | [Solution](./solutions/Medium/0207-course-schedule/solution.java) |
 | implement-trie-prefix-tree | 208. Implement Trie Prefix Tree | Medium | java | [Problem](https://leetcode.com/problems/implement-trie-prefix-tree/) | [Solution](./solutions/Medium/0208-implement-trie-prefix-tree/solution.java) |
+| total-hamming-distance | Total Hamming Distance | Medium | java | [Problem](https://leetcode.com/problems/total-hamming-distance/) | [Solution](./solutions/Medium/0477-total-hamming-distance/solution.java) |
+| word-search-ii | 212. Word Search Ii | Hard | java | [Problem](https://leetcode.com/problems/word-search-ii/) | [Solution](./solutions/Hard/0212-word-search-ii/solution.java) |
 | house-robber-ii | 213. House Robber Ii | Medium | java | [Problem](https://leetcode.com/problems/house-robber-ii/) | [Solution](./solutions/Medium/0213-house-robber-ii/solution.java) |
+| shortest-palindrome | 214. Shortest Palindrome | Hard | java | [Problem](https://leetcode.com/problems/shortest-palindrome/) | [Solution](./solutions/Hard/0214-shortest-palindrome/solution.java) |
 | kth-largest-element-in-an-array | 215. Kth Largest Element In An Array | Medium | java | [Problem](https://leetcode.com/problems/kth-largest-element-in-an-array/) | [Solution](./solutions/Medium/0215-kth-largest-element-in-an-array/solution.java) |
 | combination-sum-iii | 216. Combination Sum Iii | Medium | java | [Problem](https://leetcode.com/problems/combination-sum-iii/) | [Solution](./solutions/Medium/0216-combination-sum-iii/solution.java) |
+| the-skyline-problem | 218. The Skyline Problem | Hard | java | [Problem](https://leetcode.com/problems/the-skyline-problem/) | [Solution](./solutions/Hard/0218-the-skyline-problem/solution.java) |
+| contains-duplicate-ii | 219. Contains Duplicate Ii | Easy | java | [Problem](https://leetcode.com/problems/contains-duplicate-ii/) | [Solution](./solutions/Easy/0219-contains-duplicate-ii/solution.java) |
+| contains-duplicate-iii | 220. Contains Duplicate Iii | Hard | java | [Problem](https://leetcode.com/problems/contains-duplicate-iii/) | [Solution](./solutions/Hard/0220-contains-duplicate-iii/solution.java) |
 | maximal-square | 221. Maximal Square | Medium | java | [Problem](https://leetcode.com/problems/maximal-square/) | [Solution](./solutions/Medium/0221-maximal-square/solution.java) |
+| basic-calculator | 224. Basic Calculator | Hard | java | [Problem](https://leetcode.com/problems/basic-calculator/) | [Solution](./solutions/Hard/0224-basic-calculator/solution.java) |
 | basic-calculator-ii | 227. Basic Calculator Ii | Medium | java | [Problem](https://leetcode.com/problems/basic-calculator-ii/) | [Solution](./solutions/Medium/0227-basic-calculator-ii/solution.java) |
+| summary-ranges | 228. Summary Ranges | Easy | java | [Problem](https://leetcode.com/problems/summary-ranges/) | [Solution](./solutions/Easy/0228-summary-ranges/solution.java) |
 | majority-element-ii | 229. Majority Element Ii | Medium | java | [Problem](https://leetcode.com/problems/majority-element-ii/) | [Solution](./solutions/Medium/0229-majority-element-ii/solution.java) |
+| sliding-window-maximum | 239. Sliding Window Maximum | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-maximum/) | [Solution](./solutions/Hard/0239-sliding-window-maximum/solution.java) |
 | search-a-2d-matrix-ii | 240. Search A 2d Matrix Ii | Medium | java | [Problem](https://leetcode.com/problems/search-a-2d-matrix-ii/) | [Solution](./solutions/Medium/0240-search-a-2d-matrix-ii/solution.java) |
 | different-ways-to-add-parentheses | 241. Different Ways To Add Parentheses | Medium | java | [Problem](https://leetcode.com/problems/different-ways-to-add-parentheses/) | [Solution](./solutions/Medium/0241-different-ways-to-add-parentheses/solution.java) |
-| total-hamming-distance | Total Hamming Distance | Medium | java | [Problem](https://leetcode.com/problems/total-hamming-distance/) | [Solution](./solutions/Medium/0477-total-hamming-distance/solution.java) |
 | valid-anagram | 242. Valid Anagram | Easy | java | [Problem](https://leetcode.com/problems/valid-anagram/) | [Solution](./solutions/Easy/0242-valid-anagram/solution.java) |
 | binary-tree-paths | 257. Binary Tree Paths | Easy | java | [Problem](https://leetcode.com/problems/binary-tree-paths/) | [Solution](./solutions/Easy/0257-binary-tree-paths/solution.java) |
 | single-number-iii | 260. Single Number Iii | Medium | java | [Problem](https://leetcode.com/problems/single-number-iii/) | [Solution](./solutions/Medium/0260-single-number-iii/solution.java) |
