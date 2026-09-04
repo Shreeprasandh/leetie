@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 311 Solved
+## Progress Summary: 312 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -34,6 +34,7 @@
 | degree-of-an-array | Degree of an Array | Easy | java | [Problem](https://leetcode.com/problems/degree-of-an-array/) | [Solution](./solutions/Easy/0697-degree-of-an-array/solution.java) |
 | design-circular-deque | Design Circular Deque | Medium | java | [Problem](https://leetcode.com/problems/design-circular-deque/) | [Solution](./solutions/Medium/0641-design-circular-deque/solution.java) |
 | design-circular-queue | Design Circular Queue | Medium | java | [Problem](https://leetcode.com/problems/design-circular-queue/) | [Solution](./solutions/Medium/0622-design-circular-queue/solution.java) |
+| design-hashmap | Design HashMap | Easy | java | [Problem](https://leetcode.com/problems/design-hashmap/) | [Solution](./solutions/Easy/0706-design-hashmap/solution.java) |
 | design-hashset | Design HashSet | Easy | java | [Problem](https://leetcode.com/problems/design-hashset/) | [Solution](./solutions/Easy/0705-design-hashset/solution.java) |
 | design-twitter | Design Twitter | Medium | java | [Problem](https://leetcode.com/problems/design-twitter/) | [Solution](./solutions/Medium/0355-design-twitter/solution.java) |
 | diagonal-traverse | Diagonal Traverse | Medium | java | [Problem](https://leetcode.com/problems/diagonal-traverse/) | [Solution](./solutions/Medium/0498-diagonal-traverse/solution.java) |
