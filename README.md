@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 318 Solved
+## Progress Summary: 319 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -104,12 +104,25 @@
 | populating-next-right-pointers-in-each-node-ii | 117. Populating Next Right Pointers In Each Node Ii | Medium | java | [Problem](https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/) | [Solution](./solutions/Medium/0117-populating-next-right-pointers-in-each-node-ii/solution.java) |
 | surrounded-regions | 130. Surrounded Regions | Medium | java | [Problem](https://leetcode.com/problems/surrounded-regions/) | [Solution](./solutions/Medium/0130-surrounded-regions/solution.java) |
 | gas-station | 134. Gas Station | Medium | java | [Problem](https://leetcode.com/problems/gas-station/) | [Solution](./solutions/Medium/0134-gas-station/solution.java) |
+| max-points-on-a-line | 149. Max Points On A Line | Hard | java | [Problem](https://leetcode.com/problems/max-points-on-a-line/) | [Solution](./solutions/Hard/0149-max-points-on-a-line/solution.java) |
 | evaluate-reverse-polish-notation | 150. Evaluate Reverse Polish Notation | Medium | java | [Problem](https://leetcode.com/problems/evaluate-reverse-polish-notation/) | [Solution](./solutions/Medium/0150-evaluate-reverse-polish-notation/solution.java) |
 | compare-version-numbers | 165. Compare Version Numbers | Medium | java | [Problem](https://leetcode.com/problems/compare-version-numbers/) | [Solution](./solutions/Medium/0165-compare-version-numbers/solution.java) |
 | fraction-to-recurring-decimal | 166. Fraction To Recurring Decimal | Medium | java | [Problem](https://leetcode.com/problems/fraction-to-recurring-decimal/) | [Solution](./solutions/Medium/0166-fraction-to-recurring-decimal/solution.java) |
 | dungeon-game | 174. Dungeon Game | Hard | java | [Problem](https://leetcode.com/problems/dungeon-game/) | [Solution](./solutions/Hard/0174-dungeon-game/solution.java) |
+| partition-to-k-equal-sum-subsets | Partition to K Equal Sum Subsets | Medium | java | [Problem](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) | [Solution](./solutions/Medium/0698-partition-to-k-equal-sum-subsets/solution.java) |
+| random-pick-with-blacklist | Random Pick with Blacklist | Hard | java | [Problem](https://leetcode.com/problems/random-pick-with-blacklist/) | [Solution](./solutions/Hard/0710-random-pick-with-blacklist/solution.java) |
+| random-pick-with-weight | Random Pick with Weight | Medium | java | [Problem](https://leetcode.com/problems/random-pick-with-weight/) | [Solution](./solutions/Medium/0528-random-pick-with-weight/solution.java) |
+| random-point-in-non-overlapping-rectangles | Random Point in Non-overlapping Rectangles | Medium | java | [Problem](https://leetcode.com/problems/random-point-in-non-overlapping-rectangles/) | [Solution](./solutions/Medium/0497-random-point-in-non-overlapping-rectangles/solution.java) |
+| range-addition-ii | Range Addition II | Easy | java | [Problem](https://leetcode.com/problems/range-addition-ii/) | [Solution](./solutions/Easy/0598-range-addition-ii/solution.java) |
+| relative-ranks | Relative Ranks | Easy | java | [Problem](https://leetcode.com/problems/relative-ranks/) | [Solution](./solutions/Easy/0506-relative-ranks/solution.java) |
+| remove-boxes | Remove Boxes | Hard | java | [Problem](https://leetcode.com/problems/remove-boxes/) | [Solution](./solutions/Hard/0546-remove-boxes/solution.java) |
+| removing-minimum-and-maximum-from-array | Removing Minimum and Maximum From Array | Medium | java | [Problem](https://leetcode.com/problems/removing-minimum-and-maximum-from-array/) | [Solution](./solutions/Medium/2091-removing-minimum-and-maximum-from-array/solution.java) |
 | repeated-dna-sequences | 187. Repeated Dna Sequences | Medium | java | [Problem](https://leetcode.com/problems/repeated-dna-sequences/) | [Solution](./solutions/Medium/0187-repeated-dna-sequences/solution.java) |
 | best-time-to-buy-and-sell-stock-iv | 188. Best Time To Buy And Sell Stock Iv | Hard | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | [Solution](./solutions/Hard/0188-best-time-to-buy-and-sell-stock-iv/solution.java) |
+| replace-words | Replace Words | Medium | java | [Problem](https://leetcode.com/problems/replace-words/) | [Solution](./solutions/Medium/0648-replace-words/solution.java) |
+| reshape-the-matrix | Reshape the Matrix | Easy | java | [Problem](https://leetcode.com/problems/reshape-the-matrix/) | [Solution](./solutions/Easy/0566-reshape-the-matrix/solution.java) |
+| reveal-cards-in-increasing-order | Reveal Cards In Increasing Order | Medium | java | [Problem](https://leetcode.com/problems/reveal-cards-in-increasing-order/) | [Solution](./solutions/Medium/0950-reveal-cards-in-increasing-order/solution.java) |
+| reverse-pairs | Reverse Pairs | Hard | java | [Problem](https://leetcode.com/problems/reverse-pairs/) | [Solution](./solutions/Hard/0493-reverse-pairs/solution.java) |
 | rotate-array | 189. Rotate Array | Medium | java | [Problem](https://leetcode.com/problems/rotate-array/) | [Solution](./solutions/Medium/0189-rotate-array/solution.java) |
 | house-robber | 198. House Robber | Medium | java | [Problem](https://leetcode.com/problems/house-robber/) | [Solution](./solutions/Medium/0198-house-robber/solution.java) |
 | binary-tree-right-side-view | 199. Binary Tree Right Side View | Medium | java | [Problem](https://leetcode.com/problems/binary-tree-right-side-view/) | [Solution](./solutions/Medium/0199-binary-tree-right-side-view/solution.java) |
@@ -118,62 +131,13 @@
 | count-primes | 204. Count Primes | Medium | java | [Problem](https://leetcode.com/problems/count-primes/) | [Solution](./solutions/Medium/0204-count-primes/solution.java) |
 | course-schedule | 207. Course Schedule | Medium | java | [Problem](https://leetcode.com/problems/course-schedule/) | [Solution](./solutions/Medium/0207-course-schedule/solution.java) |
 | implement-trie-prefix-tree | 208. Implement Trie Prefix Tree | Medium | java | [Problem](https://leetcode.com/problems/implement-trie-prefix-tree/) | [Solution](./solutions/Medium/0208-implement-trie-prefix-tree/solution.java) |
-| word-search-ii | 212. Word Search Ii | Hard | java | [Problem](https://leetcode.com/problems/word-search-ii/) | [Solution](./solutions/Hard/0212-word-search-ii/solution.java) |
-| house-robber-ii | 213. House Robber Ii | Medium | java | [Problem](https://leetcode.com/problems/house-robber-ii/) | [Solution](./solutions/Medium/0213-house-robber-ii/solution.java) |
-| shortest-palindrome | 214. Shortest Palindrome | Hard | java | [Problem](https://leetcode.com/problems/shortest-palindrome/) | [Solution](./solutions/Hard/0214-shortest-palindrome/solution.java) |
-| kth-largest-element-in-an-array | 215. Kth Largest Element In An Array | Medium | java | [Problem](https://leetcode.com/problems/kth-largest-element-in-an-array/) | [Solution](./solutions/Medium/0215-kth-largest-element-in-an-array/solution.java) |
-| combination-sum-iii | 216. Combination Sum Iii | Medium | java | [Problem](https://leetcode.com/problems/combination-sum-iii/) | [Solution](./solutions/Medium/0216-combination-sum-iii/solution.java) |
-| the-skyline-problem | 218. The Skyline Problem | Hard | java | [Problem](https://leetcode.com/problems/the-skyline-problem/) | [Solution](./solutions/Hard/0218-the-skyline-problem/solution.java) |
-| contains-duplicate-iii | 220. Contains Duplicate Iii | Hard | java | [Problem](https://leetcode.com/problems/contains-duplicate-iii/) | [Solution](./solutions/Hard/0220-contains-duplicate-iii/solution.java) |
-| maximal-square | 221. Maximal Square | Medium | java | [Problem](https://leetcode.com/problems/maximal-square/) | [Solution](./solutions/Medium/0221-maximal-square/solution.java) |
-| basic-calculator | 224. Basic Calculator | Hard | java | [Problem](https://leetcode.com/problems/basic-calculator/) | [Solution](./solutions/Hard/0224-basic-calculator/solution.java) |
-| basic-calculator-ii | 227. Basic Calculator Ii | Medium | java | [Problem](https://leetcode.com/problems/basic-calculator-ii/) | [Solution](./solutions/Medium/0227-basic-calculator-ii/solution.java) |
-| majority-element-ii | 229. Majority Element Ii | Medium | java | [Problem](https://leetcode.com/problems/majority-element-ii/) | [Solution](./solutions/Medium/0229-majority-element-ii/solution.java) |
-| sliding-window-maximum | 239. Sliding Window Maximum | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-maximum/) | [Solution](./solutions/Hard/0239-sliding-window-maximum/solution.java) |
-| search-a-2d-matrix-ii | 240. Search A 2d Matrix Ii | Medium | java | [Problem](https://leetcode.com/problems/search-a-2d-matrix-ii/) | [Solution](./solutions/Medium/0240-search-a-2d-matrix-ii/solution.java) |
-| different-ways-to-add-parentheses | 241. Different Ways To Add Parentheses | Medium | java | [Problem](https://leetcode.com/problems/different-ways-to-add-parentheses/) | [Solution](./solutions/Medium/0241-different-ways-to-add-parentheses/solution.java) |
-| single-number-iii | 260. Single Number Iii | Medium | java | [Problem](https://leetcode.com/problems/single-number-iii/) | [Solution](./solutions/Medium/0260-single-number-iii/solution.java) |
-| integer-to-english-words | 273. Integer To English Words | Hard | java | [Problem](https://leetcode.com/problems/integer-to-english-words/) | [Solution](./solutions/Hard/0273-integer-to-english-words/solution.java) |
-| h-index | 274. H Index | Medium | java | [Problem](https://leetcode.com/problems/h-index/) | [Solution](./solutions/Medium/0274-h-index/solution.java) |
-| h-index-ii | 275. H Index Ii | Medium | java | [Problem](https://leetcode.com/problems/h-index-ii/) | [Solution](./solutions/Medium/0275-h-index-ii/solution.java) |
-| expression-add-operators | 282. Expression Add Operators | Hard | java | [Problem](https://leetcode.com/problems/expression-add-operators/) | [Solution](./solutions/Hard/0282-expression-add-operators/solution.java) |
-| peeking-iterator | 284. Peeking Iterator | Medium | java | [Problem](https://leetcode.com/problems/peeking-iterator/) | [Solution](./solutions/Medium/0284-peeking-iterator/solution.java) |
-| find-the-duplicate-number | 287. Find The Duplicate Number | Medium | java | [Problem](https://leetcode.com/problems/find-the-duplicate-number/) | [Solution](./solutions/Medium/0287-find-the-duplicate-number/solution.java) |
-| game-of-life | 289. Game Of Life | Medium | java | [Problem](https://leetcode.com/problems/game-of-life/) | [Solution](./solutions/Medium/0289-game-of-life/solution.java) |
-| serialize-and-deserialize-binary-tree | 297. Serialize And Deserialize Binary Tree | Hard | java | [Problem](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | [Solution](./solutions/Hard/0297-serialize-and-deserialize-binary-tree/solution.java) |
-| bulls-and-cows | 299. Bulls And Cows | Medium | java | [Problem](https://leetcode.com/problems/bulls-and-cows/) | [Solution](./solutions/Medium/0299-bulls-and-cows/solution.java) |
-| longest-increasing-subsequence | 300. Longest Increasing Subsequence | Medium | java | [Problem](https://leetcode.com/problems/longest-increasing-subsequence/) | [Solution](./solutions/Medium/0300-longest-increasing-subsequence/solution.java) |
-| partition-to-k-equal-sum-subsets | Partition to K Equal Sum Subsets | Medium | java | [Problem](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/) | [Solution](./solutions/Medium/0698-partition-to-k-equal-sum-subsets/solution.java) |
-| random-pick-with-blacklist | Random Pick with Blacklist | Hard | java | [Problem](https://leetcode.com/problems/random-pick-with-blacklist/) | [Solution](./solutions/Hard/0710-random-pick-with-blacklist/solution.java) |
-| random-pick-with-weight | Random Pick with Weight | Medium | java | [Problem](https://leetcode.com/problems/random-pick-with-weight/) | [Solution](./solutions/Medium/0528-random-pick-with-weight/solution.java) |
-| random-point-in-non-overlapping-rectangles | Random Point in Non-overlapping Rectangles | Medium | java | [Problem](https://leetcode.com/problems/random-point-in-non-overlapping-rectangles/) | [Solution](./solutions/Medium/0497-random-point-in-non-overlapping-rectangles/solution.java) |
-| range-addition-ii | Range Addition II | Easy | java | [Problem](https://leetcode.com/problems/range-addition-ii/) | [Solution](./solutions/Easy/0598-range-addition-ii/solution.java) |
-| range-sum-query-immutable | 303. Range Sum Query Immutable | Easy | java | [Problem](https://leetcode.com/problems/range-sum-query-immutable/) | [Solution](./solutions/Easy/0303-range-sum-query-immutable/solution.java) |
-| relative-ranks | Relative Ranks | Easy | java | [Problem](https://leetcode.com/problems/relative-ranks/) | [Solution](./solutions/Easy/0506-relative-ranks/solution.java) |
-| remove-boxes | Remove Boxes | Hard | java | [Problem](https://leetcode.com/problems/remove-boxes/) | [Solution](./solutions/Hard/0546-remove-boxes/solution.java) |
-| remove-invalid-parentheses | 301. Remove Invalid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/remove-invalid-parentheses/) | [Solution](./solutions/Hard/0301-remove-invalid-parentheses/solution.java) |
-| range-sum-query-2d-immutable | 304. Range Sum Query 2d Immutable | Medium | java | [Problem](https://leetcode.com/problems/range-sum-query-2d-immutable/) | [Solution](./solutions/Medium/0304-range-sum-query-2d-immutable/solution.java) |
-| additive-number | 306. Additive Number | Medium | java | [Problem](https://leetcode.com/problems/additive-number/) | [Solution](./solutions/Medium/0306-additive-number/solution.java) |
-| range-sum-query-mutable | 307. Range Sum Query Mutable | Medium | java | [Problem](https://leetcode.com/problems/range-sum-query-mutable/) | [Solution](./solutions/Medium/0307-range-sum-query-mutable/solution.java) |
-| best-time-to-buy-and-sell-stock-with-cooldown | 309. Best Time To Buy And Sell Stock With Cooldown | Medium | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/) | [Solution](./solutions/Medium/0309-best-time-to-buy-and-sell-stock-with-cooldown/solution.java) |
-| burst-balloons | 312. Burst Balloons | Hard | java | [Problem](https://leetcode.com/problems/burst-balloons/) | [Solution](./solutions/Hard/0312-burst-balloons/solution.java) |
-| super-ugly-number | 313. Super Ugly Number | Medium | java | [Problem](https://leetcode.com/problems/super-ugly-number/) | [Solution](./solutions/Medium/0313-super-ugly-number/solution.java) |
-| count-of-smaller-numbers-after-self | 315. Count Of Smaller Numbers After Self | Hard | java | [Problem](https://leetcode.com/problems/count-of-smaller-numbers-after-self/) | [Solution](./solutions/Hard/0315-count-of-smaller-numbers-after-self/solution.java) |
-| remove-duplicate-letters | 316. Remove Duplicate Letters | Medium | java | [Problem](https://leetcode.com/problems/remove-duplicate-letters/) | [Solution](./solutions/Medium/0316-remove-duplicate-letters/solution.java) |
-| maximum-product-of-word-lengths | 318. Maximum Product Of Word Lengths | Medium | java | [Problem](https://leetcode.com/problems/maximum-product-of-word-lengths/) | [Solution](./solutions/Medium/0318-maximum-product-of-word-lengths/solution.java) |
-| create-maximum-number | 321. Create Maximum Number | Hard | java | [Problem](https://leetcode.com/problems/create-maximum-number/) | [Solution](./solutions/Hard/0321-create-maximum-number/solution.java) |
-| coin-change | 322. Coin Change | Medium | java | [Problem](https://leetcode.com/problems/coin-change/) | [Solution](./solutions/Medium/0322-coin-change/solution.java) |
-| removing-minimum-and-maximum-from-array | Removing Minimum and Maximum From Array | Medium | java | [Problem](https://leetcode.com/problems/removing-minimum-and-maximum-from-array/) | [Solution](./solutions/Medium/2091-removing-minimum-and-maximum-from-array/solution.java) |
-| replace-words | Replace Words | Medium | java | [Problem](https://leetcode.com/problems/replace-words/) | [Solution](./solutions/Medium/0648-replace-words/solution.java) |
-| reshape-the-matrix | Reshape the Matrix | Easy | java | [Problem](https://leetcode.com/problems/reshape-the-matrix/) | [Solution](./solutions/Easy/0566-reshape-the-matrix/solution.java) |
-| reveal-cards-in-increasing-order | Reveal Cards In Increasing Order | Medium | java | [Problem](https://leetcode.com/problems/reveal-cards-in-increasing-order/) | [Solution](./solutions/Medium/0950-reveal-cards-in-increasing-order/solution.java) |
-| reverse-pairs | Reverse Pairs | Hard | java | [Problem](https://leetcode.com/problems/reverse-pairs/) | [Solution](./solutions/Hard/0493-reverse-pairs/solution.java) |
 | set-mismatch | Set Mismatch | Easy | java | [Problem](https://leetcode.com/problems/set-mismatch/) | [Solution](./solutions/Easy/0645-set-mismatch/solution.java) |
 | shopping-offers | Shopping Offers | Medium | java | [Problem](https://leetcode.com/problems/shopping-offers/) | [Solution](./solutions/Medium/0638-shopping-offers/solution.java) |
 | single-element-in-a-sorted-array | Single Element in a Sorted Array | Medium | java | [Problem](https://leetcode.com/problems/single-element-in-a-sorted-array/) | [Solution](./solutions/Medium/0540-single-element-in-a-sorted-array/solution.java) |
 | sliding-window-median | Sliding Window Median | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-median/) | [Solution](./solutions/Hard/0480-sliding-window-median/solution.java) |
 | smallest-range-covering-elements-from-k-lists | Smallest Range Covering Elements from K Lists | Hard | java | [Problem](https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/) | [Solution](./solutions/Hard/0632-smallest-range-covering-elements-from-k-lists/solution.java) |
 | smallest-stable-index-i | Smallest Stable Index I | Easy | java | [Problem](https://leetcode.com/problems/smallest-stable-index-i/) | [Solution](./solutions/Easy/3903-smallest-stable-index-i/solution.java) |
+| smallest-stable-index-ii | Smallest Stable Index II | Medium | java | [Problem](https://leetcode.com/problems/smallest-stable-index-ii/) | [Solution](./solutions/Medium/3904-smallest-stable-index-ii/solution.java) |
 | split-array-into-consecutive-subsequences | Split Array into Consecutive Subsequences | Medium | java | [Problem](https://leetcode.com/problems/split-array-into-consecutive-subsequences/) | [Solution](./solutions/Medium/0659-split-array-into-consecutive-subsequences/solution.java) |
 | stamping-the-sequence | Stamping The Sequence | Hard | java | [Problem](https://leetcode.com/problems/stamping-the-sequence/) | [Solution](./solutions/Hard/0936-stamping-the-sequence/solution.java) |
 | stickers-to-spell-word | Stickers to Spell Word | Hard | java | [Problem](https://leetcode.com/problems/stickers-to-spell-word/) | [Solution](./solutions/Hard/0691-stickers-to-spell-word/solution.java) |
@@ -190,12 +154,49 @@
 | longest-valid-parentheses | 32. Longest Valid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/longest-valid-parentheses/) | [Solution](./solutions/Hard/0032-longest-valid-parentheses/solution.java) |
 | binary-tree-maximum-path-sum | 124. Binary Tree Maximum Path Sum | Hard | java | [Problem](https://leetcode.com/problems/binary-tree-maximum-path-sum/) | [Solution](./solutions/Hard/0124-binary-tree-maximum-path-sum/solution.java) |
 | candy | 135. Candy | Hard | java | [Problem](https://leetcode.com/problems/candy/) | [Solution](./solutions/Hard/0135-candy/solution.java) |
-| max-points-on-a-line | 149. Max Points On A Line | Hard | java | [Problem](https://leetcode.com/problems/max-points-on-a-line/) | [Solution](./solutions/Hard/0149-max-points-on-a-line/solution.java) |
 | rising-temperature | 197. Rising Temperature | Easy | mysql | [Problem](https://leetcode.com/problems/rising-temperature/) | [Solution](./solutions/Easy/0197-rising-temperature/solution.sql) |
+| word-search-ii | 212. Word Search Ii | Hard | java | [Problem](https://leetcode.com/problems/word-search-ii/) | [Solution](./solutions/Hard/0212-word-search-ii/solution.java) |
+| house-robber-ii | 213. House Robber Ii | Medium | java | [Problem](https://leetcode.com/problems/house-robber-ii/) | [Solution](./solutions/Medium/0213-house-robber-ii/solution.java) |
+| shortest-palindrome | 214. Shortest Palindrome | Hard | java | [Problem](https://leetcode.com/problems/shortest-palindrome/) | [Solution](./solutions/Hard/0214-shortest-palindrome/solution.java) |
+| kth-largest-element-in-an-array | 215. Kth Largest Element In An Array | Medium | java | [Problem](https://leetcode.com/problems/kth-largest-element-in-an-array/) | [Solution](./solutions/Medium/0215-kth-largest-element-in-an-array/solution.java) |
+| combination-sum-iii | 216. Combination Sum Iii | Medium | java | [Problem](https://leetcode.com/problems/combination-sum-iii/) | [Solution](./solutions/Medium/0216-combination-sum-iii/solution.java) |
+| the-skyline-problem | 218. The Skyline Problem | Hard | java | [Problem](https://leetcode.com/problems/the-skyline-problem/) | [Solution](./solutions/Hard/0218-the-skyline-problem/solution.java) |
+| contains-duplicate-iii | 220. Contains Duplicate Iii | Hard | java | [Problem](https://leetcode.com/problems/contains-duplicate-iii/) | [Solution](./solutions/Hard/0220-contains-duplicate-iii/solution.java) |
+| maximal-square | 221. Maximal Square | Medium | java | [Problem](https://leetcode.com/problems/maximal-square/) | [Solution](./solutions/Medium/0221-maximal-square/solution.java) |
+| basic-calculator | 224. Basic Calculator | Hard | java | [Problem](https://leetcode.com/problems/basic-calculator/) | [Solution](./solutions/Hard/0224-basic-calculator/solution.java) |
+| basic-calculator-ii | 227. Basic Calculator Ii | Medium | java | [Problem](https://leetcode.com/problems/basic-calculator-ii/) | [Solution](./solutions/Medium/0227-basic-calculator-ii/solution.java) |
 | summary-ranges | 228. Summary Ranges | Easy | java | [Problem](https://leetcode.com/problems/summary-ranges/) | [Solution](./solutions/Easy/0228-summary-ranges/solution.java) |
+| majority-element-ii | 229. Majority Element Ii | Medium | java | [Problem](https://leetcode.com/problems/majority-element-ii/) | [Solution](./solutions/Medium/0229-majority-element-ii/solution.java) |
+| sliding-window-maximum | 239. Sliding Window Maximum | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-maximum/) | [Solution](./solutions/Hard/0239-sliding-window-maximum/solution.java) |
+| search-a-2d-matrix-ii | 240. Search A 2d Matrix Ii | Medium | java | [Problem](https://leetcode.com/problems/search-a-2d-matrix-ii/) | [Solution](./solutions/Medium/0240-search-a-2d-matrix-ii/solution.java) |
+| different-ways-to-add-parentheses | 241. Different Ways To Add Parentheses | Medium | java | [Problem](https://leetcode.com/problems/different-ways-to-add-parentheses/) | [Solution](./solutions/Medium/0241-different-ways-to-add-parentheses/solution.java) |
 | valid-anagram | 242. Valid Anagram | Easy | java | [Problem](https://leetcode.com/problems/valid-anagram/) | [Solution](./solutions/Easy/0242-valid-anagram/solution.java) |
 | binary-tree-paths | 257. Binary Tree Paths | Easy | java | [Problem](https://leetcode.com/problems/binary-tree-paths/) | [Solution](./solutions/Easy/0257-binary-tree-paths/solution.java) |
+| single-number-iii | 260. Single Number Iii | Medium | java | [Problem](https://leetcode.com/problems/single-number-iii/) | [Solution](./solutions/Medium/0260-single-number-iii/solution.java) |
+| integer-to-english-words | 273. Integer To English Words | Hard | java | [Problem](https://leetcode.com/problems/integer-to-english-words/) | [Solution](./solutions/Hard/0273-integer-to-english-words/solution.java) |
+| h-index | 274. H Index | Medium | java | [Problem](https://leetcode.com/problems/h-index/) | [Solution](./solutions/Medium/0274-h-index/solution.java) |
+| h-index-ii | 275. H Index Ii | Medium | java | [Problem](https://leetcode.com/problems/h-index-ii/) | [Solution](./solutions/Medium/0275-h-index-ii/solution.java) |
+| expression-add-operators | 282. Expression Add Operators | Hard | java | [Problem](https://leetcode.com/problems/expression-add-operators/) | [Solution](./solutions/Hard/0282-expression-add-operators/solution.java) |
+| peeking-iterator | 284. Peeking Iterator | Medium | java | [Problem](https://leetcode.com/problems/peeking-iterator/) | [Solution](./solutions/Medium/0284-peeking-iterator/solution.java) |
+| find-the-duplicate-number | 287. Find The Duplicate Number | Medium | java | [Problem](https://leetcode.com/problems/find-the-duplicate-number/) | [Solution](./solutions/Medium/0287-find-the-duplicate-number/solution.java) |
+| game-of-life | 289. Game Of Life | Medium | java | [Problem](https://leetcode.com/problems/game-of-life/) | [Solution](./solutions/Medium/0289-game-of-life/solution.java) |
 | word-pattern | 290. Word Pattern | Easy | java | [Problem](https://leetcode.com/problems/word-pattern/) | [Solution](./solutions/Easy/0290-word-pattern/solution.java) |
+| serialize-and-deserialize-binary-tree | 297. Serialize And Deserialize Binary Tree | Hard | java | [Problem](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/) | [Solution](./solutions/Hard/0297-serialize-and-deserialize-binary-tree/solution.java) |
+| bulls-and-cows | 299. Bulls And Cows | Medium | java | [Problem](https://leetcode.com/problems/bulls-and-cows/) | [Solution](./solutions/Medium/0299-bulls-and-cows/solution.java) |
+| longest-increasing-subsequence | 300. Longest Increasing Subsequence | Medium | java | [Problem](https://leetcode.com/problems/longest-increasing-subsequence/) | [Solution](./solutions/Medium/0300-longest-increasing-subsequence/solution.java) |
+| remove-invalid-parentheses | 301. Remove Invalid Parentheses | Hard | java | [Problem](https://leetcode.com/problems/remove-invalid-parentheses/) | [Solution](./solutions/Hard/0301-remove-invalid-parentheses/solution.java) |
+| range-sum-query-immutable | 303. Range Sum Query Immutable | Easy | java | [Problem](https://leetcode.com/problems/range-sum-query-immutable/) | [Solution](./solutions/Easy/0303-range-sum-query-immutable/solution.java) |
+| range-sum-query-2d-immutable | 304. Range Sum Query 2d Immutable | Medium | java | [Problem](https://leetcode.com/problems/range-sum-query-2d-immutable/) | [Solution](./solutions/Medium/0304-range-sum-query-2d-immutable/solution.java) |
+| additive-number | 306. Additive Number | Medium | java | [Problem](https://leetcode.com/problems/additive-number/) | [Solution](./solutions/Medium/0306-additive-number/solution.java) |
+| range-sum-query-mutable | 307. Range Sum Query Mutable | Medium | java | [Problem](https://leetcode.com/problems/range-sum-query-mutable/) | [Solution](./solutions/Medium/0307-range-sum-query-mutable/solution.java) |
+| best-time-to-buy-and-sell-stock-with-cooldown | 309. Best Time To Buy And Sell Stock With Cooldown | Medium | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/) | [Solution](./solutions/Medium/0309-best-time-to-buy-and-sell-stock-with-cooldown/solution.java) |
+| burst-balloons | 312. Burst Balloons | Hard | java | [Problem](https://leetcode.com/problems/burst-balloons/) | [Solution](./solutions/Hard/0312-burst-balloons/solution.java) |
+| super-ugly-number | 313. Super Ugly Number | Medium | java | [Problem](https://leetcode.com/problems/super-ugly-number/) | [Solution](./solutions/Medium/0313-super-ugly-number/solution.java) |
+| count-of-smaller-numbers-after-self | 315. Count Of Smaller Numbers After Self | Hard | java | [Problem](https://leetcode.com/problems/count-of-smaller-numbers-after-self/) | [Solution](./solutions/Hard/0315-count-of-smaller-numbers-after-self/solution.java) |
+| remove-duplicate-letters | 316. Remove Duplicate Letters | Medium | java | [Problem](https://leetcode.com/problems/remove-duplicate-letters/) | [Solution](./solutions/Medium/0316-remove-duplicate-letters/solution.java) |
+| maximum-product-of-word-lengths | 318. Maximum Product Of Word Lengths | Medium | java | [Problem](https://leetcode.com/problems/maximum-product-of-word-lengths/) | [Solution](./solutions/Medium/0318-maximum-product-of-word-lengths/solution.java) |
+| create-maximum-number | 321. Create Maximum Number | Hard | java | [Problem](https://leetcode.com/problems/create-maximum-number/) | [Solution](./solutions/Hard/0321-create-maximum-number/solution.java) |
+| coin-change | 322. Coin Change | Medium | java | [Problem](https://leetcode.com/problems/coin-change/) | [Solution](./solutions/Medium/0322-coin-change/solution.java) |
 | wiggle-sort-ii | 324. Wiggle Sort Ii | Medium | java | [Problem](https://leetcode.com/problems/wiggle-sort-ii/) | [Solution](./solutions/Medium/0324-wiggle-sort-ii/solution.java) |
 | count-of-range-sum | 327. Count Of Range Sum | Hard | java | [Problem](https://leetcode.com/problems/count-of-range-sum/) | [Solution](./solutions/Hard/0327-count-of-range-sum/solution.java) |
 | longest-increasing-path-in-a-matrix | 329. Longest Increasing Path In A Matrix | Hard | java | [Problem](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) | [Solution](./solutions/Hard/0329-longest-increasing-path-in-a-matrix/solution.java) |
