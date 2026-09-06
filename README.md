@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 349 Solved
+## Progress Summary: 350 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -194,6 +194,7 @@
 | teemo-attacking | Teemo Attacking | Easy | java | [Problem](https://leetcode.com/problems/teemo-attacking/) | [Solution](./solutions/Easy/0495-teemo-attacking/solution.java) |
 | toeplitz-matrix | Toeplitz Matrix | Easy | java | [Problem](https://leetcode.com/problems/toeplitz-matrix/) | [Solution](./solutions/Easy/0766-toeplitz-matrix/solution.java) |
 | top-k-frequent-words | Top K Frequent Words | Medium | java | [Problem](https://leetcode.com/problems/top-k-frequent-words/) | [Solution](./solutions/Medium/0692-top-k-frequent-words/solution.java) |
+| transform-to-chessboard | Transform to Chessboard | Hard | java | [Problem](https://leetcode.com/problems/transform-to-chessboard/) | [Solution](./solutions/Hard/0782-transform-to-chessboard/solution.java) |
 | two-sum | 1. Two Sum | Easy | java | [Problem](https://leetcode.com/problems/two-sum/) | [Solution](./solutions/Easy/0001-two-sum/solution.java) |
 | palindrome-number | 9. Palindrome Number | Easy | java | [Problem](https://leetcode.com/problems/palindrome-number/) | [Solution](./solutions/Easy/0009-palindrome-number/solution.java) |
 | roman-to-integer | 13. Roman To Integer | Easy | java | [Problem](https://leetcode.com/problems/roman-to-integer/) | [Solution](./solutions/Easy/0013-roman-to-integer/solution.java) |
@@ -354,4 +355,4 @@
 | smallest-missing-multiple-of-k | 3718. Smallest Missing Multiple Of K | Easy | java | [Problem](https://leetcode.com/problems/smallest-missing-multiple-of-k/) | [Solution](./solutions/Easy/3718-smallest-missing-multiple-of-k/solution.java) |
 | lexicographically-smallest-permutation-greater-than-target | 3720. Lexicographically Smallest Permutation Greater Than Target | Medium | java | [Problem](https://leetcode.com/problems/lexicographically-smallest-permutation-greater-than-target/) | [Solution](./solutions/Medium/3720-lexicographically-smallest-permutation-greater-than-target/solution.java) |
 | lexicographically-smallest-palindromic-permutation-greater-than-target | 3734. Lexicographically Smallest Palindromic Permutation Greater Than Target | Hard | java | [Problem](https://leetcode.com/problems/lexicographically-smallest-palindromic-permutation-greater-than-target/) | [Solution](./solutions/Hard/3734-lexicographically-smallest-palindromic-permutation-greater-than-target/solution.java) |
-| transform-to-chessboard | Transform to Chessboard | Hard | java | [Problem](https://leetcode.com/problems/transform-to-chessboard/) | [Solution](./solutions/Hard/0782-transform-to-chessboard/solution.java) |
+| valid-tic-tac-toe-state | Valid Tic-Tac-Toe State | Medium | java | [Problem](https://leetcode.com/problems/valid-tic-tac-toe-state/) | [Solution](./solutions/Medium/0794-valid-tic-tac-toe-state/solution.java) |
