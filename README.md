@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 351 Solved
+## Progress Summary: 352 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -51,30 +51,9 @@
 | design-twitter | Design Twitter | Medium | java | [Problem](https://leetcode.com/problems/design-twitter/) | [Solution](./solutions/Medium/0355-design-twitter/solution.java) |
 | diagonal-traverse | Diagonal Traverse | Medium | java | [Problem](https://leetcode.com/problems/diagonal-traverse/) | [Solution](./solutions/Medium/0498-diagonal-traverse/solution.java) |
 | distinct-subsequences | Distinct Subsequences | Hard | java | [Problem](https://leetcode.com/problems/distinct-subsequences/) | [Solution](./solutions/Hard/0115-distinct-subsequences/solution.java) |
+| distinct-subsequences-ii | Distinct Subsequences II | Hard | java | [Problem](https://leetcode.com/problems/distinct-subsequences-ii/) | [Solution](./solutions/Hard/0940-distinct-subsequences-ii/solution.java) |
 | distribute-candies | Distribute Candies | Easy | java | [Problem](https://leetcode.com/problems/distribute-candies/) | [Solution](./solutions/Easy/0575-distribute-candies/solution.java) |
 | employee-importance | Employee Importance | Medium | java | [Problem](https://leetcode.com/problems/employee-importance/) | [Solution](./solutions/Medium/0690-employee-importance/solution.java) |
-| employees-earning-more-than-their-managers | 181. Employees Earning More Than Their Managers | Easy | mysql | [Problem](https://leetcode.com/problems/employees-earning-more-than-their-managers/) | [Solution](./solutions/Easy/0181-employees-earning-more-than-their-managers/solution.sql) |
-| erect-the-fence | Erect the Fence | Hard | java | [Problem](https://leetcode.com/problems/erect-the-fence/) | [Solution](./solutions/Hard/0587-erect-the-fence/solution.java) |
-| escape-the-ghosts | Escape The Ghosts | Medium | java | [Problem](https://leetcode.com/problems/escape-the-ghosts/) | [Solution](./solutions/Medium/0789-escape-the-ghosts/solution.java) |
-| exclusive-time-of-functions | Exclusive Time of Functions | Medium | java | [Problem](https://leetcode.com/problems/exclusive-time-of-functions/) | [Solution](./solutions/Medium/0636-exclusive-time-of-functions/solution.java) |
-| falling-squares | Falling Squares | Hard | java | [Problem](https://leetcode.com/problems/falling-squares/) | [Solution](./solutions/Hard/0699-falling-squares/solution.java) |
-| find-duplicate-file-in-system | Find Duplicate File in System | Medium | java | [Problem](https://leetcode.com/problems/find-duplicate-file-in-system/) | [Solution](./solutions/Medium/0609-find-duplicate-file-in-system/solution.java) |
-| find-maximum-non-decreasing-array-length | Find Maximum Non-decreasing Array Length | Hard | java | [Problem](https://leetcode.com/problems/find-maximum-non-decreasing-array-length/) | [Solution](./solutions/Hard/2945-find-maximum-non-decreasing-array-length/solution.java) |
-| find-pivot-index | Find Pivot Index | Easy | java | [Problem](https://leetcode.com/problems/find-pivot-index/) | [Solution](./solutions/Easy/0724-find-pivot-index/solution.java) |
-| find-smallest-letter-greater-than-target | Find Smallest Letter Greater Than Target | Easy | java | [Problem](https://leetcode.com/problems/find-smallest-letter-greater-than-target/) | [Solution](./solutions/Easy/0744-find-smallest-letter-greater-than-target/solution.java) |
-| find-the-minimum-and-maximum-number-of-nodes-between-critical-points | Find the Minimum and Maximum Number of Nodes Between Critical Points | Medium | java | [Problem](https://leetcode.com/problems/find-the-minimum-and-maximum-number-of-nodes-between-critical-points/) | [Solution](./solutions/Medium/2058-find-the-minimum-and-maximum-number-of-nodes-between-critical-points/solution.java) |
-| flatten-a-multilevel-doubly-linked-list | Flatten a Multilevel Doubly Linked List | Medium | java | [Problem](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/) | [Solution](./solutions/Medium/0430-flatten-a-multilevel-doubly-linked-list/solution.java) |
-| flood-fill | Flood Fill | Easy | java | [Problem](https://leetcode.com/problems/flood-fill/) | [Solution](./solutions/Easy/0733-flood-fill/solution.java) |
-| global-and-local-inversions | Global and Local Inversions | Medium | java | [Problem](https://leetcode.com/problems/global-and-local-inversions/) | [Solution](./solutions/Medium/0775-global-and-local-inversions/solution.java) |
-| image-smoother | Image Smoother | Easy | java | [Problem](https://leetcode.com/problems/image-smoother/) | [Solution](./solutions/Easy/0661-image-smoother/solution.java) |
-| implement-stack-using-queues | Implement Stack using Queues | Easy | java | [Problem](https://leetcode.com/problems/implement-stack-using-queues/) | [Solution](./solutions/Easy/0225-implement-stack-using-queues/solution.java) |
-| intersection-of-two-arrays | 349. Intersection Of Two Arrays | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays/) | [Solution](./solutions/Easy/0349-intersection-of-two-arrays/solution.java) |
-| intersection-of-two-arrays-ii | 350. Intersection Of Two Arrays Ii | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays-ii/) | [Solution](./solutions/Easy/0350-intersection-of-two-arrays-ii/solution.java) |
-| ipo | IPO | Hard | java | [Problem](https://leetcode.com/problems/ipo/) | [Solution](./solutions/Hard/0502-ipo/solution.java) |
-| island-perimeter | Island Perimeter | Easy | java | [Problem](https://leetcode.com/problems/island-perimeter/) | [Solution](./solutions/Easy/0463-island-perimeter/solution.java) |
-| largest-number-at-least-twice-of-others | Largest Number At Least Twice of Others | Easy | java | [Problem](https://leetcode.com/problems/largest-number-at-least-twice-of-others/) | [Solution](./solutions/Easy/0747-largest-number-at-least-twice-of-others/solution.java) |
-| largest-plus-sign | Largest Plus Sign | Medium | java | [Problem](https://leetcode.com/problems/largest-plus-sign/) | [Solution](./solutions/Medium/0764-largest-plus-sign/solution.java) |
-| lfu-cache | LFU Cache | Hard | java | [Problem](https://leetcode.com/problems/lfu-cache/) | [Solution](./solutions/Hard/0460-lfu-cache/solution.java) |
 | longest-substring-without-repeating-characters | 3. Longest Substring Without Repeating Characters | Medium | java | [Problem](https://leetcode.com/problems/longest-substring-without-repeating-characters/) | [Solution](./solutions/Medium/0003-longest-substring-without-repeating-characters/solution.java) |
 | median-of-two-sorted-arrays | 4. Median Of Two Sorted Arrays | Hard | java | [Problem](https://leetcode.com/problems/median-of-two-sorted-arrays/) | [Solution](./solutions/Hard/0004-median-of-two-sorted-arrays/solution.java) |
 | longest-palindromic-substring | 5. Longest Palindromic Substring | Medium | java | [Problem](https://leetcode.com/problems/longest-palindromic-substring/) | [Solution](./solutions/Medium/0005-longest-palindromic-substring/solution.java) |
@@ -99,6 +78,21 @@
 | compare-version-numbers | 165. Compare Version Numbers | Medium | java | [Problem](https://leetcode.com/problems/compare-version-numbers/) | [Solution](./solutions/Medium/0165-compare-version-numbers/solution.java) |
 | fraction-to-recurring-decimal | 166. Fraction To Recurring Decimal | Medium | java | [Problem](https://leetcode.com/problems/fraction-to-recurring-decimal/) | [Solution](./solutions/Medium/0166-fraction-to-recurring-decimal/solution.java) |
 | dungeon-game | 174. Dungeon Game | Hard | java | [Problem](https://leetcode.com/problems/dungeon-game/) | [Solution](./solutions/Hard/0174-dungeon-game/solution.java) |
+| employees-earning-more-than-their-managers | 181. Employees Earning More Than Their Managers | Easy | mysql | [Problem](https://leetcode.com/problems/employees-earning-more-than-their-managers/) | [Solution](./solutions/Easy/0181-employees-earning-more-than-their-managers/solution.sql) |
+| erect-the-fence | Erect the Fence | Hard | java | [Problem](https://leetcode.com/problems/erect-the-fence/) | [Solution](./solutions/Hard/0587-erect-the-fence/solution.java) |
+| escape-the-ghosts | Escape The Ghosts | Medium | java | [Problem](https://leetcode.com/problems/escape-the-ghosts/) | [Solution](./solutions/Medium/0789-escape-the-ghosts/solution.java) |
+| exclusive-time-of-functions | Exclusive Time of Functions | Medium | java | [Problem](https://leetcode.com/problems/exclusive-time-of-functions/) | [Solution](./solutions/Medium/0636-exclusive-time-of-functions/solution.java) |
+| falling-squares | Falling Squares | Hard | java | [Problem](https://leetcode.com/problems/falling-squares/) | [Solution](./solutions/Hard/0699-falling-squares/solution.java) |
+| find-duplicate-file-in-system | Find Duplicate File in System | Medium | java | [Problem](https://leetcode.com/problems/find-duplicate-file-in-system/) | [Solution](./solutions/Medium/0609-find-duplicate-file-in-system/solution.java) |
+| find-maximum-non-decreasing-array-length | Find Maximum Non-decreasing Array Length | Hard | java | [Problem](https://leetcode.com/problems/find-maximum-non-decreasing-array-length/) | [Solution](./solutions/Hard/2945-find-maximum-non-decreasing-array-length/solution.java) |
+| find-pivot-index | Find Pivot Index | Easy | java | [Problem](https://leetcode.com/problems/find-pivot-index/) | [Solution](./solutions/Easy/0724-find-pivot-index/solution.java) |
+| find-smallest-letter-greater-than-target | Find Smallest Letter Greater Than Target | Easy | java | [Problem](https://leetcode.com/problems/find-smallest-letter-greater-than-target/) | [Solution](./solutions/Easy/0744-find-smallest-letter-greater-than-target/solution.java) |
+| find-the-minimum-and-maximum-number-of-nodes-between-critical-points | Find the Minimum and Maximum Number of Nodes Between Critical Points | Medium | java | [Problem](https://leetcode.com/problems/find-the-minimum-and-maximum-number-of-nodes-between-critical-points/) | [Solution](./solutions/Medium/2058-find-the-minimum-and-maximum-number-of-nodes-between-critical-points/solution.java) |
+| flatten-a-multilevel-doubly-linked-list | Flatten a Multilevel Doubly Linked List | Medium | java | [Problem](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/) | [Solution](./solutions/Medium/0430-flatten-a-multilevel-doubly-linked-list/solution.java) |
+| flood-fill | Flood Fill | Easy | java | [Problem](https://leetcode.com/problems/flood-fill/) | [Solution](./solutions/Easy/0733-flood-fill/solution.java) |
+| global-and-local-inversions | Global and Local Inversions | Medium | java | [Problem](https://leetcode.com/problems/global-and-local-inversions/) | [Solution](./solutions/Medium/0775-global-and-local-inversions/solution.java) |
+| image-smoother | Image Smoother | Easy | java | [Problem](https://leetcode.com/problems/image-smoother/) | [Solution](./solutions/Easy/0661-image-smoother/solution.java) |
+| implement-stack-using-queues | Implement Stack using Queues | Easy | java | [Problem](https://leetcode.com/problems/implement-stack-using-queues/) | [Solution](./solutions/Easy/0225-implement-stack-using-queues/solution.java) |
 | repeated-dna-sequences | 187. Repeated Dna Sequences | Medium | java | [Problem](https://leetcode.com/problems/repeated-dna-sequences/) | [Solution](./solutions/Medium/0187-repeated-dna-sequences/solution.java) |
 | best-time-to-buy-and-sell-stock-iv | 188. Best Time To Buy And Sell Stock Iv | Hard | java | [Problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/) | [Solution](./solutions/Hard/0188-best-time-to-buy-and-sell-stock-iv/solution.java) |
 | rotate-array | 189. Rotate Array | Medium | java | [Problem](https://leetcode.com/problems/rotate-array/) | [Solution](./solutions/Medium/0189-rotate-array/solution.java) |
@@ -157,6 +151,13 @@
 | palindrome-pairs | 336. Palindrome Pairs | Hard | java | [Problem](https://leetcode.com/problems/palindrome-pairs/) | [Solution](./solutions/Hard/0336-palindrome-pairs/solution.java) |
 | house-robber-iii | 337. House Robber Iii | Medium | java | [Problem](https://leetcode.com/problems/house-robber-iii/) | [Solution](./solutions/Medium/0337-house-robber-iii/solution.java) |
 | top-k-frequent-elements | 347. Top K Frequent Elements | Medium | java | [Problem](https://leetcode.com/problems/top-k-frequent-elements/) | [Solution](./solutions/Medium/0347-top-k-frequent-elements/solution.java) |
+| intersection-of-two-arrays | 349. Intersection Of Two Arrays | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays/) | [Solution](./solutions/Easy/0349-intersection-of-two-arrays/solution.java) |
+| intersection-of-two-arrays-ii | 350. Intersection Of Two Arrays Ii | Easy | java | [Problem](https://leetcode.com/problems/intersection-of-two-arrays-ii/) | [Solution](./solutions/Easy/0350-intersection-of-two-arrays-ii/solution.java) |
+| ipo | IPO | Hard | java | [Problem](https://leetcode.com/problems/ipo/) | [Solution](./solutions/Hard/0502-ipo/solution.java) |
+| island-perimeter | Island Perimeter | Easy | java | [Problem](https://leetcode.com/problems/island-perimeter/) | [Solution](./solutions/Easy/0463-island-perimeter/solution.java) |
+| largest-number-at-least-twice-of-others | Largest Number At Least Twice of Others | Easy | java | [Problem](https://leetcode.com/problems/largest-number-at-least-twice-of-others/) | [Solution](./solutions/Easy/0747-largest-number-at-least-twice-of-others/solution.java) |
+| largest-plus-sign | Largest Plus Sign | Medium | java | [Problem](https://leetcode.com/problems/largest-plus-sign/) | [Solution](./solutions/Medium/0764-largest-plus-sign/solution.java) |
+| lfu-cache | LFU Cache | Hard | java | [Problem](https://leetcode.com/problems/lfu-cache/) | [Solution](./solutions/Hard/0460-lfu-cache/solution.java) |
 | russian-doll-envelopes | 354. Russian Doll Envelopes | Hard | java | [Problem](https://leetcode.com/problems/russian-doll-envelopes/) | [Solution](./solutions/Hard/0354-russian-doll-envelopes/solution.java) |
 | max-sum-of-rectangle-no-larger-than-k | 363. Max Sum Of Rectangle No Larger Than K | Hard | java | [Problem](https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/) | [Solution](./solutions/Hard/0363-max-sum-of-rectangle-no-larger-than-k/solution.java) |
 | largest-divisible-subset | 368. Largest Divisible Subset | Medium | java | [Problem](https://leetcode.com/problems/largest-divisible-subset/) | [Solution](./solutions/Medium/0368-largest-divisible-subset/solution.java) |
