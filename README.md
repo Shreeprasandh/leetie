@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 359 Solved
+## Progress Summary: 360 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -147,6 +147,7 @@
 | stickers-to-spell-word | Stickers to Spell Word | Hard | java | [Problem](https://leetcode.com/problems/stickers-to-spell-word/) | [Solution](./solutions/Hard/0691-stickers-to-spell-word/solution.java) |
 | subarray-product-less-than-k | Subarray Product Less Than K | Medium | java | [Problem](https://leetcode.com/problems/subarray-product-less-than-k/) | [Solution](./solutions/Medium/0713-subarray-product-less-than-k/solution.java) |
 | subarray-sum-equals-k | Subarray Sum Equals K | Medium | java | [Problem](https://leetcode.com/problems/subarray-sum-equals-k/) | [Solution](./solutions/Medium/0560-subarray-sum-equals-k/solution.java) |
+| subdomain-visit-count | Subdomain Visit Count | Medium | java | [Problem](https://leetcode.com/problems/subdomain-visit-count/) | [Solution](./solutions/Medium/0811-subdomain-visit-count/solution.java) |
 | super-washing-machines | Super Washing Machines | Hard | java | [Problem](https://leetcode.com/problems/super-washing-machines/) | [Solution](./solutions/Hard/0517-super-washing-machines/solution.java) |
 | swim-in-rising-water | Swim in Rising Water | Hard | java | [Problem](https://leetcode.com/problems/swim-in-rising-water/) | [Solution](./solutions/Hard/0778-swim-in-rising-water/solution.java) |
 | target-sum | Target Sum | Medium | java | [Problem](https://leetcode.com/problems/target-sum/) | [Solution](./solutions/Medium/0494-target-sum/solution.java) |
