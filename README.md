@@ -2,7 +2,7 @@
 
 > *Automatically synced by [leetie](https://github.com/leetie/leetie).*
 
-## Progress Summary: 373 Solved
+## Progress Summary: 374 Solved
 
 | Slug | Problem | Difficulty | Language | Problem Link | Solution Code |
 |------|---------|-----------|----------|--------------|---------------|
@@ -190,6 +190,7 @@
 | longest-harmonious-subsequence | Longest Harmonious Subsequence | Easy | java | [Problem](https://leetcode.com/problems/longest-harmonious-subsequence/) | [Solution](./solutions/Easy/0594-longest-harmonious-subsequence/solution.java) |
 | longest-palindrome | 409. Longest Palindrome | Easy | java | [Problem](https://leetcode.com/problems/longest-palindrome/) | [Solution](./solutions/Easy/0409-longest-palindrome/solution.java) |
 | longest-word-in-dictionary | Longest Word in Dictionary | Medium | java | [Problem](https://leetcode.com/problems/longest-word-in-dictionary/) | [Solution](./solutions/Medium/0720-longest-word-in-dictionary/solution.java) |
+| magic-squares-in-grid | Magic Squares In Grid | Medium | java | [Problem](https://leetcode.com/problems/magic-squares-in-grid/) | [Solution](./solutions/Medium/0840-magic-squares-in-grid/solution.java) |
 | making-a-large-island | Making A Large Island | Hard | java | [Problem](https://leetcode.com/problems/making-a-large-island/) | [Solution](./solutions/Hard/0827-making-a-large-island/solution.java) |
 | matchsticks-to-square | Matchsticks to Square | Medium | java | [Problem](https://leetcode.com/problems/matchsticks-to-square/) | [Solution](./solutions/Medium/0473-matchsticks-to-square/solution.java) |
 | max-chunks-to-make-sorted | Max Chunks To Make Sorted | Medium | java | [Problem](https://leetcode.com/problems/max-chunks-to-make-sorted/) | [Solution](./solutions/Medium/0769-max-chunks-to-make-sorted/solution.java) |
