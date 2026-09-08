@@ -269,8 +269,8 @@
 | set-intersection-size-at-least-two | Set Intersection Size At Least Two | Hard | java | [Problem](https://leetcode.com/problems/set-intersection-size-at-least-two/) | [Solution](./solutions/Hard/0757-set-intersection-size-at-least-two/solution.java) |
 | set-mismatch | Set Mismatch | Easy | java | [Problem](https://leetcode.com/problems/set-mismatch/) | [Solution](./solutions/Easy/0645-set-mismatch/solution.java) |
 | shopping-offers | Shopping Offers | Medium | java | [Problem](https://leetcode.com/problems/shopping-offers/) | [Solution](./solutions/Medium/0638-shopping-offers/solution.java) |
+| short-encoding-of-words | Short Encoding of Words | Medium | java | [Problem](https://leetcode.com/problems/short-encoding-of-words/) | [Solution](./solutions/Medium/0820-short-encoding-of-words/solution.java) |
 | shortest-completing-word | Shortest Completing Word | Easy | java | [Problem](https://leetcode.com/problems/shortest-completing-word/) | [Solution](./solutions/Easy/0748-shortest-completing-word/solution.java) |
-| shortest-distance-to-a-character | Shortest Distance to a Character | Easy | java | [Problem](https://leetcode.com/problems/shortest-distance-to-a-character/) | [Solution](./solutions/Easy/0821-shortest-distance-to-a-character/solution.java) |
 | single-element-in-a-sorted-array | Single Element in a Sorted Array | Medium | java | [Problem](https://leetcode.com/problems/single-element-in-a-sorted-array/) | [Solution](./solutions/Medium/0540-single-element-in-a-sorted-array/solution.java) |
 | sliding-puzzle | Sliding Puzzle | Hard | java | [Problem](https://leetcode.com/problems/sliding-puzzle/) | [Solution](./solutions/Hard/0773-sliding-puzzle/solution.java) |
 | sliding-window-median | Sliding Window Median | Hard | java | [Problem](https://leetcode.com/problems/sliding-window-median/) | [Solution](./solutions/Hard/0480-sliding-window-median/solution.java) |
