@@ -1,6 +1,6 @@
 # My LeetCode Solutions
 
-> *Automatically synced by [leetie](https://github.com/leetie/leetie).*
+> *Automatically synced by [leetie](https://github.com/leetie/leetie).* - for testing purpose.
 
 ## Progress Summary: 380 Solved
 
